@@ -1,6 +1,6 @@
-const { ApiError } = require("../errorHandler");
+const { ApiError } = require("../errorHandler/apiErrorHandler");
 const Host = require("../models/hostModel");
-const { verifyJWT } = require("../utils");
+const verifyJWT = require("../utils/verifyJWT");
 
 const hostAuth = async (req, res, next) => {
     // console.log("hostAuth")
@@ -11,7 +11,7 @@ const hostAuth = async (req, res, next) => {
         if (!token || token == "undefined") throw new ApiError("Token is required!", 401);
 
         const verifiedUser = verifyJWT(token);
-        const user = await Host.findById(verifiedUser._id).lean();
+        const user = await Host.findById(verifiedUser._id);
         if (!user) throw new ApiError("User not found!", 404);
 
         req.user = user;

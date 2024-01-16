@@ -1,9 +1,9 @@
 const { ApiError } = require("../errorHandler/apiErrorHandler");
-const User = require("../models/userModel");
-const verifyJWT = require("../utils/verifyJWT");
+const verifyJWT = require('../utils/verifyJWT')
+const Admin = require("../models/adminModel");
 
-const userAuth = async (req, res, next) => {
-    // console.log("userAuth")
+const adminAuth = async (req, res, next) => {
+    // console.log("adminAuth")
     try {
         const header = req.header("Authorization");
         if (!header) throw new ApiError("No header is present in the request!", 400);
@@ -11,7 +11,7 @@ const userAuth = async (req, res, next) => {
         if (!token || token == "undefined") throw new ApiError("Token is required!", 401);
 
         const verifiedUser = verifyJWT(token);
-        const user = await User.findById(verifiedUser._id);
+        const user = await Admin.findById(verifiedUser._id);
         if (!user) throw new ApiError("User not found!", 404);
 
         req.user = user;
@@ -21,4 +21,4 @@ const userAuth = async (req, res, next) => {
     }
 }
 
-module.exports = userAuth;
+module.exports = adminAuth;

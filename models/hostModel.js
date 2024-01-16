@@ -7,6 +7,8 @@ const hostSchema = new mongoose.Schema(
         password: { type: String, required: [true, 'Password is required!'] },
         forget_password_otp: { type: String },
         phone_number: { type: String, default: '' },
+
+        detail_count: { type: String, default: '5' },
         gender: { type: String, default: '' },
         age: { type: String, default: '' },
         interest: [{ type: mongoose.Schema.Types.ObjectId, ref: 'interest' }],
@@ -16,13 +18,13 @@ const hostSchema = new mongoose.Schema(
             lat: { type: String, default: '' },
             long: { type: String, default: '' },
         },
+        
         gallery: [{ type: String }],
         role: { type: String, default: 'host' },
-        is_deleted: { type: Boolean, default: false, },
+        agency_code: { type: String, required: [true, 'Agency code is required!'] },
         detail_status: { type: String, default: 'incomplete', },
         account_status: { type: String, default: 'unapproved' },
-
-        agency_code: {type: String, required: [true, 'Agency code is required!']},
+        is_deleted: { type: Boolean, default: false, },
     },
     { timestamps: true }
 );

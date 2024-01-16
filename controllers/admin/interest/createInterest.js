@@ -1,3 +1,4 @@
+const { ApiError } = require("../../../errorHandler/apiErrorHandler");
 const Interest = require("../../../models/interestModel");
 
 const createInterest = async (req, res, next) => {

@@ -1,6 +1,10 @@
 const hostRoute = require('express').Router();
-const createHost = require('../controllers/host/auth/createHost');
+const hostAuth = require("../middlewares/hostAuth");
+// controller
+const registerHost = require('../controllers/host/auth/registerHost');
+const getHostDetails = require('../controllers/host/getHostDetails');
 
-hostRoute.route('/').post(createHost)
+hostRoute.post('/register', registerHost);
+hostRoute.route('/').get(hostAuth, getHostDetails)
 
 module.exports = hostRoute;
