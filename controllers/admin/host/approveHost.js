@@ -4,7 +4,7 @@ const Host = require('../../../models/hostModel');
 const User = require('../../../models/userModel');
 
 const approveHost = async (req, res, next) => {
-    console.log("approveHost -------------------------->", req.body);
+    // console.log("approveHost -------------------------->", req.body);
     try {
         let { id } = req.body;
         if (!id) throw new ApiError("ID is required!", 400);

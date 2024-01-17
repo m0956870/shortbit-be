@@ -6,8 +6,7 @@ const updateRegisterDetails = async (req, res, next) => {
     // console.log("updateRegisterDetails -------------------------+>", req.user)
     imageUpload(req, res, async (error) => {
         try {
-            console.log(error)
-            if (error) throw new ApiError("Multer error!", 400);
+            if (error) throw new ApiError(error.message, 400);
 
             let user = req.user;
             let { gender, age, interest, location } = req.body;

@@ -1,9 +1,9 @@
-const { ApiError } = require("../errorHandler");
+const { ApiError } = require("../errorHandler/apiErrorHandler");
 const Agency = require("../models/agencyModel");
-const { verifyJWT } = require("../utils");
+const verifyJWT = require("../utils/verifyJWT");
 
-const userAuth = async (req, res, next) => {
-    // console.log("userAuth")
+const agencyAuth = async (req, res, next) => {
+    // console.log("agencyAuth")
     try {
         const header = req.header("Authorization");
         if (!header) throw new ApiError("No header is present in the request!", 400);
@@ -21,4 +21,4 @@ const userAuth = async (req, res, next) => {
     }
 }
 
-module.exports = userAuth;
+module.exports = agencyAuth;
