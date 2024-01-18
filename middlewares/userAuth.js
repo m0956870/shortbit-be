@@ -2,7 +2,7 @@ const { ApiError } = require("../errorHandler/apiErrorHandler");
 const User = require("../models/userModel");
 const verifyJWT = require("../utils/verifyJWT");
 
-const userAuth = async (req, res, next) => {
+const userAuth = async (req, res, next, role) => {
     // console.log("userAuth")
     try {
         const header = req.header("Authorization");
@@ -11,7 +11,10 @@ const userAuth = async (req, res, next) => {
         if (!token || token == "undefined") throw new ApiError("Token is required!", 401);
 
         const verifiedUser = verifyJWT(token);
-        const user = await User.findById(verifiedUser._id);
+        let user;
+        if (role === "admin") {
+            user = await User.findById(verifiedUser._id);
+        }
         if (!user) throw new ApiError("User not found!", 404);
 
         req.user = user;

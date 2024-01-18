@@ -10,6 +10,6 @@ const getProfileDetails = require("../controllers/user/getProfileDetails");
 userRoute.post('/login', loginUser);
 userRoute.route('/').post(signupUser).get(userAuth, getProfileDetails)
 
-userRoute.route('/detail_status').get(userAuth, detailStatus).patch(userAuth, updateRegisterDetails);
+userRoute.route('/detail_status').get((req, res, next) => userAuth(req, res, next, "admin"), detailStatus).patch(userAuth, updateRegisterDetails);
 
 module.exports = userRoute;
