@@ -15,6 +15,6 @@ adminRoute.route('/').post(signupAdmin).get(adminAuth, getAdminDetails)
 adminRoute.route('/host').patch(adminAuth, approveHost)
 
 // master data
-adminRoute.route('/interest').get(getAllInterest).post(createInterest), adminRoute.delete('/interest/:id', deleteInterest);
+adminRoute.route('/interest').get(getAllInterest).post(createInterest); adminRoute.delete('/interest/:id', deleteInterest);
 
 module.exports = adminRoute;

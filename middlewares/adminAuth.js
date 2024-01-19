@@ -12,7 +12,7 @@ const adminAuth = async (req, res, next) => {
 
         const verifiedUser = verifyJWT(token);
         const user = await Admin.findById(verifiedUser._id);
-        if (!user) throw new ApiError("User not found!", 404);
+        if (!user) throw new ApiError("Admin not found!", 404);
 
         req.user = user;
         next();

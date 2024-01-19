@@ -13,6 +13,8 @@ const userSchema = new mongoose.Schema(
         password: { type: String, minlength: 6, required: [true, 'Password is required!'] },
         forget_password_otp: { type: String },
         phone_number: { type: String, default: '' },
+        signup_otp: { type: String, default: '' },
+        signup_otp_expiry: { type: String, default: '' },
 
         detail_count: { type: String, default: '5' },
         gender: { type: String, default: '' },
@@ -24,7 +26,7 @@ const userSchema = new mongoose.Schema(
             lat: { type: String, default: '' },
             long: { type: String, default: '' },
         },
-        
+
         gallery: [{ type: String }],
         role: { type: String, default: 'user' },
         agency_code: { type: String },

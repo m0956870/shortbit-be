@@ -1,5 +1,5 @@
 const getProfileDetails = async (req, res, next) => {
-    // console.log("getProfileDetails -------------------------->", req.body)
+    console.log("getProfileDetails -------------------------->", req.body)
     try {
         req.user.password = undefined;
         res.status(200).json({ status: true, message: "Profile details fetched successfully.", data: req.user })

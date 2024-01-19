@@ -1,6 +1,5 @@
 const { isValidObjectId } = require("mongoose");
 const { ApiError } = require("../../../errorHandler/apiErrorHandler");
-const Host = require('../../../models/hostModel');
 const User = require('../../../models/userModel');
 
 const approveHost = async (req, res, next) => {
@@ -13,12 +12,10 @@ const approveHost = async (req, res, next) => {
         let updatedObj = {};
         updatedObj.account_status = 'approved';
 
-        const host = await Host.findByIdAndUpdate(id, updatedObj, { new: true }).lean()
-        if (!host) throw new ApiError("No host found with this ID", 404);
         const user = await User.findByIdAndUpdate(id, updatedObj, { new: true }).lean()
         if (!user) throw new ApiError("No user found with this ID", 404);
 
-        res.status(200).json({ status: true, message: "host updated sucessfully.", data: host });
+        res.status(200).json({ status: true, message: "host updated sucessfully.", data: user });
     } catch (error) {
         next(error);
     }
