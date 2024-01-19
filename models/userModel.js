@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema(
 
         detail_count: { type: String, default: '5' },
         gender: { type: String, default: '' },
-        age: { type: String, default: '' },
+        dob: { type: String, default: '' },
         interest: [{ type: mongoose.Schema.Types.ObjectId, ref: 'interest' }],
         profile_image: { type: String, default: '' },
         location: {
@@ -26,8 +26,9 @@ const userSchema = new mongoose.Schema(
             lat: { type: String, default: '' },
             long: { type: String, default: '' },
         },
-
+        
         gallery: [{ type: String }],
+        age: { type: String, default: '' },
         role: { type: String, default: 'user' },
         agency_code: { type: String },
         detail_status: { type: String, default: 'incomplete', },

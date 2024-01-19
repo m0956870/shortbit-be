@@ -9,11 +9,11 @@ const updateRegisterDetails = async (req, res, next) => {
             if (error) throw new ApiError(error.message, 400);
 
             let user = req.user;
-            let { gender, age, interest, location } = req.body;
+            let { gender, dob, interest, location } = req.body;
 
             if (!location) {
                 if (gender) user.gender = gender, user.detail_count = 4;
-                if (age) user.age = age, user.detail_count = 3;
+                if (dob) user.dob = dob, user.detail_count = 3;
                 if (interest) user.interest = JSON.parse(interest), user.detail_count = 2;
                 if (req.file) user.profile_image = getBaseUrl() + "/image/" + req.file.filename, user.detail_count = 1;
 
