@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema(
         signup_otp: { type: String, default: '' },
         signup_otp_expiry: { type: String, default: '' },
 
-        detail_count: { type: String, default: '5' },
+        detail_count: { type: String, default: '4' },
         gender: { type: String, default: '' },
         dob: { type: String, default: '' },
         interest: [{ type: mongoose.Schema.Types.ObjectId, ref: 'interest' }],
