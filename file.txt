@@ -1,0 +1,49 @@
+firebase - Chat module
+fcm - notification
+agora - video module
+payment gateway - gift buy
+Email & SMS integration - forget password
+S3 bucket - cloud storage
+
+
+
+Admin Panel :-
+- agency management
+- agency settlement
+- host management
+- user management
+
+- interest CRUD
+- audio CRUD
+
+
+Agency Panel :-
+- host management
+- host settlement
+
+
+Host Panel :-
+- request to admin (with agency code)
+- auth
+- live video (create channel id)
+- video call (create channel id)
+- upload videos
+- follow / unfollow
+
+
+User Panel :-
+- auth
+- upload video
+- follow / unfollow
+- post interacivity
+- send gift
+- buy coins
+
+
+
+
+------------------- 22-01-2024 ----------------------
+
+follow / unfollow
+upload video
+like / unlike - comment / uncomment - share - view count - 

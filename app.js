@@ -13,7 +13,10 @@ app.use(morgan('dev'));
 app.use(cors());
 app.use(express.urlencoded({ extended: true, limit: '100kb' }));
 app.use(express.json({ limit: '100kb' }));
+
 app.use('/image', express.static("images"));
+app.use('/video', express.static("videos"));
+app.use('/audio', express.static("audios"));
 
 // routes
 app.use('/api/admin', adminRoute);
