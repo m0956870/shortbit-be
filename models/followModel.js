@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const postSchema = new mongoose.Schema(
+const followSchema = new mongoose.Schema(
     {
         follower_id: { type: mongoose.Types.ObjectId, ref: 'user', required: [true, 'follower id is required!'] },
         following_id: { type: mongoose.Types.ObjectId, ref: 'user', required: [true, 'following id is required!'] },
@@ -10,5 +10,5 @@ const postSchema = new mongoose.Schema(
     { timestamps: true },
 )
 
-const Post = mongoose.model('post', postSchema);
-module.exports = Post;
+const Follow = mongoose.model('follow', followSchema);
+module.exports = Follow;

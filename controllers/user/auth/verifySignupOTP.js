@@ -17,7 +17,7 @@ const verifySignupOTP = async (req, res, next) => {
         if(user.signup_otp !== String(otp)) throw new ApiError("Incorrect OTP!", 400);
 
         const token = signJWT(user._id);
-        res.status(201).json({ status: true, message: "User signed in successful", data: { token } });
+        res.status(200).json({ status: true, message: "User signed in successful", data: { token } });
     } catch (error) {
         next(error);
     }

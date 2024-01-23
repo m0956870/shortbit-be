@@ -3,20 +3,14 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema(
     {
         name: { type: String, default: "" },
-        email: {
-            type: String, unique: true, required: [true, 'Email is required!'], lowercase: true,
-            validate: {
-                validator: (val) => /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/.test(val),
-                message: 'Invalid email format',
-            }
-        },
+        email: { type: String, unique: true, required: [true, 'Email is required!'], lowercase: true, },
         password: { type: String, minlength: 6, required: [true, 'Password is required!'] },
         forget_password_otp: { type: String },
         phone_number: { type: String, default: '' },
         signup_otp: { type: String, default: '' },
         signup_otp_expiry: { type: String, default: '' },
 
-        detail_count: { type: String, default: '4' },
+        detail_count: { type: String, default: '0' },
         gender: { type: String, default: '' },
         dob: { type: String, default: '' },
         interest: [{ type: mongoose.Schema.Types.ObjectId, ref: 'interest' }],
@@ -26,13 +20,17 @@ const userSchema = new mongoose.Schema(
             lat: { type: String, default: '' },
             long: { type: String, default: '' },
         },
-        
+
         gallery: [{ type: String }],
         age: { type: String, default: '' },
         role: { type: String, default: 'user' },
         agency_code: { type: String },
         detail_status: { type: String, default: 'incomplete', },
         account_status: { type: String, default: 'active' },
+
+        followers_count: { type: Number, default: 0 },
+        following_count: { type: Number, default: 0 },
+
         is_deleted: { type: Boolean, default: false, },
     },
     { timestamps: true }
