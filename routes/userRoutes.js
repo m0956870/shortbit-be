@@ -18,6 +18,8 @@ const createLiveRoom = require("../controllers/user/live_room/host/createLiveRoo
 const endLiveRoom = require("../controllers/user/live_room/host/endLiveRoom");
 const joinLiveRoom = require("../controllers/user/live_room/user/joinLiveRoom");
 const leaveLiveRoom = require("../controllers/user/live_room/user/leaveLiveRoom");
+const getAllLiveRooms = require("../controllers/user/live_room/getAllLiveRooms");
+const ongoingLiveRoom = require("../controllers/user/live_room/host/ongoingLiveRoom");
 
 userRoute.post('/login', loginUser);
 userRoute.post('/verify_signup_otp', verifySignupOTP);
@@ -40,7 +42,8 @@ userRoute.post('/host_request', hostRequest);
 
 // live & video call module
 // host
-userRoute.route('/live_room').post(userAuth, createLiveRoom).patch(userAuth, endLiveRoom)
+userRoute.route('/live_room').get(userAuth, getAllLiveRooms).post(userAuth, createLiveRoom).patch(userAuth, endLiveRoom)
+userRoute.route('/ongoing_live_room').get(userAuth, ongoingLiveRoom);
 // user
 userRoute.route('/join_room').post(userAuth, joinLiveRoom)
 userRoute.route('/leave_room').post(userAuth, leaveLiveRoom)

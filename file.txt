@@ -61,7 +61,7 @@ gift CRUD
 live video logs
 video call - initiate api
 
-host live listing api --
+host live listing api ---------------------------------------------------- done
 
 
 <<<<<<<<<<<<<<<<<< ----- while deleting post - remove from its dependency ----- >>>>>>>>>>>>>>>>>>>
