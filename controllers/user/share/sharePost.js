@@ -2,6 +2,7 @@ const { isValidObjectId } = require("mongoose");
 const { ApiError } = require("../../../errorHandler/apiErrorHandler");
 const SharePost = require("../../../models/sharePostModel");
 const Post = require("../../../models/postModel");
+const User = require("../../../models/userModel");
 
 const sharePost = async (req, res, next) => {
     try {
@@ -10,6 +11,8 @@ const sharePost = async (req, res, next) => {
         if (!isValidObjectId(post_id)) throw new ApiError("Invalid ID format", 400);
         if (!to) throw new ApiError("to user id is required", 400)
         if (!isValidObjectId(to)) throw new ApiError("Invalid to user ID format", 400);
+        let toUser = await User.findById(to);
+        if (!toUser) throw new ApiError("not user found with to user id", 404);
         let rootUser = req.user;
 
         let postShareCount = await Post.findByIdAndUpdate(post_id, { $inc: { share: 1 } }, { new: true });

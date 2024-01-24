@@ -16,8 +16,8 @@ const loginUser = async (req, res, next) => {
         const passMatched = await bcrypt.compare(password, user.password);
         if (!passMatched || email !== user.email) throw new ApiError("Invalid credentails!", 404);
 
-        // const token = signJWT(user._id);
-        res.status(200).json({ status: true, message: "Please verify otp." });
+        const token = signJWT(user._id);
+        res.status(200).json({ status: true, message: "login successful", data: { token } });
     } catch (error) {
         next(error);
     }

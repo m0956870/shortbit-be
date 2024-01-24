@@ -13,8 +13,8 @@ Admin Panel :-
 - host management
 - user management
 
-- interest CRUD
-- audio CRUD
+- interest CRUD ----------------
+- audio CRUD ------------------
 
 
 Agency Panel :-
@@ -23,12 +23,12 @@ Agency Panel :-
 
 
 Host Panel :-
-- request to admin (with agency code)
-- auth
+- request to admin (with agency code) ------------------ done
+- auth -------------------------------------------------
 - live video (create channel id)
 - video call (create channel id)
-- upload videos
-- follow / unfollow
+- upload videos ----------------------------------------
+- follow / unfollow ------------------------------------ done
 
 
 User Panel :-
@@ -58,5 +58,10 @@ view count --------------------------------------------------------------- done
 
 ------------------- 24-01-2024 ----------------------
 gift CRUD
-video call - initiate api
 live video logs
+video call - initiate api
+
+host live listing api --
+
+
+<<<<<<<<<<<<<<<<<< ----- while deleting post - remove from its dependency ----- >>>>>>>>>>>>>>>>>>>

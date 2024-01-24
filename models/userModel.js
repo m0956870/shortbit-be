@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema(
         role: { type: String, default: 'user' },
         agency_code: { type: String },
         detail_status: { type: String, default: 'incomplete', },
-        account_status: { type: String, default: 'active' },
+        account_status: { type: String, default: 'active', enum: ['active', 'unapproved', 'approved'] },
 
         followers_count: { type: Number, default: 0 },
         following_count: { type: Number, default: 0 },
