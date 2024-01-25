@@ -31,6 +31,8 @@ const userSchema = new mongoose.Schema(
         followers_count: { type: Number, default: 0 },
         following_count: { type: Number, default: 0 },
 
+        balance: { type: Number, default: 0 },
+
         is_deleted: { type: Boolean, default: false, },
     },
     { timestamps: true }

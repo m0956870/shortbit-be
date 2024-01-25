@@ -1,17 +1,17 @@
 const { isValidObjectId } = require("mongoose");
-const { ApiError } = require("../../errorHandler");
 const Interest = require("../../../models/interestModel");
+const { ApiError } = require("../../../errorHandler/apiErrorHandler");
 
 const updateInterest = async (req, res, next) => {
     // console.log("updateInterest -------------------------->", req.body);
     try {
-        let { id, name, icom } = req.body;
+        let { id, name, icon } = req.body;
         if (!id) throw new ApiError("ID is required!", 400);
         if (!isValidObjectId(id)) throw new ApiError("Invalid ID!", 400);
 
         let updatedVisaObj = {};
         if (name) updatedVisaObj.name = name;
-        if (icom) updatedVisaObj.icom = icom;
+        if (icon) updatedVisaObj.icon = icon;
 
         let updatedRecord = await Interest.findByIdAndUpdate(id, updatedVisaObj, { new: true }).lean()
         if (!updatedRecord) throw new ApiError("No document found with this ID", 404);

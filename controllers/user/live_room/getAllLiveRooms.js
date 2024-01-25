@@ -16,12 +16,18 @@ const getAllLiveRooms = async (req, res, next) => {
             .sort({ createdAt: -1 })
             .select(" -__v")
             .populate('host_id', 'name profile_image')
+            .lean()
 
-        if (allLiveRooms.length === 0) res.status(200).json({ status: true, message: "no live hosts found!" })
+        allLiveRooms.map(room => {
+            room.earned_coins = 0;
+            room.level = 'Lvl 5';
+            room.language = 'English';
+        })
+
         res.status(200).json({
             status: true,
-            message: "All live rooms fetched successfully.",
-            total_posts: allLiveRooms.length,
+            message: "live rooms listing",
+            total_data: allLiveRooms.length,
             total_pages: Math.ceil(allLiveRooms.length / limit),
             data: allLiveRooms,
         });

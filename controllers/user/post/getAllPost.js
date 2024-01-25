@@ -16,11 +16,10 @@ const getAllPost = async (req, res, next) => {
             .sort({ createdAt: -1 })
             .select("-is_deleted -__v")
 
-        if (post.length === 0) res.status(200).json({ status: true, message: "no post found!", data: [] })
         res.status(200).json({
             status: true,
             message: "All post fetched successfully.",
-            total_posts: post.length,
+            total_data: post.length,
             total_pages: Math.ceil(post.length / limit),
             data: post,
         });
