@@ -76,17 +76,11 @@ comment api - listing
 master data :- CRUD
 term & condition
 faq
-avatar
+avatar ------------------------------------------------------------------ done
 
 notification fcm
 
 
 
 // farhan
-avatar
 user - profile details 
-
-master data :- CRUD
-term & condition
-faq
-avatar

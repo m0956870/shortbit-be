@@ -16,6 +16,10 @@ const createGift = require('../controllers/admin/gift/createGift');
 const updateGift = require('../controllers/admin/gift/updateGift');
 const deleteGift = require('../controllers/admin/gift/deleteGift');
 const updateBalance = require('../controllers/admin/transaction/user/updateBalance');
+const createAvatar = require('../controllers/admin/avatar/createAvatar');
+const updateAvatar = require('../controllers/admin/avatar/updateAvatar');
+const getAllAvatar = require('../controllers/admin/avatar/getAllAvatar');
+const deleteAvatar = require('../controllers/admin/avatar/deleteAvatar');
 
 adminRoute.post('/login', loginAdmin);
 adminRoute.route('/').post(signupAdmin).get(adminAuth, getAdminDetails)
@@ -26,6 +30,7 @@ adminRoute.route('/update_balance').post(adminAuth, updateBalance)
 // master data
 adminRoute.route('/gift').get(adminAuth, getAllIGifts).post(adminAuth, createGift).patch(adminAuth, updateGift); adminRoute.delete('/gift/:id', adminAuth, deleteGift);
 adminRoute.route('/interest').get(adminAuth, getAllInterest).post(adminAuth, createInterest).patch(adminAuth, updateInterest); adminRoute.delete('/interest/:id', adminAuth, deleteInterest);
+adminRoute.route('/avatar').get(adminAuth, getAllAvatar).post(adminAuth, createAvatar).patch(adminAuth, updateAvatar); adminRoute.delete('/avatar/:id', adminAuth, deleteAvatar);
 adminRoute.route('/audio').get(getAllAudio).post(adminAuth, addAudio);
 
 module.exports = adminRoute;

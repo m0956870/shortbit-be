@@ -23,10 +23,14 @@ const ongoingLiveRoom = require("../controllers/user/live_room/host/ongoingLiveR
 const getAllInterest = require("../controllers/user/interest/getAllInterest");
 const sendGift = require("../controllers/user/transaction/user/sendGift");
 const giftListing = require("../controllers/user/gift/giftListing");
+const getAllAvatar = require("../controllers/user/avatar/getAllAvatar");
+const updateDetails = require("../controllers/user/updateDetails");
 
+userRoute.route('/').post(signupUser).get(userAuth, getProfileDetails).patch(userAuth, updateDetails)
+
+// auth
 userRoute.post('/login', loginUser);
 userRoute.post('/verify_signup_otp', verifySignupOTP);
-userRoute.route('/').post(signupUser).get(userAuth, getProfileDetails);
 userRoute.route('/interest').get(getAllInterest)
 userRoute.route('/detail_status').patch(userAuth, updateRegisterDetails);
 
@@ -47,12 +51,17 @@ userRoute.post('/host_request', hostRequest);
 // host
 userRoute.route('/live_room').get(userAuth, getAllLiveRooms).post(userAuth, createLiveRoom).patch(userAuth, endLiveRoom)
 userRoute.route('/ongoing_live_room').get(userAuth, ongoingLiveRoom);
-// user
+
+
+// USER - live room
 userRoute.route('/join_room').post(userAuth, joinLiveRoom)
 userRoute.route('/leave_room').post(userAuth, leaveLiveRoom)
 
 // gift
 userRoute.post('/send_gift', userAuth, sendGift);
-userRoute.post('/gift', userAuth, giftListing); // Gift listing for user
+userRoute.route('/gift').get(userAuth, giftListing);
+
+// avatar
+userRoute.route('/avatar').get(userAuth, getAllAvatar);
 
 module.exports = userRoute;
