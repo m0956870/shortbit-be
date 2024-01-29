@@ -22,6 +22,7 @@ const getAllLiveRooms = require("../controllers/user/live_room/getAllLiveRooms")
 const ongoingLiveRoom = require("../controllers/user/live_room/host/ongoingLiveRoom");
 const getAllInterest = require("../controllers/user/interest/getAllInterest");
 const sendGift = require("../controllers/user/transaction/user/sendGift");
+const giftListing = require("../controllers/user/gift/giftListing");
 
 userRoute.post('/login', loginUser);
 userRoute.post('/verify_signup_otp', verifySignupOTP);
@@ -52,5 +53,6 @@ userRoute.route('/leave_room').post(userAuth, leaveLiveRoom)
 
 // gift
 userRoute.post('/send_gift', userAuth, sendGift);
+userRoute.post('/gift', userAuth, giftListing); // Gift listing for user
 
 module.exports = userRoute;

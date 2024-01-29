@@ -25,18 +25,18 @@ Agency Panel :-
 Host Panel :-
 - request to admin (with agency code) ------------------ done
 - auth -------------------------------------------------
-- live video (create channel id)
+- live video (create channel id) -----------------------
 - video call (create channel id)
 - upload videos ----------------------------------------
 - follow / unfollow ------------------------------------ done
 
 
 User Panel :-
-- auth
-- upload video
-- follow / unfollow
-- post interacivity
-- send gift
+- auth ------------------------------------------------- done
+- upload video ----------------------------------------- 
+- follow / unfollow ------------------------------------ done
+- post interacivity ------------------------------------
+- send gift -------------------------------------------- 
 - buy coins
 
 
@@ -64,3 +64,29 @@ user - send gift -------------------------------------------------------- done
 host - recieve gift ----------------------------------------------------- done
 liveroom.host_earning + gift amount ------------------------------------- done
 transaction ------------------------------------------------------------- done
+
+
+video call
+recharge api
+
+user - join room - send necessory details
+user - profile details 
+comment api - listing
+
+master data :- CRUD
+term & condition
+faq
+avatar
+
+notification fcm
+
+
+
+// farhan
+avatar
+user - profile details 
+
+master data :- CRUD
+term & condition
+faq
+avatar

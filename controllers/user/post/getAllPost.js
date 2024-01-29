@@ -1,31 +1,62 @@
 const Post = require("../../../models/postModel");
+const mongoose = require("mongoose");
 
 const getAllPost = async (req, res, next) => {
-    // console.log("getAllPost -------------------------->")
     try {
         let { page, limit } = req.query;
-        page = page ? page : 1;
-        limit = limit ? limit : 10;
+        page = page ? parseInt(page) : 1;
+        limit = limit ? parseInt(limit) : 10;
 
         const findConditions = { is_deleted: false, status: true };
-        // if (type) findConditions.type = { $regex: new RegExp(type, "i") };
 
-        const post = await Post.find(findConditions)
-            .skip((page * limit) - limit)
-            .limit(limit)
-            .sort({ createdAt: -1 })
-            .select("-is_deleted -__v")
+        const pipeline = [
+            { $match: findConditions },
+            {
+                $lookup: {
+                    from: "likes",
+                    localField: "_id",
+                    foreignField: "post_id",
+                    as: "likes"
+                }
+            },
+            {
+                $addFields: {
+                    total_likes: { $size: "$likes" },
+                    is_liked: {
+                        $cond: {
+                            if: { $in: [new mongoose.Types.ObjectId(req.user.id), "$likes.user_id"] },
+                            then: true,
+                            else: false
+                        }
+                    }
+                }
+            },
+            { $unset: "likes" },
+            { $sort: { createdAt: -1 } },
+            { $skip: (page - 1) * limit },
+            { $limit: limit }
+        ];
+
+        const postsWithLikes = await Post.aggregate(pipeline);
+
+        const totalCountPipeline = [
+            { $match: findConditions },
+            { $count: "total_data" }
+        ];
+
+        const [{ total_data: totalPosts }] = await Post.aggregate(totalCountPipeline);
 
         res.status(200).json({
             status: true,
-            message: "All post fetched successfully.",
-            total_data: post.length,
-            total_pages: Math.ceil(post.length / limit),
-            data: post,
+            message: "All posts fetched successfully.",
+            total_data: totalPosts,
+            total_pages: Math.ceil(totalPosts / limit),
+            data: postsWithLikes,
         });
     } catch (error) {
         next(error);
     }
-}
+};
+
 
 module.exports = getAllPost;

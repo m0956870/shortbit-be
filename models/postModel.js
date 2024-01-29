@@ -7,7 +7,7 @@ const postSchema = new mongoose.Schema(
         video_src: { type: String, required: [true, 'video src is required!'] },
         audio_src: { type: String },
         // audio_src: { type: String, required: [true, 'audio src is required!'] },
-        is_liked: { type: Boolean, default: false },
+        // is_liked: { type: Boolean, default: false },
         likes: { type: Number, default: 0 },
         comments: { type: Number, default: 0 },
         share: { type: Number, default: 0 },
