@@ -65,8 +65,33 @@ host - recieve gift ----------------------------------------------------- done
 liveroom.host_earning + gift amount ------------------------------------- done
 transaction ------------------------------------------------------------- done
 
-
 video call
+1. user initiated
+1. user initiated another chat
+2. user cancel
+2. host cancel
+3. host accept
+3. host denied and accept another request
+4. scheduler api
+5. user cut
+5. host cut
+
+1. user request call - 
+  i. check user balance & host chat price
+  ii. create VideoChat
+2. host accept call
+check if user on another call
+  i. Transaction record
+  - increse host earning
+  - decrease user balance
+3. scheduler api
+  i. check balance again
+  ii. update VideoChat & Transaction record
+  iii. update user & host
+
+4. BE scheduler
+  i. 
+
 recharge api
 
 user - join room - send necessory details

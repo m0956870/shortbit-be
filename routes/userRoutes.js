@@ -6,7 +6,7 @@ const signupUser = require("../controllers/user/auth/signupUser");
 const updateRegisterDetails = require("../controllers/user/updateRegisterDetails");
 const getProfileDetails = require("../controllers/user/getProfileDetails");
 const verifySignupOTP = require("../controllers/user/auth/verifySignupOTP");
-const hostRequest = require("../controllers/host/hostRequest");
+const hostRequest = require("../controllers/user/host_request/hostRequest");
 const createPost = require("../controllers/user/post/createPost");
 const getAllPost = require("../controllers/user/post/getAllPost");
 const followUser = require("../controllers/user/follow/followUser");
@@ -25,8 +25,11 @@ const sendGift = require("../controllers/user/transaction/user/sendGift");
 const giftListing = require("../controllers/user/gift/giftListing");
 const getAllAvatar = require("../controllers/user/avatar/getAllAvatar");
 const updateDetails = require("../controllers/user/updateDetails");
+const videoChatInitiated = require("../controllers/user/video_chat/user/videoChatInitiated");
+const getUser = require("../controllers/user/getUser");
 
 userRoute.route('/').post(signupUser).get(userAuth, getProfileDetails).patch(userAuth, updateDetails)
+userRoute.get('/details/:user_id', getUser);
 
 // auth
 userRoute.post('/login', loginUser);
@@ -44,11 +47,10 @@ userRoute.route('/view/:post_id').get(userAuth, viewPost)
 userRoute.route('/share').post(userAuth, sharePost)
 userRoute.route('/comment').post(userAuth, createComment)
 
-// host
-userRoute.post('/host_request', hostRequest);
+// HOST
+userRoute.post('/host_request', userAuth, hostRequest);
 
 // live & video chat module
-// host
 userRoute.route('/live_room').get(userAuth, getAllLiveRooms).post(userAuth, createLiveRoom).patch(userAuth, endLiveRoom)
 userRoute.route('/ongoing_live_room').get(userAuth, ongoingLiveRoom);
 
@@ -56,6 +58,9 @@ userRoute.route('/ongoing_live_room').get(userAuth, ongoingLiveRoom);
 // USER - live room
 userRoute.route('/join_room').post(userAuth, joinLiveRoom)
 userRoute.route('/leave_room').post(userAuth, leaveLiveRoom)
+
+// videochat
+userRoute.post('/videochat/initiate', userAuth, videoChatInitiated)
 
 // gift
 userRoute.post('/send_gift', userAuth, sendGift);

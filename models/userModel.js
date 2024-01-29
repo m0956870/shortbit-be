@@ -23,17 +23,19 @@ const userSchema = new mongoose.Schema(
 
         gallery: [{ type: String }],
         age: { type: String, default: '' },
-        role: { type: String, default: 'user' },
-        agency_code: { type: String },
         detail_status: { type: String, default: 'incomplete', },
         account_status: { type: String, default: 'active', enum: ['active', 'unapproved', 'approved'] },
 
         followers_count: { type: Number, default: 0 },
         following_count: { type: Number, default: 0 },
-
         balance: { type: Number, default: 0 },
 
-        is_deleted: { type: Boolean, default: false, },
+        role: { type: String, default: 'user' },
+        // host
+        agency_code: { type: String },
+        price_per_min: { type: Number, default: 0 },
+        is_live_busy: { type: Boolean, default: false },
+        is_chat_busy: { type: Boolean, default: false },
     },
     { timestamps: true }
 );
