@@ -92,20 +92,45 @@ check if user on another call
 4. BE scheduler
   i. 
 
-recharge api
-
-user - join room - send necessory details
-user - profile details 
-comment api - listing
-
-master data :- CRUD
-term & condition
-faq
 avatar ------------------------------------------------------------------ done
-
-notification fcm
-
 
 
 // farhan
 user - profile details 
+
+
+
+forget password
+reset password
+home - live host api shuffle live & adds banner
+user - join room api - necessory details
+post comments api ----------------------------------------------------
+wallet api
+notification fcm api
+
+user - profile details
+
+master data :- CRUD
+term & condition
+faq
+
+ADMIN:-
+agency onboarding & listing
+host listing
+user listing
+Top Givers / Top Receivers
+settlement ------------------------------------
+
+AGENCY:-
+host listing
+settlement ------------------------------------
+
+
+rajat :-
+recharge api
+settlement
+
+
+host request
+admin will approve host -banking details, docs
+admin will onboard agency

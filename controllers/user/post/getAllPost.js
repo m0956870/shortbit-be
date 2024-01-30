@@ -20,6 +20,14 @@ const getAllPost = async (req, res, next) => {
                 }
             },
             {
+                $lookup: {
+                    from: "users",
+                    localField: "posted_by",
+                    foreignField: "_id",
+                    as: "posted_by"
+                }
+            },
+            {
                 $addFields: {
                     total_likes: { $size: "$likes" },
                     is_liked: {
@@ -28,13 +36,32 @@ const getAllPost = async (req, res, next) => {
                             then: true,
                             else: false
                         }
-                    }
+                    },
+                    posted_by: { $first: '$posted_by' }
                 }
             },
             { $unset: "likes" },
             { $sort: { createdAt: -1 } },
             { $skip: (page - 1) * limit },
-            { $limit: limit }
+            { $limit: limit },
+            {
+                $project: {
+                    "_id": 1,
+                    "posted_by": {
+                        "_id": 1,
+                        "name": 1,
+                        "level": 1,
+                    },
+                    "title": 1,
+                    "video_src": 1,
+                    "comments": 1,
+                    "share": 1,
+                    "views": 1,
+                    "createdAt": 1,
+                    "total_likes": 1,
+                    "is_liked": 1,
+                }
+            }
         ];
 
         const postsWithLikes = await Post.aggregate(pipeline);

@@ -11,6 +11,9 @@ const agencySchema = new mongoose.Schema(
             }
         },
         password: { type: String, minlength: 6, required: [true, "Password is required!"] },
+        otp: { type: String, default: '' },
+        otp_expiry: { type: String, default: '' },
+
         phone_number: { type: String, default: "" },
         agency_code: { type: String, required: [true, 'Code is required!'] },
         profile_image: { type: String, default: "" },

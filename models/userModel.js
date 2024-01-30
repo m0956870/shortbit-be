@@ -7,8 +7,8 @@ const userSchema = new mongoose.Schema(
         password: { type: String, minlength: 6, required: [true, 'Password is required!'] },
         forget_password_otp: { type: String },
         phone_number: { type: String, default: '' },
-        signup_otp: { type: String, default: '' },
-        signup_otp_expiry: { type: String, default: '' },
+        otp: { type: String, default: '' },
+        otp_expiry: { type: String, default: '' },
 
         detail_count: { type: String, default: '0' },
         gender: { type: String, default: '' },
@@ -31,6 +31,7 @@ const userSchema = new mongoose.Schema(
         balance: { type: Number, default: 0 },
 
         role: { type: String, default: 'user' },
+        level: { type: Number, default: 1 },
         // host
         agency_code: { type: String },
         price_per_min: { type: Number, default: 0 },

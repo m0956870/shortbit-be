@@ -11,7 +11,9 @@ const adminSchema = new mongoose.Schema(
             }
         },
         password: { type: String, minlength: 6, required: [true, 'Password is required!'] },
-        forget_password_otp: { type: String },
+        otp: { type: String, default: '' },
+        otp_expiry: { type: String, default: '' },
+        
         phone_number: { type: String, default: '' },
         profile_image: { type: String, default: '' },
         role: { type: String, default: 'admin' },

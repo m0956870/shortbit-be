@@ -20,8 +20,13 @@ const createAvatar = require('../controllers/admin/avatar/createAvatar');
 const updateAvatar = require('../controllers/admin/avatar/updateAvatar');
 const getAllAvatar = require('../controllers/admin/avatar/getAllAvatar');
 const deleteAvatar = require('../controllers/admin/avatar/deleteAvatar');
+const forgetPassword = require('../controllers/admin/auth/forgetPassword');
+const resetPassword = require('../controllers/admin/auth/resetPassword');
 
 adminRoute.post('/login', loginAdmin);
+adminRoute.post("/forget_password", forgetPassword);
+adminRoute.post("/reset_password", resetPassword);
+
 adminRoute.route('/').post(signupAdmin).get(adminAuth, getAdminDetails)
 
 adminRoute.route('/host').patch(adminAuth, approveHost)

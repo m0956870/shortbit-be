@@ -12,14 +12,14 @@ const likePost = async (req, res, next) => {
 
         let oldRecord = await Like.findOne({ user_id: rootUser._id, post_id, })
         if (!oldRecord) {
-            let postLikeCount = await Post.findByIdAndUpdate(post_id, { $inc: { likes: 1 } }, { new: true });
-            if (!postLikeCount) throw new ApiError("no post found with this ID, 404");
+            // let postLikeCount = await Post.findByIdAndUpdate(post_id, { $inc: { likes: 1 } }, { new: true });
+            // if (!postLikeCount) throw new ApiError("no post found with this ID, 404");
             await Like.create({ user_id: rootUser._id, post_id });
             
             res.status(200).json({ status: true, message: "Post liked successfully" })
         } else {
-            let postLikeCount = await Post.findByIdAndUpdate(post_id, { $inc: { likes: -1 } }, { new: true })
-            if (!postLikeCount) throw new ApiError("no post found with this ID, 404");
+            // let postLikeCount = await Post.findByIdAndUpdate(post_id, { $inc: { likes: -1 } }, { new: true })
+            // if (!postLikeCount) throw new ApiError("no post found with this ID, 404");
             await Like.deleteOne({ user_id: rootUser._id, post_id, });
             
             res.status(200).json({ status: true, message: "Post unlike successfully" })

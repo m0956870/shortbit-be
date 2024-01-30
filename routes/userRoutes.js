@@ -3,6 +3,8 @@ const userAuth = require("../middlewares/userAuth");
 // controller
 const loginUser = require("../controllers/user/auth/loginUser");
 const signupUser = require("../controllers/user/auth/signupUser");
+const forgetPassword = require("../controllers/user/auth/forgetPassword");
+const resetPassword = require("../controllers/user/auth/resetPassword");
 const updateRegisterDetails = require("../controllers/user/updateRegisterDetails");
 const getProfileDetails = require("../controllers/user/getProfileDetails");
 const verifySignupOTP = require("../controllers/user/auth/verifySignupOTP");
@@ -27,12 +29,18 @@ const getAllAvatar = require("../controllers/user/avatar/getAllAvatar");
 const updateDetails = require("../controllers/user/updateDetails");
 const videoChatInitiated = require("../controllers/user/video_chat/user/videoChatInitiated");
 const getUser = require("../controllers/user/getUser");
+const getComments = require("../controllers/user/comment/getComments");
+const deleteComment = require("../controllers/user/comment/deleteComment");
+
 
 userRoute.route('/').post(signupUser).get(userAuth, getProfileDetails).patch(userAuth, updateDetails)
 userRoute.get('/details/:user_id', getUser);
 
 // auth
 userRoute.post('/login', loginUser);
+userRoute.post("/forget_password", forgetPassword);
+userRoute.post("/reset_password", resetPassword);
+
 userRoute.post('/verify_signup_otp', verifySignupOTP);
 userRoute.route('/interest').get(getAllInterest)
 userRoute.route('/detail_status').patch(userAuth, updateRegisterDetails);
@@ -45,7 +53,7 @@ userRoute.route('/post').post(userAuth, createPost).get(userAuth, getAllPost)
 userRoute.route('/like/:post_id').get(userAuth, likePost)
 userRoute.route('/view/:post_id').get(userAuth, viewPost)
 userRoute.route('/share').post(userAuth, sharePost)
-userRoute.route('/comment').post(userAuth, createComment)
+userRoute.route('/comment').get(userAuth, getComments).post(userAuth, createComment); userRoute.delete('/comment/:id', userAuth, deleteComment);
 
 // HOST
 userRoute.post('/host_request', userAuth, hostRequest);
