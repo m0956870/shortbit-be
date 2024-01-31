@@ -10,7 +10,7 @@ const loginAdmin = async ({ body }, res, next) => {
         if (!email) throw new ApiError("Email is required!", 400);
         if (!password) throw new ApiError("Password is required!", 400);
 
-        const admin = await Admin.findOne({ email }).lean();
+        const admin = await Admin.findOne({ email });
         if (!admin) throw new ApiError("Admin does not exist!", 404);
 
         const passMatched = await bcrypt.compare(password, admin.password);

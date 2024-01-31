@@ -16,8 +16,9 @@ const resetPassword = async (req, res, next) => {
         const salt = await bcrypt.genSalt(10)
         const hashPass = await bcrypt.hash(password, salt);
 
-        user.password = hashPass;
-        user.save()
+        // user.password = hashPass;
+        // user.save()
+        await User.findByIdAndUpdate(user._id, { password: hashPass }, { new: true })
         res.status(200).json({ status: true, message: "Password reseted successfully.", });
     } catch (error) {
         next(error)

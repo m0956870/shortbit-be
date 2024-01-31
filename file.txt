@@ -100,8 +100,10 @@ user - profile details
 
 
 
-forget password
-reset password
+admin / agency / user
+forget password --------------------------------------------------
+reset password ---------------------------------------------------
+
 home - live host api shuffle live & adds banner
 user - join room api - necessory details
 post comments api ----------------------------------------------------
