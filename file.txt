@@ -101,8 +101,8 @@ user - profile details
 
 
 admin / agency / user
-forget password --------------------------------------------------
-reset password ---------------------------------------------------
+forget password -------------------------------------------------- done
+reset password --------------------------------------------------- done
 
 home - live host api shuffle live & adds banner
 user - join room api - necessory details
@@ -117,15 +117,20 @@ term & condition
 faq
 
 ADMIN:-
-agency onboarding & listing
-host listing
-user listing
+agency onboarding ----------------
+agency listing -------------------------------
+host listing ---------------------------------
+user listing ---------------------------------
+user block / unblock -------------------------
 Top Givers / Top Receivers
-settlement ------------------------------------
+settlement
 
 AGENCY:-
-host listing
-settlement ------------------------------------
+host listing ----------------------------
+settlement 
+
+host 
+service active / inactive option
 
 
 rajat :-

@@ -9,9 +9,11 @@ const forgetPassword = async (req, res, next) => {
 
         let agency = await Agency.findOne({ $or: [{ email }, { phone_number }] });
         if (!agency) throw new ApiError("agency does not found", 404);
-        agency.otp = '1234';
-        agency.otp_expiry = new Date(Date.now() + 2 * 60 * 1000);
-        agency.save();
+        // agency.otp = '1234';
+        // agency.otp_expiry = new Date(Date.now() + 2 * 60 * 1000);
+        // agency.save();
+
+        await Agency.findByIdAndUpdate(agency._id, { otp: '1234', otp_expiry: new Date(Date.now() + 10 * 60 * 1000) })
 
         res.status(200).json({ status: true, message: "otp sent" });
     } catch (error) {

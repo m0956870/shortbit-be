@@ -1,13 +1,13 @@
 const LiveRoom = require("../../../models/liveRoomModel");
 
 const getAllLiveRooms = async (req, res, next) => {
-    // console.log("getAllLiveRooms -------------------------->")
+    // console.log("getAllLiveRooms -------------------------->", req.user)
     try {
         let { page, limit } = req.query;
         page = page ? page : 1;
         limit = limit ? limit : 10;
 
-        const findConditions = { status: 'ongoing' };
+        const findConditions = { host_id: { $nin: req.user._id }, status: 'ongoing' };
         // if (type) findConditions.type = { $regex: new RegExp(type, "i") };
 
         const allLiveRooms = await LiveRoom.find(findConditions)

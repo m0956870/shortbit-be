@@ -9,9 +9,11 @@ const forgetPassword = async (req, res, next) => {
 
         let admin = await Admin.findOne({ $or: [{ email }, { phone_number }] });
         if (!admin) throw new ApiError("admin does not found", 404);
-        admin.otp = '1234';
-        admin.otp_expiry = new Date(Date.now() + 2 * 60 * 1000);
-        admin.save();
+        // admin.otp = '1234';
+        // admin.otp_expiry = new Date(Date.now() + 2 * 60 * 1000);
+        // admin.save();
+
+        await Admin.findByIdAndUpdate(admin._id, { otp: '1234', otp_expiry: new Date(Date.now() + 10 * 60 * 1000) });
 
         res.status(200).json({ status: true, message: "otp sent" });
     } catch (error) {

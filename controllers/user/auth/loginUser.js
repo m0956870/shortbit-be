@@ -12,6 +12,7 @@ const loginUser = async (req, res, next) => {
 
         let user = await User.findOne({ email }).lean();
         if (!user) throw new ApiError("User does not exist!", 404);
+        if (user.account_status === "blocked") throw new ApiError("User is blocked!", 403);
 
         const passMatched = await bcrypt.compare(password, user.password);
         if (!passMatched || email !== user.email) throw new ApiError("Invalid credentails!", 404);

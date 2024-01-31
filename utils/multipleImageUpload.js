@@ -22,6 +22,7 @@ const multipleImageUpload = multer({
             : cb(new ApiError("Invalid image type!", 400))
     },
 }).fields([
+    { name: 'image', maxCount: 1 },
     { name: 'avatar_image', maxCount: 1 },
     { name: 'profile_image', maxCount: 1 },
 ]);

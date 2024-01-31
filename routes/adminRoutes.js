@@ -4,7 +4,6 @@ const adminAuth = require('../middlewares/adminAuth');
 const loginAdmin = require('../controllers/admin/auth/loginAdmin');
 const signupAdmin = require('../controllers/admin/auth/signupAdmin');
 const getAdminDetails = require('../controllers/admin/getAdminDetails');
-const approveHost = require('../controllers/admin/host/approveHost');
 const createInterest = require('../controllers/admin/interest/createInterest');
 const deleteInterest = require('../controllers/admin/interest/deleteInterest');
 const getAllInterest = require('../controllers/admin/interest/getAllInterest');
@@ -22,15 +21,27 @@ const getAllAvatar = require('../controllers/admin/avatar/getAllAvatar');
 const deleteAvatar = require('../controllers/admin/avatar/deleteAvatar');
 const forgetPassword = require('../controllers/admin/auth/forgetPassword');
 const resetPassword = require('../controllers/admin/auth/resetPassword');
+const getAllAgencyListing = require('../controllers/admin/agency/getAllAgencyListing');
+const getAllHostListing = require('../controllers/admin/host/getAllHostListing');
+const getAllUserListing = require('../controllers/admin/user/getAllUserListing');
+const updateUser = require('../controllers/admin/user/updateUser');
+const updateHost = require('../controllers/admin/host/updateHost');
 
 adminRoute.post('/login', loginAdmin);
 adminRoute.post("/forget_password", forgetPassword);
 adminRoute.post("/reset_password", resetPassword);
-
 adminRoute.route('/').post(signupAdmin).get(adminAuth, getAdminDetails)
 
-adminRoute.route('/host').patch(adminAuth, approveHost)
+// agency
+adminRoute.route('/agency').get(adminAuth, getAllAgencyListing)
+
+// USER
 adminRoute.route('/update_balance').post(adminAuth, updateBalance)
+
+// host
+adminRoute.route('/host').get(adminAuth, getAllHostListing).patch(adminAuth, updateHost)
+// user
+adminRoute.route('/user').get(adminAuth, getAllUserListing).patch(adminAuth, updateUser)
 
 // master data
 adminRoute.route('/gift').get(adminAuth, getAllIGifts).post(adminAuth, createGift).patch(adminAuth, updateGift); adminRoute.delete('/gift/:id', adminAuth, deleteGift);

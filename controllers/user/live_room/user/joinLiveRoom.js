@@ -10,8 +10,8 @@ const joinLiveRoom = async (req, res, next) => {
         let user = req.user;
 
         let liveRoom = await LiveRoom.findById(room_id);
-        if (!liveRoom) throw new ApiError('No live room find with this id', 404)
-        if (liveRoom.status === 'ended') return res.status(200).json({ status: true, message: 'this live room is ended', data: liveRoom })
+        if (!liveRoom) throw new ApiError('No live room find with this id', 404);
+        if (liveRoom.status === 'ended') return res.status(200).json({ status: false, message: 'this live room is ended', data: liveRoom });
 
         liveRoom.users.push(req.user._id);
         liveRoom.users = [...new Set(liveRoom.users)];

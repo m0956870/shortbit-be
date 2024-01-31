@@ -5,19 +5,14 @@ const User = require("../../../models/userModel");
 const resetPassword = async (req, res, next) => {
     // console.log("resetPassword")
     try {
-        const { email, phone_number, otp, password } = req.body;
-        if (!otp) throw new ApiError("otp is required!", 400);
+        const { email, phone_number, password } = req.body;
         if (!password) throw new ApiError("Password is required!", 400);
 
         const user = await User.findOne({ $or: [{ email }, { phone_number }] });
-        if (new Date(user.otp_expiry) < new Date()) throw new ApiError("otp expired", 400);
-        if (user.otp !== otp) throw new ApiError("incorrect otp", 400);
 
         const salt = await bcrypt.genSalt(10)
         const hashPass = await bcrypt.hash(password, salt);
 
-        // user.password = hashPass;
-        // user.save()
         await User.findByIdAndUpdate(user._id, { password: hashPass }, { new: true })
         res.status(200).json({ status: true, message: "Password reseted successfully.", });
     } catch (error) {

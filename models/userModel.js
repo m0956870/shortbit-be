@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema(
         gallery: [{ type: String }],
         age: { type: String, default: '' },
         detail_status: { type: String, default: 'incomplete', },
-        account_status: { type: String, default: 'active', enum: ['active', 'unapproved', 'approved'] },
+        account_status: { type: String, default: 'active', enum: ['active', 'inactive', 'blocked', 'unapproved', 'approved'] },
 
         followers_count: { type: Number, default: 0 },
         following_count: { type: Number, default: 0 },
