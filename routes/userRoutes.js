@@ -31,6 +31,8 @@ const videoChatInitiated = require("../controllers/user/video_chat/user/videoCha
 const getUser = require("../controllers/user/getUser");
 const getComments = require("../controllers/user/comment/getComments");
 const deleteComment = require("../controllers/user/comment/deleteComment");
+const getFollowerListing = require("../controllers/user/follow/getFollowerListing");
+const getFollowingListing = require("../controllers/user/follow/getFollowingListing");
 
 
 userRoute.route('/').post(signupUser).get(userAuth, getProfileDetails).patch(userAuth, updateDetails)
@@ -47,6 +49,8 @@ userRoute.route('/detail_status').patch(userAuth, updateRegisterDetails);
 
 // user interactivity
 userRoute.route('/follow/:following_id').get(userAuth, followUser)
+userRoute.get('/followers', userAuth, getFollowerListing)
+userRoute.get('/following', userAuth, getFollowingListing)
 
 // post interactivity
 userRoute.route('/post').post(userAuth, createPost).get(userAuth, getAllPost)

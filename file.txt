@@ -95,49 +95,63 @@ check if user on another call
 avatar ------------------------------------------------------------------ done
 
 
-// farhan
+// farhan :-
 user - profile details 
 
+// rajat :-
+recharge api
+settlement
 
 
 admin / agency / user
 forget password -------------------------------------------------- done
 reset password --------------------------------------------------- done
 
-home - live host api shuffle live & adds banner
-user - join room api - necessory details
-post comments api ----------------------------------------------------
-wallet api
-notification fcm api
-
-user - profile details
+ADMIN:-
+agency onboarding -------------------------------------
+agency listing ----------------------------------------
+admin approve host ---------------------------------
+user listing ------------------------------------------
+user block / unblock ----------------------------------
+Top Givers / Top Receivers
+settlement
+banner CRUD --------------------------------------------
 
 master data :- CRUD
 term & condition
 faq
 
-ADMIN:-
-agency onboarding ----------------
-agency listing -------------------------------
-host listing ---------------------------------
-user listing ---------------------------------
-user block / unblock -------------------------
-Top Givers / Top Receivers
-settlement
-
 AGENCY:-
 host listing ----------------------------
 settlement 
 
-host 
-service active / inactive option
+HOST :- 
+service active / inactive option --------------------------------
+block user - functionality
 
+USER :-
+D- social login api
+D- notification fcm api
+user - profile details
+home - live host api shuffle live, country flag & adds banner
+user - join room api - necessory details, rank?, joined all user details
+follower api & following api  ----------------------------------------
+post comments api ----------------------------------------------------
+D- wallet api
 
-rajat :-
-recharge api
-settlement
-
-
-host request
-admin will approve host -banking details, docs
-admin will onboard agency
+pages :-
+// 5. social login
+// 13. s3 integration - gallery upload
+16. add banner --------------------------------------------------------- done
+17. followed - true/false ----------------------------------- & top rank
+19. host profile details
+24. notification api
+// 25. followed - true/false
+// 32. recharge api
+34. follower & following api ------------------------------------------- done
+36. wallet api
+// 39. blacklist functionality
+40. privacy policy
+41. terms & condition
+42. profile update
+46. faq ---------------------------------------------------------------- done

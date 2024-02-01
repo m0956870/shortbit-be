@@ -14,12 +14,18 @@ const userSchema = new mongoose.Schema(
         gender: { type: String, default: '' },
         dob: { type: String, default: '' },
         interest: [{ type: mongoose.Schema.Types.ObjectId, ref: 'interest' }],
+        height: { type: String, default: '' },
+        // language: [{ type: mongoose.Schema.Types.ObjectId, ref: 'language' }],
+        language: { type: String, default: 'English' },
         profile_image: { type: String, default: '' },
+        avtar: { type: String, default: '' },
         location: {
             name: { type: String, default: '' },
             lat: { type: String, default: '' },
             long: { type: String, default: '' },
         },
+        user_name: { type: String, unique: true },
+        about_me: { type: String, default: '' },
 
         gallery: [{ type: String }],
         age: { type: String, default: '' },

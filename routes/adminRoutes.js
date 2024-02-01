@@ -26,6 +26,14 @@ const getAllHostListing = require('../controllers/admin/host/getAllHostListing')
 const getAllUserListing = require('../controllers/admin/user/getAllUserListing');
 const updateUser = require('../controllers/admin/user/updateUser');
 const updateHost = require('../controllers/admin/host/updateHost');
+const getAllHomeBanner = require('../controllers/admin/home_banner/getAllHomeBanner');
+const createHomeBanner = require('../controllers/admin/home_banner/createHomeBanner');
+const updateHomeBanner = require('../controllers/admin/home_banner/updateHomeBanner');
+const deleteHomeBanner = require('../controllers/admin/home_banner/deleteHomeBanner');
+const getAllFAQ = require('../controllers/admin/faq/getAllFAQ');
+const createFAQ = require('../controllers/admin/faq/createFAQ');
+const updateFAQ = require('../controllers/admin/faq/updateFAQ');
+const deleteFAQ = require('../controllers/admin/faq/deleteFAQ');
 
 adminRoute.post('/login', loginAdmin);
 adminRoute.post("/forget_password", forgetPassword);
@@ -47,6 +55,9 @@ adminRoute.route('/user').get(adminAuth, getAllUserListing).patch(adminAuth, upd
 adminRoute.route('/gift').get(adminAuth, getAllIGifts).post(adminAuth, createGift).patch(adminAuth, updateGift); adminRoute.delete('/gift/:id', adminAuth, deleteGift);
 adminRoute.route('/interest').get(adminAuth, getAllInterest).post(adminAuth, createInterest).patch(adminAuth, updateInterest); adminRoute.delete('/interest/:id', adminAuth, deleteInterest);
 adminRoute.route('/avatar').get(adminAuth, getAllAvatar).post(adminAuth, createAvatar).patch(adminAuth, updateAvatar); adminRoute.delete('/avatar/:id', adminAuth, deleteAvatar);
-adminRoute.route('/audio').get(getAllAudio).post(adminAuth, addAudio);
+adminRoute.route('/home_banner').get(adminAuth, getAllHomeBanner).post(adminAuth, createHomeBanner).patch(adminAuth, updateHomeBanner); adminRoute.delete('/home_banner/:id', adminAuth, deleteHomeBanner);
+adminRoute.route('/audio').get(getAllAudio).post(adminAuth, addAudio); adminRoute.delete('/audio/:id', adminAuth, deleteFAQ);
+
+adminRoute.route('/faq').get(adminAuth, getAllFAQ).post(adminAuth, createFAQ).patch(adminAuth, updateFAQ); adminRoute.delete('/faq/:id', adminAuth, deleteFAQ);
 
 module.exports = adminRoute;

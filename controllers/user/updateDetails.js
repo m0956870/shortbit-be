@@ -1,12 +1,54 @@
-const updateDetails = async (req, res, next) => {
-    // console.log("updateDetails -------------------------->", req.body)
-    
-    // multipleImageUpload
-    try {
-        res.status(200).json({ status: true, message: "updateDetails.", })
-    } catch (error) {
-        next(error)
-    }
-}
+const { ApiError } = require("../../errorHandler/apiErrorHandler.js");
+const userSchema = require("../../models/userModel.js");
+const avtarSchema = require("../../models/avatarModel.js");
+const multipleImageUpload = require("../../utils/multipleImageUpload.js");
+const getBaseUrl = require("../../utils/getBaseUrl.js");
 
-module.exports = updateDetails
+const updateDetails = async (req, res, next) => {
+    multipleImageUpload(req, res, async (error) => {
+        try {
+            if (error) throw new ApiError(error.message, 400);
+            const body = {
+                name: req.body.name,
+                gender: req.body.gender,
+                dob: req.body.dob,
+                user_name: req.body.user_name,
+                about_me: req.body.about_me,
+            };
+            if (body.user_name) {
+                const alreadyUserName = await userSchema.findOne({ user_name: body.user_name });
+                if (alreadyUserName) throw new ApiError(`UserName  ${body.user_name} already exists`);
+            }
+            const condition = {};
+            for (let key in body) {
+                if (body[key] != undefined && body[key] != "") {
+                    condition[key] = body[kry];
+                }
+            }
+            if (req.body.avtar) {
+                const haha = await avtarSchema.findOne({ _id: req.body.avtar });
+                if (haha) {
+                    condition.avtar = haha.icon;
+                }
+            }
+
+            console.log("object", req.files);
+
+            if (req.files["image"][0]) {
+                condition.profile_image = getBaseUrl() + "/image/" + req.files["image"][0].filename;
+
+            }
+            if (body.dob) {
+                // calculate age
+                console.log(body.dob);
+            }
+
+            const result = await userSchema.findByIdAndUpdate(req.user.id, condition, { new: true })
+            res.status(200).json({ status: true, message: "updateDetails.", result });
+        } catch (error) {
+            next(error);
+        }
+    })
+};
+
+module.exports = updateDetails;
