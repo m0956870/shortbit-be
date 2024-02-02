@@ -34,6 +34,9 @@ const getAllFAQ = require('../controllers/admin/faq/getAllFAQ');
 const createFAQ = require('../controllers/admin/faq/createFAQ');
 const updateFAQ = require('../controllers/admin/faq/updateFAQ');
 const deleteFAQ = require('../controllers/admin/faq/deleteFAQ');
+const getAllAppData = require('../controllers/admin/app_data/getAllAppData');
+const createAppData = require('../controllers/admin/app_data/createAppData');
+const updateAppData = require('../controllers/admin/app_data/updateAppData');
 
 adminRoute.post('/login', loginAdmin);
 adminRoute.post("/forget_password", forgetPassword);
@@ -59,5 +62,6 @@ adminRoute.route('/home_banner').get(adminAuth, getAllHomeBanner).post(adminAuth
 adminRoute.route('/audio').get(getAllAudio).post(adminAuth, addAudio); adminRoute.delete('/audio/:id', adminAuth, deleteFAQ);
 
 adminRoute.route('/faq').get(adminAuth, getAllFAQ).post(adminAuth, createFAQ).patch(adminAuth, updateFAQ); adminRoute.delete('/faq/:id', adminAuth, deleteFAQ);
+adminRoute.route('/app_data').get(adminAuth, getAllAppData).post(adminAuth, createAppData).patch(adminAuth, updateAppData); // adminRoute.delete('/app_data/:id', adminAuth, deleteFAQ);
 
 module.exports = adminRoute;

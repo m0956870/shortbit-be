@@ -33,19 +33,20 @@ const getComments = require("../controllers/user/comment/getComments");
 const deleteComment = require("../controllers/user/comment/deleteComment");
 const getFollowerListing = require("../controllers/user/follow/getFollowerListing");
 const getFollowingListing = require("../controllers/user/follow/getFollowingListing");
+const getAllFAQs = require("../controllers/user/app_data/getAllFAQs");
+const getAppData = require("../controllers/user/app_data/getAppData");
+const initiateRecharge = require("../controllers/user/recharge/initiateRecharge");
+const getWalletDetails = require("../controllers/user/wallet/user/getWalletDetails");
 
 
 userRoute.route('/').post(signupUser).get(userAuth, getProfileDetails).patch(userAuth, updateDetails)
+userRoute.route('/detail_status').patch(userAuth, updateRegisterDetails);
 userRoute.get('/details/:user_id', getUser);
-
 // auth
 userRoute.post('/login', loginUser);
+userRoute.post('/verify_signup_otp', verifySignupOTP);
 userRoute.post("/forget_password", forgetPassword);
 userRoute.post("/reset_password", resetPassword);
-
-userRoute.post('/verify_signup_otp', verifySignupOTP);
-userRoute.route('/interest').get(getAllInterest)
-userRoute.route('/detail_status').patch(userAuth, updateRegisterDetails);
 
 // user interactivity
 userRoute.route('/follow/:following_id').get(userAuth, followUser)
@@ -78,7 +79,15 @@ userRoute.post('/videochat/initiate', userAuth, videoChatInitiated)
 userRoute.post('/send_gift', userAuth, sendGift);
 userRoute.route('/gift').get(userAuth, giftListing);
 
+// recharge & wallet
+userRoute.post('/recharge/initiate', userAuth, initiateRecharge);
+userRoute.route('/wallet').get(userAuth, getWalletDetails);
+
 // avatar
 userRoute.route('/avatar').get(userAuth, getAllAvatar);
+userRoute.route('/interest').get(getAllInterest)
+userRoute.route('/faq').get(userAuth, getAllFAQs)
+userRoute.route('/app_data/:key').get(getAppData)
+
 
 module.exports = userRoute;

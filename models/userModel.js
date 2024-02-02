@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema(
         phone_number: { type: String, default: '' },
         otp: { type: String, default: '' },
         otp_expiry: { type: String, default: '' },
+        device_token: { type: String, default: '' },
 
         detail_count: { type: String, default: '0' },
         gender: { type: String, default: '' },
@@ -48,9 +49,11 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre('save', async function (next) {
-    const bcrypt = require('bcrypt');
-    const saltRounds = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, saltRounds);
+    if (this.isModified('password')) {
+        const bcrypt = require('bcrypt');
+        const saltRounds = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, saltRounds);
+    }
     next();
 });
 

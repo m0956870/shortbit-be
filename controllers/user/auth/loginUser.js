@@ -6,7 +6,7 @@ const { ApiError } = require("../../../errorHandler/apiErrorHandler");
 const loginUser = async (req, res, next) => {
     // console.log("loginUser", req.body);
     try {
-        const { email, password } = req.body;
+        const { email, password, device_token } = req.body;
         if (!email) throw new ApiError("Email is required!", 400);
         if (!password) throw new ApiError("Password is required!", 400);
 
@@ -18,6 +18,9 @@ const loginUser = async (req, res, next) => {
         if (!passMatched || email !== user.email) throw new ApiError("Invalid credentails!", 404);
 
         const token = signJWT(user._id);
+        user.device_token = device_token;
+        user.save();
+        
         res.status(200).json({ status: true, message: "login successful", data: { token } });
     } catch (error) {
         next(error);

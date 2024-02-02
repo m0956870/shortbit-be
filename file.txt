@@ -119,7 +119,7 @@ banner CRUD --------------------------------------------
 
 master data :- CRUD
 term & condition
-faq
+faq ----------------------------------------------------------------------
 
 AGENCY:-
 host listing ----------------------------
@@ -149,9 +149,9 @@ pages :-
 // 25. followed - true/false
 // 32. recharge api
 34. follower & following api ------------------------------------------- done
-36. wallet api
+36. wallet api ---------------------------------------------------------
 // 39. blacklist functionality
-40. privacy policy
-41. terms & condition
+40. privacy policy ----------------------------------------------------- done
+41. terms & condition -------------------------------------------------- done
 42. profile update
 46. faq ---------------------------------------------------------------- done
