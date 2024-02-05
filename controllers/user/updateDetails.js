@@ -22,22 +22,13 @@ const updateDetails = async (req, res, next) => {
             const condition = {};
             for (let key in body) {
                 if (body[key] != undefined && body[key] != "") {
-                    condition[key] = body[kry];
+                    condition[key] = body[key];
                 }
             }
-            if (req.body.avtar) {
-                const haha = await avtarSchema.findOne({ _id: req.body.avtar });
-                if (haha) {
-                    condition.avtar = haha.icon;
-                }
-            }
+    
+            if (req.body.avtar) condition.avtar = req.body.avtar;
+            if (req.files?.["image"]?.[0]) condition.profile_image = getBaseUrl() + "/image/" + req.files["image"][0].filename;
 
-            console.log("object", req.files);
-
-            if (req.files["image"][0]) {
-                condition.profile_image = getBaseUrl() + "/image/" + req.files["image"][0].filename;
-
-            }
             if (body.dob) {
                 // calculate age
                 console.log(body.dob);

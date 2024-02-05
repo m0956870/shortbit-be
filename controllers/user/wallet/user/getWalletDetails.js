@@ -1,5 +1,6 @@
 const { ApiError } = require("../../../../errorHandler/apiErrorHandler");
 const Transaction = require("../../../../models/transactionModel");
+const Settlement = require("../../../../models/settlementModel");
 
 const getWalletDetails = async (req, res, next) => {
     // console.log("getWalletDetails -----------------------", req.body)
@@ -22,9 +23,21 @@ const getWalletDetails = async (req, res, next) => {
             userTransactionsData.balance = user.balance
             userTransactionsData.userTransactions = userTransactions
 
-            return res.status(201).json({ status: true, message: 'transaction listing', data: userTransactionsData });
+            return res.status(200).json({ status: true, message: 'transaction listing', data: userTransactionsData });
         } else if (type === 'settlement') {
-            return res.send('settlement')
+            let userSettlements = await Settlement.find({ host_id: user._id })
+                .lean()
+                .skip((page * limit) - limit)
+                .limit(limit)
+                .sort({ createdAt: -1 })
+                .populate('host_id', 'name email profile_image phone_number balance')
+                .select('-__v')
+
+            let userSettlementData = {}
+            userSettlementData.balance = user.balance
+            userSettlementData.userSettlements = userSettlements
+
+            return res.status(200).json({ status: true, message: 'settlement listing', data: userSettlementData });
         }
         throw new ApiError("give proper type", 400)
     } catch (error) {

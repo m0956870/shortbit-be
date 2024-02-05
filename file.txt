@@ -118,12 +118,12 @@ settlement
 banner CRUD --------------------------------------------
 
 master data :- CRUD
-term & condition
-faq ----------------------------------------------------------------------
+term & condition -------------------------------------------------------
+faq --------------------------------------------------------------------
 
 AGENCY:-
 host listing ----------------------------
-settlement 
+settlement -----------------------------
 
 HOST :- 
 service active / inactive option --------------------------------
@@ -135,9 +135,9 @@ D- notification fcm api
 user - profile details
 home - live host api shuffle live, country flag & adds banner
 user - join room api - necessory details, rank?, joined all user details
-follower api & following api  ----------------------------------------
-post comments api ----------------------------------------------------
-D- wallet api
+follower api & following api  ------------------------------------------
+post comments api ------------------------------------------------------
+D- wallet api ----------------------------------------------------------
 
 pages :-
 // 5. social login
@@ -149,9 +149,19 @@ pages :-
 // 25. followed - true/false
 // 32. recharge api
 34. follower & following api ------------------------------------------- done
-36. wallet api ---------------------------------------------------------
+36. wallet api --------------------------------------------------------- done
 // 39. blacklist functionality
 40. privacy policy ----------------------------------------------------- done
 41. terms & condition -------------------------------------------------- done
-42. profile update
+42. profile update -----------------------------------------------------
 46. faq ---------------------------------------------------------------- done
+
+settlement module api host & admin -------------------------------------
+admin settlement approve api -------------------------------------------
+
+schedular in liveroom
+notification api
+block functionality
+liveroom top 3 Givers
+top givers / top takers
+admin - debit use balance functionality

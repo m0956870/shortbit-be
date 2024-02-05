@@ -1,14 +1,18 @@
+const User = require("../../models/userModel");
+
 const getProfileDetails = async (req, res, next) => {
     // console.log("getProfileDetails -------------------------->", req.body)
     try {
-        let user = req.user;
-        if (user.detail_status === 'incomplete') return res.status(200).json({ status: false, message: "incomplete information!", count: user.detail_count });
+        let rootUser = req.user;
+        if (rootUser.detail_status === 'incomplete') return res.status(200).json({ status: false, message: "incomplete information!", count: rootUser.detail_count });
 
-        user.password = undefined;
-        res.status(200).json({ status: true, message: "Profile details fetched successfully.", data: user })
+        await rootUser.populate('interest');
+        rootUser.password = undefined;
+
+        res.status(200).json({ status: true, message: "Profile details fetched successfully.", data: rootUser });
     } catch (error) {
-        next(error)
+        next(error);
     }
 }
 
-module.exports = getProfileDetails
+module.exports = getProfileDetails;

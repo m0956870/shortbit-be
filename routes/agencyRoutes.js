@@ -7,6 +7,7 @@ const forgetPassword = require("../controllers/agency/auth/forgetPassword");
 const resetPassword = require("../controllers/agency/auth/resetPassword");
 const getAgencyDetails = require("../controllers/agency/getAgencyDetails");
 const getAllHostListing = require("../controllers/agency/host/getAllHostListing");
+const getSettlementListing = require("../controllers/agency/settlement/getSettlementListing");
 
 agencyRoute.post('/login', loginAgency);
 agencyRoute.post("/forget_password", forgetPassword);
@@ -14,7 +15,8 @@ agencyRoute.post("/reset_password", resetPassword);
 
 agencyRoute.route('/').post(signupAgnecy).get(agencyAuth, getAgencyDetails)
 
-agencyRoute.route('/host').get(agencyAuth, getAllHostListing)//.patch(adminAuth, approveHost)
+agencyRoute.route('/host').get(agencyAuth, getAllHostListing)
+agencyRoute.route('/settlement').get(agencyAuth, getSettlementListing)
 
 
 module.exports = agencyRoute;

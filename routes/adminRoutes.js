@@ -37,22 +37,26 @@ const deleteFAQ = require('../controllers/admin/faq/deleteFAQ');
 const getAllAppData = require('../controllers/admin/app_data/getAllAppData');
 const createAppData = require('../controllers/admin/app_data/createAppData');
 const updateAppData = require('../controllers/admin/app_data/updateAppData');
+const getSettlementListing = require('../controllers/admin/settlement/getSettlementListing');
+const updateSettlement = require('../controllers/admin/settlement/updateSettlement');
 
 adminRoute.post('/login', loginAdmin);
 adminRoute.post("/forget_password", forgetPassword);
 adminRoute.post("/reset_password", resetPassword);
-adminRoute.route('/').post(signupAdmin).get(adminAuth, getAdminDetails)
+adminRoute.route('/').post(signupAdmin).get(adminAuth, getAdminDetails);
 
 // agency
-adminRoute.route('/agency').get(adminAuth, getAllAgencyListing)
+adminRoute.route('/agency').get(adminAuth, getAllAgencyListing);
+// settlement
+adminRoute.route('/settlement').get(adminAuth, getSettlementListing).patch(adminAuth, updateSettlement)
 
 // USER
-adminRoute.route('/update_balance').post(adminAuth, updateBalance)
+adminRoute.route('/update_balance').post(adminAuth, updateBalance);
 
 // host
-adminRoute.route('/host').get(adminAuth, getAllHostListing).patch(adminAuth, updateHost)
+adminRoute.route('/host').get(adminAuth, getAllHostListing).patch(adminAuth, updateHost);
 // user
-adminRoute.route('/user').get(adminAuth, getAllUserListing).patch(adminAuth, updateUser)
+adminRoute.route('/user').get(adminAuth, getAllUserListing).patch(adminAuth, updateUser);
 
 // master data
 adminRoute.route('/gift').get(adminAuth, getAllIGifts).post(adminAuth, createGift).patch(adminAuth, updateGift); adminRoute.delete('/gift/:id', adminAuth, deleteGift);

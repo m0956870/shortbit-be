@@ -10,13 +10,13 @@ const updateRegisterDetails = async (req, res, next) => {
 
             let user = req.user;
             let { gender, dob, interest, location } = req.body;
-
+            
             if (!location) {
                 if (gender) user.gender = gender, user.detail_count = 1;
                 if (dob) user.dob = dob, user.detail_count = 1;
                 if (interest) user.interest = JSON.parse(interest), user.detail_count = 2;
                 if (req.file) user.profile_image = getBaseUrl() + "/image/" + req.file.filename, user.detail_count = 3;
-
+                
                 await user.save();
                 res.status(200).json({ status: true, message: "User details updated successfully!", data: user });
             } else {
