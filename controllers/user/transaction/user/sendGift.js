@@ -21,7 +21,7 @@ const sendGift = async (req, res, next) => {
         if (!gift) throw new ApiError("no gift found with this id", 400)
         if (user.balance < gift.coins) throw new ApiError('Insufficient balance', 400);
 
-        // desc balance in user account
+        // USER - desc balance in user account
         let userTransaction = await Transaction.create({
             user_id: user._id,
             to_user_id,
@@ -34,7 +34,7 @@ const sendGift = async (req, res, next) => {
         user.balance = user.balance - gift.coins;
         user.save();
 
-        // inc balance in host account
+        // HOST - inc balance in host account
         let hostTransaction = await Transaction.create({
             user_id: to_user_id,
             to_user_id: user._id,
@@ -47,9 +47,9 @@ const sendGift = async (req, res, next) => {
         // await User.findByIdAndUpdate(to_user_id, { $inc: { balance: +gift.coins } }, { new: true });
         host.balance = host.balance + gift.coins;
         host.save();
-        
+
         // inc liveroom host earning
-        let liveRoom = await LiveRoom.findByIdAndUpdate(room_id, { $inc: { earned_coins: +gift.coins } }, { new: true });
+        if (room_id) await LiveRoom.findByIdAndUpdate(room_id, { $inc: { earned_coins: +gift.coins } }, { new: true });
         res.status(201).json({ status: true, message: 'gift sent' });
     } catch (error) {
         next(error);

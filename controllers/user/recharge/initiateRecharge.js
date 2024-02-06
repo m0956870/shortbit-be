@@ -9,10 +9,9 @@ const initiateRecharge = async (req, res, next) => {
         // desc balance in user account
         let userTransaction = await Transaction.create({
             user_id: user._id,
-            to_user_id: "null",
             transaction_type: 'credit',
             transaction_by: 'user',
-            item_type: 'coin',
+            item_type: 'recharge',
             amount
         });
         user.balance = user.balance + amount;

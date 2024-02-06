@@ -114,7 +114,7 @@ admin approve host ---------------------------------
 user listing ------------------------------------------
 user block / unblock ----------------------------------
 Top Givers / Top Receivers
-settlement
+settlement ---------------------------------------------
 banner CRUD --------------------------------------------
 
 master data :- CRUD
@@ -160,8 +160,8 @@ settlement module api host & admin -------------------------------------
 admin settlement approve api -------------------------------------------
 
 schedular in liveroom
-notification api
-block functionality
-liveroom top 3 Givers
-top givers / top takers
+notification api 
+block functionality ------------------------------
+liveroom top 3 Givers ----------------------------
+top givers / top takers 
 admin - debit use balance functionality
