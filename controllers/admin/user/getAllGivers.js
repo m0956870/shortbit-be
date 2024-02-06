@@ -1,7 +1,7 @@
 const Transaction = require("../../../models/transactionModel");
 
-const getTopReceivers = async (req, res, next) => {
-    // console.log("getTopReceivers -------------------------->")
+const getAllGivers = async (req, res, next) => {
+    // console.log("getAllGivers -------------------------->")
     try {
         let { page, limit, start_date, end_date, host_id } = req.query;
         page = page ? Number(page) : 1;
@@ -76,4 +76,4 @@ const getTopReceivers = async (req, res, next) => {
     }
 }
 
-module.exports = getTopReceivers;
+module.exports = getAllGivers;
