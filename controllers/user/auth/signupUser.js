@@ -20,7 +20,7 @@ const signupUser = async (req, res, next) => {
         const otp = "1234";
         const otp_expiry = new Date(Date.now() + 2 * 60 * 1000);
 
-        await User.create({ name, email, password, phone_number, otp, otp_expiry });
+        await User.create({ name, email, password, phone_number, otp, otp_expiry, user_name: Date.now() });
         res.status(201).json({ status: true, message: "User created successfully.", data: { phone: phone_number, otpExpiry: otp_expiry, } });
     } catch (error) {
         next(error);

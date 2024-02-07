@@ -50,6 +50,7 @@ const getTopReceivers = async (req, res, next) => {
                     data: {
                         total: 1,
                         user: {
+                            _id: 1,
                             name: 1,
                             email: 1,
                             phone_number: 1,
@@ -62,7 +63,7 @@ const getTopReceivers = async (req, res, next) => {
 
 
         const allData = await Transaction.aggregate(pipeline)
-        const dataCount = allData[0].total_data[0].total_data;
+        const dataCount = allData[0]?.total_data[0]?.total_data;
 
         res.status(200).json({
             status: true,

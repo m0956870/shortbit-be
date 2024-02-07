@@ -3,14 +3,14 @@ const Transaction = require("../../../models/transactionModel");
 const getAllGivers = async (req, res, next) => {
     // console.log("getAllGivers -------------------------->")
     try {
-        let { page, limit, start_date, end_date, host_id } = req.query;
+        let { page, limit, start_date, end_date, user_id } = req.query;
         page = page ? Number(page) : 1;
         limit = limit ? Number(limit) : 10;
 
         const pipeline = [];
-        const matchObj = { transaction_type: 'credit', transaction_by: 'user', $or: [{ item_type: 'gift' }, { item_type: 'coin' }] }
+        const matchObj = { transaction_type: 'debit', transaction_by: 'user', $or: [{ item_type: 'gift' }, { item_type: 'coin' }] }
 
-        if (host_id) matchObj.user_id = host_id;
+        if (user_id) matchObj.user_id = user_id;
         if (start_date) matchObj.createdAt = { $gte: new Date(start_date) };
         if (end_date) matchObj.createdAt = { ...matchObj.createdAt, $lte: new Date(end_date) };
 
@@ -50,6 +50,7 @@ const getAllGivers = async (req, res, next) => {
                     data: {
                         total: 1,
                         user: {
+                            _id: 1,
                             name: 1,
                             email: 1,
                             phone_number: 1,
@@ -62,7 +63,7 @@ const getAllGivers = async (req, res, next) => {
 
 
         const allData = await Transaction.aggregate(pipeline)
-        const dataCount = allData[0].total_data[0].total_data;
+        const dataCount = allData[0]?.total_data[0]?.total_data;
 
         res.status(200).json({
             status: true,

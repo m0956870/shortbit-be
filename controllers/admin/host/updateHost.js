@@ -4,6 +4,7 @@ const { ApiError } = require("../../../errorHandler/apiErrorHandler");
 const getBaseUrl = require("../../../utils/getBaseUrl");
 const multipleImageUpload = require("../../../utils/multipleImageUpload");
 
+const accountStatus = ['active', 'inactive', 'blocked', 'unapproved', 'approved'];
 
 const updateHost = async (req, res, next) => {
     // console.log("updateHost -------------------------->", req.body);
@@ -13,6 +14,7 @@ const updateHost = async (req, res, next) => {
             let { id, status } = req.body;
             if (!id) throw new ApiError("ID is required!", 400);
             if (!isValidObjectId(id)) throw new ApiError("Invalid ID!", 400);
+            if (!accountStatus.includes(status)) throw new ApiError("Invalid status!", 400);
 
             let updatedObj = {};
             updatedObj.account_status = status;

@@ -3,6 +3,8 @@ const User = require('../../../../models/userModel');
 const Transaction = require('../../../../models/transactionModel');
 const { ApiError } = require("../../../../errorHandler/apiErrorHandler");
 
+let TypeEnum = ['credit', 'debit'];
+
 const updateBalance = async (req, res, next) => {
     // console.log("updateBalance ----------------------", req.body)
     try {
@@ -10,6 +12,7 @@ const updateBalance = async (req, res, next) => {
         if (!user_id) throw new ApiError("user id is required", 400)
         if (!isValidObjectId(user_id)) throw new ApiError("Invalid ID format", 400);
         if (!type) throw new ApiError("type is required", 400)
+        if (!TypeEnum.includes(type)) throw new ApiError("invalid type", 400)
         if (!amount) throw new ApiError("amount is required", 400)
         // else amount = Number(amount);
         let admin = req.user;
@@ -31,7 +34,7 @@ const updateBalance = async (req, res, next) => {
         } else {
             res.send("debit not implemented")
             // res.status(200).json({ status: true, message: 'balance updated successfully', data: updated });
-           
+
             // check for user negative balance
 
             // let user = await User.findById(user_id);

@@ -23,6 +23,7 @@ const updateRegisterDetails = async (req, res, next) => {
                 if (location) user.location = JSON.parse(location);
                 user.detail_count = 4;
                 user.detail_status = 'complete';
+                
                 await user.save();
                 res.status(200).json({ status: true, message: "User details completed.", data: user });
             }

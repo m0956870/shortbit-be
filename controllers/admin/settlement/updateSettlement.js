@@ -2,12 +2,15 @@ const { isValidObjectId } = require("mongoose");
 const { ApiError } = require("../../../errorHandler/apiErrorHandler");
 const Settlement = require('../../../models/settlementModel');
 
+const settlementStatus = ['pending', 'settled'];
+
 const updateSettlement = async (req, res, next) => {
     // console.log("updateSettlement -------------------------->", req.body);
     try {
         let { id, status } = req.body;
         if (!id) throw new ApiError("ID is required!", 400);
         if (!isValidObjectId(id)) throw new ApiError("Invalid ID format!", 400);
+        if (!settlementStatus.includes(status)) throw new ApiError("Invalid status!", 400);
 
         let updatedObj = {};
         updatedObj.status = status;

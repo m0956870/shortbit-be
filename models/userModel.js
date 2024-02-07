@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema(
             lat: { type: String, default: '' },
             long: { type: String, default: '' },
         },
-        user_name: { type: String, unique: true },
+        user_name: { type: String, required: [true, 'username is required'], unique: true, },
         about_me: { type: String, default: '' },
 
         gallery: [{ type: String }],

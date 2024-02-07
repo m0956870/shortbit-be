@@ -3,15 +3,14 @@ fcm - notification
 agora - video module
 payment gateway - gift buy
 Email & SMS integration - forget password
-S3 bucket - cloud storage
-
+S3 bucket - cloud storage 
 
 
 Admin Panel :-
 - agency management
 - agency settlement
 - host management
-- user management
+- user management 
 
 - interest CRUD ----------------
 - audio CRUD ------------------
@@ -110,12 +109,12 @@ reset password --------------------------------------------------- done
 ADMIN:-
 agency onboarding -------------------------------------
 agency listing ----------------------------------------
-admin approve host ---------------------------------
+admin approve host ------------------------------------
 user listing ------------------------------------------
 user block / unblock ----------------------------------
-Top Givers / Top Receivers
-settlement ---------------------------------------------
-banner CRUD --------------------------------------------
+Top Givers / Top Receivers ----------------------------
+settlement --------------------------------------------
+banner CRUD -------------------------------------------
 
 master data :- CRUD
 term & condition -------------------------------------------------------
@@ -127,7 +126,7 @@ settlement -----------------------------
 
 HOST :- 
 service active / inactive option --------------------------------
-block user - functionality
+block user - functionality --------------------------------------
 
 USER :-
 D- social login api
@@ -156,12 +155,16 @@ pages :-
 42. profile update -----------------------------------------------------
 46. faq ---------------------------------------------------------------- done
 
-settlement module api host & admin -------------------------------------
-admin settlement approve api -------------------------------------------
+settlement module api host & admin ------------------------------------- done
+admin settlement approve api ------------------------------------------- done
 
 schedular in liveroom
 notification api 
 block functionality ------------------------------
 liveroom top 3 Givers ----------------------------
-top givers / top takers 
+top givers / top takers --------------------------
 admin - debit use balance functionality
+delete user - and from its dependency
+
+add host
+add agemcy
