@@ -65,19 +65,13 @@ const getAllPost = async (req, res, next) => {
         ];
 
         const postsWithLikes = await Post.aggregate(pipeline);
-
-        const totalCountPipeline = [
-            { $match: findConditions },
-            { $count: "total_data" }
-        ];
-
-        const [{ total_data: totalPosts }] = await Post.aggregate(totalCountPipeline);
+        const total_data = await Post.countDocuments(findConditions);
 
         res.status(200).json({
             status: true,
             message: "All posts fetched successfully.",
-            total_data: totalPosts,
-            total_pages: Math.ceil(totalPosts / limit),
+            total_data: total_data,
+            total_pages: Math.ceil(total_data / limit),
             data: postsWithLikes,
         });
     } catch (error) {

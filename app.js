@@ -8,6 +8,7 @@ const agencyRoute = require('./routes/agencyRoutes');
 const userRoute = require('./routes/userRoutes');
 const unspecifiedRouteHandler = require('./routes/unspecifiedRouteHandler');
 const { finalErrorHandler } = require('./errorHandler/apiErrorHandler');
+const sendNotification = require('./utils/sendNotification');
 
 app.use(morgan('dev'));
 app.use(cors());
@@ -24,6 +25,16 @@ app.use('/api/agency', agencyRoute);
 app.use('/api/user', userRoute);
 
 app.get('/api/test', (req, res) => res.json({ status: true, message: 'Working fine...' }));
+app.get('/api/notification_test', async (req, res) => {
+    let { token, data } = req.body;
+    try {
+        // let data =  await sendNotification(token, data)
+        res.send(await sendNotification(token, data))
+    } catch (error) {
+        res.send("error")
+        console.log("/api/test error", error)
+    }
+});
 
 // error handles
 app.use(unspecifiedRouteHandler);
