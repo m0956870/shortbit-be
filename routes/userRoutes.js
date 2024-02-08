@@ -39,6 +39,7 @@ const initiateRecharge = require("../controllers/user/recharge/initiateRecharge"
 const getWalletDetails = require("../controllers/user/wallet/user/getWalletDetails");
 const initiateSettlement = require("../controllers/user/settlement/host/initiateSettlement");
 const getAllHostListing = require("../controllers/user/host/getAllHostListing");
+const updateLiveRoomStatus = require("../controllers/user/live_room/host/updateLiveRoomStatus");
 
 
 userRoute.route('/').post(signupUser).get(userAuth, getProfileDetails).patch(userAuth, updateDetails)
@@ -69,6 +70,7 @@ userRoute.post('/initiate_settlement', userAuth, initiateSettlement);
 // live & video chat module
 userRoute.route('/live_room').get(userAuth, getAllLiveRooms).post(userAuth, createLiveRoom).patch(userAuth, endLiveRoom)
 userRoute.route('/ongoing_live_room').get(userAuth, ongoingLiveRoom);
+userRoute.route('/liveroom_schedular').get(userAuth, updateLiveRoomStatus);
 
 
 // USER - live room

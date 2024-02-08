@@ -8,6 +8,7 @@ const createInterest = require('../controllers/admin/interest/createInterest');
 const deleteInterest = require('../controllers/admin/interest/deleteInterest');
 const getAllInterest = require('../controllers/admin/interest/getAllInterest');
 const addAudio = require('../controllers/admin/audio/addAudio');
+const deleteAudio = require('../controllers/admin/audio/deleteAudio');
 const getAllAudio = require('../controllers/admin/audio/getAllAudio');
 const updateInterest = require('../controllers/admin/interest/updateInterest');
 const getAllIGifts = require('../controllers/admin/gift/getAllIGifts');
@@ -67,7 +68,7 @@ adminRoute.route('/gift').get(adminAuth, getAllIGifts).post(adminAuth, createGif
 adminRoute.route('/interest').get(adminAuth, getAllInterest).post(adminAuth, createInterest).patch(adminAuth, updateInterest); adminRoute.delete('/interest/:id', adminAuth, deleteInterest);
 adminRoute.route('/avatar').get(adminAuth, getAllAvatar).post(adminAuth, createAvatar).patch(adminAuth, updateAvatar); adminRoute.delete('/avatar/:id', adminAuth, deleteAvatar);
 adminRoute.route('/home_banner').get(adminAuth, getAllHomeBanner).post(adminAuth, createHomeBanner).patch(adminAuth, updateHomeBanner); adminRoute.delete('/home_banner/:id', adminAuth, deleteHomeBanner);
-adminRoute.route('/audio').get(getAllAudio).post(adminAuth, addAudio); adminRoute.delete('/audio/:id', adminAuth, deleteFAQ);
+adminRoute.route('/audio').get(getAllAudio).post(adminAuth, addAudio); adminRoute.delete('/audio/:id', adminAuth, deleteAudio);
 
 adminRoute.route('/faq').get(adminAuth, getAllFAQ).post(adminAuth, createFAQ).patch(adminAuth, updateFAQ); adminRoute.delete('/faq/:id', adminAuth, deleteFAQ);
 adminRoute.route('/app_data').get(adminAuth, getAllAppData).post(adminAuth, createAppData).patch(adminAuth, updateAppData); // adminRoute.delete('/app_data/:id', adminAuth, deleteFAQ);

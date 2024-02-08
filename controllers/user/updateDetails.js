@@ -14,6 +14,7 @@ const updateDetails = async (req, res, next) => {
                 dob: req.body.dob,
                 user_name: req.body.user_name,
                 about_me: req.body.about_me,
+                account_status: req.body.account_status,
             };
             if (body.user_name) {
                 const alreadyUserName = await userSchema.findOne({ user_name: body.user_name });

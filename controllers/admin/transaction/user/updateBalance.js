@@ -27,22 +27,40 @@ const updateBalance = async (req, res, next) => {
                 item_type: 'coin'
             });
 
-            let updated = await User.findByIdAndUpdate(user_id, { $inc: { balance: type === 'credit' ? +amount : -amount } }, { new: true });
+            let updated = await User.findByIdAndUpdate(user_id, { $inc: { balance: +amount } }, { new: true });
             if (!updated) throw new ApiError("no user found with this ID", 404);
 
-            res.status(200).json({ status: true, message: 'balance updated successfully', data: updated });
+            return res.status(200).json({ status: true, message: 'balance updated successfully', data: updated });
         } else {
-            res.send("debit not implemented")
-            // res.status(200).json({ status: true, message: 'balance updated successfully', data: updated });
-
             // check for user negative balance
+            let user = await User.findById(user_id);
+            if (!user) throw new ApiError("no user found with this ID", 404);
 
-            // let user = await User.findById(user_id);
-            // if (type === 'debit') {
-            //     if ((user.balance - amount) < 0) {
-            //         amount = 0
-            //     }
-            // }
+            console.log(amount, user.balance, amount > user.balance);
+            if (amount > user.balance) {
+                amount = user.balance;
+                await Transaction.create({
+                    user_id: admin._id,
+                    to_user_id: user_id,
+                    transaction_type: type,
+                    transaction_by: 'admin',
+                    amount: amount,
+                    item_type: 'coin'
+                });
+                let updated = await User.findByIdAndUpdate(user_id, { $inc: { balance: -amount } }, { new: true });
+                return res.status(200).json({ status: true, message: 'balance updated successfully', data: updated });
+            } else {
+                await Transaction.create({
+                    user_id: admin._id,
+                    to_user_id: user_id,
+                    transaction_type: type,
+                    transaction_by: 'admin',
+                    amount: amount,
+                    item_type: 'coin'
+                });
+                let updated = await User.findByIdAndUpdate(user_id, { $inc: { balance: -amount } }, { new: true });
+                return res.status(200).json({ status: true, message: 'balance updated successfully', data: updated });
+            }
         }
     } catch (error) {
         next(error)

@@ -8,7 +8,7 @@ const schema = new mongoose.Schema(
         users: [String],
         peak_view_count: { type: Number, default: 0 },
         earned_coins: { type: Number, default: 0 },
-        last_active_time: { type: Date, default: Date.now() },
+        last_active_time: { type: Date, default: Date.now },
         scheduler_id: { type: Number, default: null },
         status: { type: String, default: 'ongoing', enum: ['ongoing', 'ended'] } // ongoing / ended
     },

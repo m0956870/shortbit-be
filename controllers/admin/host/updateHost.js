@@ -16,12 +16,15 @@ const updateHost = async (req, res, next) => {
             if (!isValidObjectId(id)) throw new ApiError("Invalid ID!", 400);
             if (!accountStatus.includes(status)) throw new ApiError("Invalid status!", 400);
 
-            let updatedObj = {};
-            updatedObj.account_status = status;
-            if (req.file) updatedObj.profile_image = getBaseUrl() + "/image/" + req.files['image'][0].filename;
-
-            const user = await User.findByIdAndUpdate(id, updatedObj, { new: true }).lean()
+            const user = await User.findById(id);
             if (!user) throw new ApiError("No user found with this ID", 404);
+            if (user.role === 'user') throw new ApiError("user is not a host", 404);
+
+            user.account_status = status;
+            if (req.file) user.profile_image = getBaseUrl() + "/image/" + req.files['image'][0].filename;
+            user.save();
+
+            // const user = await User.findByIdAndUpdate(id, updatedObj, { new: true }).lean()
 
             res.status(200).json({ status: true, message: "host updated sucessfully.", data: user });
         } catch (error) {

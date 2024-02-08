@@ -158,25 +158,25 @@ pages :-
 settlement module api host & admin ------------------------------------- done
 admin settlement approve api ------------------------------------------- done
 
-schedular in liveroom
+schedular in liveroom -------------------------------------------------- done
 notification api 
-block functionality ------------------------------
-liveroom top 3 Givers ----------------------------
-top givers / top takers --------------------------
-admin - debit use balance functionality
+block functionality ---------------------------------------------------- done
+liveroom top 3 Givers -------------------------------------------------- done
+top givers / top takers ------------------------------------------------ done
+admin - debit use balance functionality -------------------------------- done
 delete user - and from its dependency
 
 add host
-add agemcy
+add agency
+update host - active/inactive status ----------------------------------- done
+host api
 
 send notification :-
-
 - follow
 - like
 - comment
 // share
-
 - gift
-- chat notification
+- chat notification 
 
 dashboard api
