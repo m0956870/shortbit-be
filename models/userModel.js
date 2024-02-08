@@ -42,6 +42,7 @@ const userSchema = new mongoose.Schema(
         // host
         agency_code: { type: String },
         price_per_min: { type: Number, default: 0 },
+        live_room_id: { type: mongoose.Types.ObjectId, ref: 'liveroom', default: null },
         is_live_busy: { type: Boolean, default: false },
         is_chat_busy: { type: Boolean, default: false },
     },

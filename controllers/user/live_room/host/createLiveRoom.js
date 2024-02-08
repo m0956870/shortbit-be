@@ -10,6 +10,7 @@ const createLiveRoom = async (req, res, next) => {
         if (existingLiveRoom) throw new ApiError("live room already created", 400);
 
         let liveRoom = await LiveRoom.create({ host_id: host._id, status: 'ongoing', });
+        req.user.live_room_id = liveRoom._id;
         req.user.is_live_busy = true;
         req.user.save();
 
