@@ -169,7 +169,7 @@ delete user - and from its dependency
 add host
 add agency
 update host - active/inactive status ----------------------------------- done
-host api
+host home api ---------------------------------------------------------- done
 
 send notification :-
 - follow
@@ -180,3 +180,4 @@ send notification :-
 - chat notification 
 
 dashboard api
+admin - settlement - create transaction of agency and host percentage wise

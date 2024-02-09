@@ -32,6 +32,7 @@ const userSchema = new mongoose.Schema(
         age: { type: String, default: '' },
         detail_status: { type: String, default: 'incomplete', },
         account_status: { type: String, default: 'active', enum: ['active', 'inactive', 'blocked', 'unapproved', 'approved'] },
+        service_status: { type: String, default: 'active', enum: ['active', 'inactive'] },
 
         followers_count: { type: Number, default: 0 },
         following_count: { type: Number, default: 0 },

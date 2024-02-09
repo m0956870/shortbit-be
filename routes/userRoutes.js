@@ -40,6 +40,7 @@ const getWalletDetails = require("../controllers/user/wallet/user/getWalletDetai
 const initiateSettlement = require("../controllers/user/settlement/host/initiateSettlement");
 const getAllHostListing = require("../controllers/user/host/getAllHostListing");
 const updateLiveRoomStatus = require("../controllers/user/live_room/host/updateLiveRoomStatus");
+const geHomeApiDetails = require("../controllers/user/home/geHomeApiDetails");
 
 
 userRoute.route('/').post(signupUser).get(userAuth, getProfileDetails).patch(userAuth, updateDetails)
@@ -50,6 +51,9 @@ userRoute.post('/login', loginUser);
 userRoute.post('/verify_signup_otp', verifySignupOTP);
 userRoute.post("/forget_password", forgetPassword);
 userRoute.post("/reset_password", resetPassword);
+
+// home api
+userRoute.route('/home').get(userAuth, geHomeApiDetails)
 
 // user interactivity
 userRoute.route('/follow/:following_id').get(userAuth, followUser)
