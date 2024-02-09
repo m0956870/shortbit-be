@@ -14,7 +14,7 @@ const getFollowerListing = async (req, res, next) => {
         
         const findCondition =  { 'following_id': new mongoose.Types.ObjectId(user_id) };
 
-        const followers = await Follow.aggregate([
+        const allFollowers = await Follow.aggregate([
             { $match: findCondition },
             { $sort: { createdAt: -1 } },
             { $skip: (page - 1) * limit },
@@ -24,18 +24,18 @@ const getFollowerListing = async (req, res, next) => {
                     from: "users",
                     localField: "follower_id",
                     foreignField: "_id",
-                    as: "followers"
+                    as: "follower"
                 }
             },
             {
                 $addFields: {
-                    followers: { $arrayElemAt: ['$followers', 0] }
+                    follower: { $arrayElemAt: ['$follower', 0] }
                 }
             },
             {
                 $project: {
                     _id: 0,
-                    followers: {
+                    follower: {
                         name: 1,
                         profile_image: 1,
                     },
@@ -46,10 +46,10 @@ const getFollowerListing = async (req, res, next) => {
         const totalData = await Follow.countDocuments(findCondition);
         res.status(200).json({
             status: true,
-            message: "All followers..",
+            message: "followers listing",
             total_data: totalData,
             total_pages: Math.ceil(totalData / limit),
-            data: followers,
+            data: allFollowers,
         });
     } catch (error) {
         next(error)

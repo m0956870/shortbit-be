@@ -14,7 +14,7 @@ const getFollowingListing = async (req, res, next) => {
 
         const findCondition = { 'follower_id': new mongoose.Types.ObjectId(user_id) }
 
-        const followers = await Follow.aggregate([
+        const allFollowings = await Follow.aggregate([
             { $match: findCondition },
             { $sort: { createdAt: -1 } },
             { $skip: (page - 1) * limit },
@@ -47,10 +47,10 @@ const getFollowingListing = async (req, res, next) => {
 
         res.status(200).json({
             status: true,
-            message: "All followers..",
+            message: "following listing",
             total_data: totalData,
             total_pages: Math.ceil(totalData / limit),
-            data: followers,
+            data: allFollowings,
         });
     } catch (error) {
         next(error)

@@ -5,8 +5,8 @@ const geHomeApiDetails = async (req, res, next) => {
     // console.log("geHomeApiDetails -------------------------->")
     try {
         let { page, limit } = req.query;
-        // page = page ? page : 1;
-        // limit = limit ? limit : 10;
+        page = page ? Number(page) : 1;
+        limit = limit ? Number(limit) : 10;
 
         const findConditions = { role: 'host', account_status: 'approved' };
 
@@ -44,6 +44,8 @@ const geHomeApiDetails = async (req, res, next) => {
                             },
                         },
                     ],
+                    totalDataArray: { $concatArrays: ["$live", "$active", "$inactive"] },
+                    data: [{ $skip: (page * limit) - limit }, { $limit: limit }],
                     total_data: [
                         {
                             $count: 'total_data'
@@ -51,17 +53,31 @@ const geHomeApiDetails = async (req, res, next) => {
                     ]
                 },
             },
+            {
+                $addFields: {
+                    totalDataArray:
+                        { $concatArrays: ["$live", "$active", "$inactive"] }
+                }
+            },
+            {
+                $project: {
+                    totalDataArray: 1,
+                    total_data: 1
+                }
+            }
         ])
         const banners = await HomeBanner.find().lean();
+        // await Promise.all([allData, banners])
 
         const dataCount = allData[0]?.total_data[0]?.total_data;
+        let data = allData[0]?.totalDataArray
 
         res.status(200).json({
             status: true,
             message: "host listing",
             total_data: dataCount,
             // total_pages: Math.ceil(dataCount / limit),
-            data: allData,
+            data,
             banners
         });
     } catch (error) {

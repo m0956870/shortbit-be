@@ -42,6 +42,7 @@ const getSettlementListing = require('../controllers/admin/settlement/getSettlem
 const updateSettlement = require('../controllers/admin/settlement/updateSettlement');
 const getTopReceivers = require('../controllers/admin/host/getTopReceivers');
 const getAllGivers = require('../controllers/admin/user/getAllGivers');
+const getWalletDetails = require('../controllers/admin/wallet/getWalletDetails');
 
 adminRoute.post('/login', loginAdmin);
 adminRoute.post("/forget_password", forgetPassword);
@@ -54,6 +55,7 @@ adminRoute.route('/agency').get(adminAuth, getAllAgencyListing);
 adminRoute.route('/settlement').get(adminAuth, getSettlementListing).patch(adminAuth, updateSettlement)
 
 // USER
+adminRoute.route('/user_wallet').get(adminAuth, getWalletDetails);
 adminRoute.route('/update_balance').post(adminAuth, updateBalance);
 adminRoute.route('/top_receiver').get(adminAuth, getTopReceivers);
 adminRoute.route('/top_givers').get(adminAuth, getAllGivers);
