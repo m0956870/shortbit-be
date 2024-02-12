@@ -16,7 +16,7 @@ const getAllLiveRooms = async (req, res, next) => {
             .limit(limit)
             .sort({ createdAt: -1 })
             .select(" -__v")
-            .populate('host_id', 'name profile_image level language')
+            .populate('host_id', 'name profile_image level language followers_count')
             .lean()
 
         const banners = await HomeBanner.find().lean();

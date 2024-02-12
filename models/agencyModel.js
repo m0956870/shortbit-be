@@ -18,7 +18,10 @@ const agencySchema = new mongoose.Schema(
         agency_code: { type: String, required: [true, 'Code is required!'] },
         profile_image: { type: String, default: "" },
         is_deleted: { type: Boolean, default: false, },
-        status: { type: Boolean, default: true, }
+        status: { type: Boolean, default: true, },
+
+        balance: { type: Number, default: 0 },
+        commission: { type: Number, default: 0 },
     },
     { timestamps: true }
 );

@@ -44,8 +44,8 @@ const geHomeApiDetails = async (req, res, next) => {
                             },
                         },
                     ],
-                    totalDataArray: { $concatArrays: ["$live", "$active", "$inactive"] },
-                    data: [{ $skip: (page * limit) - limit }, { $limit: limit }],
+                    // totalDataArray: { $concatArrays: ["$live", "$active", "$inactive"] },          // gives error
+                    // data: [{ $skip: (page * limit) - limit }, { $limit: limit }],
                     total_data: [
                         {
                             $count: 'total_data'
@@ -55,29 +55,28 @@ const geHomeApiDetails = async (req, res, next) => {
             },
             {
                 $addFields: {
-                    totalDataArray:
-                        { $concatArrays: ["$live", "$active", "$inactive"] }
+                    totalDataArray: { $concatArrays: ["$live", "$active", "$inactive"] }
                 }
             },
-            {
-                $project: {
-                    totalDataArray: 1,
-                    total_data: 1
-                }
-            }
+            // {
+            //     $project: {
+            //         totalDataArray: 1,
+            //         total_data: 1
+            //     }
+            // }
         ])
         const banners = await HomeBanner.find().lean();
         // await Promise.all([allData, banners])
 
         const dataCount = allData[0]?.total_data[0]?.total_data;
-        let data = allData[0]?.totalDataArray
+        // let data = allData[0]?.totalDataArray
 
         res.status(200).json({
             status: true,
             message: "host listing",
             total_data: dataCount,
-            // total_pages: Math.ceil(dataCount / limit),
-            data,
+            total_pages: Math.ceil(dataCount / limit),
+            data: allData,
             banners
         });
     } catch (error) {

@@ -41,6 +41,7 @@ const initiateSettlement = require("../controllers/user/settlement/host/initiate
 const getAllHostListing = require("../controllers/user/host/getAllHostListing");
 const updateLiveRoomStatus = require("../controllers/user/live_room/host/updateLiveRoomStatus");
 const geHomeApiDetails = require("../controllers/user/home/geHomeApiDetails");
+const getLiveRoom = require("../controllers/user/live_room/getLiveRoom");
 
 
 userRoute.route('/').post(signupUser).get(userAuth, getProfileDetails).patch(userAuth, updateDetails)
@@ -73,6 +74,8 @@ userRoute.post('/initiate_settlement', userAuth, initiateSettlement);
 
 // live & video chat module
 userRoute.route('/live_room').get(userAuth, getAllLiveRooms).post(userAuth, createLiveRoom).patch(userAuth, endLiveRoom)
+userRoute.route('/get_live_room').get(userAuth, getLiveRoom)
+
 userRoute.route('/ongoing_live_room').get(userAuth, ongoingLiveRoom);
 userRoute.route('/liveroom_schedular').get(userAuth, updateLiveRoomStatus);
 
