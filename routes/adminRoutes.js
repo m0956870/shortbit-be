@@ -45,11 +45,14 @@ const getAllGivers = require('../controllers/admin/user/getAllGivers');
 const getWalletDetails = require('../controllers/admin/wallet/getWalletDetails');
 const createAgency = require('../controllers/admin/agency/createAgency');
 const updateAgency = require('../controllers/admin/agency/updateAgency');
+const adminDashboardData = require('../controllers/admin/dashboard/adminDashboardData');
 
 adminRoute.post('/login', loginAdmin);
 adminRoute.post("/forget_password", forgetPassword);
 adminRoute.post("/reset_password", resetPassword);
 adminRoute.route('/').post(signupAdmin).get(adminAuth, getAdminDetails);
+
+adminRoute.route('/dashboard').get(adminAuth, adminDashboardData)
 
 // agency
 adminRoute.route('/agency').post(adminAuth, createAgency).get(adminAuth, getAllAgencyListing).patch(adminAuth, updateAgency)

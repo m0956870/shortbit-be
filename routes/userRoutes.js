@@ -42,6 +42,8 @@ const getAllHostListing = require("../controllers/user/host/getAllHostListing");
 const updateLiveRoomStatus = require("../controllers/user/live_room/host/updateLiveRoomStatus");
 const geHomeApiDetails = require("../controllers/user/home/geHomeApiDetails");
 const getLiveRoom = require("../controllers/user/live_room/getLiveRoom");
+const createMessageGroup = require("../controllers/user/message_group/createMessageGroup");
+const getAllMessageGroup = require("../controllers/user/message_group/getAllMessageGroup");
 
 
 userRoute.route('/').post(signupUser).get(userAuth, getProfileDetails).patch(userAuth, updateDetails)
@@ -87,6 +89,9 @@ userRoute.route('/leave_room').post(userAuth, leaveLiveRoom)
 
 // videochat
 userRoute.post('/videochat/initiate', userAuth, videoChatInitiated)
+
+// message
+userRoute.route('/message_group').post(userAuth, createMessageGroup).get(userAuth, getAllMessageGroup)
 
 // gift
 userRoute.post('/send_gift', userAuth, sendGift);
