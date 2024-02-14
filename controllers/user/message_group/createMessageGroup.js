@@ -12,8 +12,8 @@ const createMessageGroup = async (req, res, next) => {
         if (!toUser) throw new ApiError("no to user found", 404);
         const rootUser = req.user;
 
-        const existingMessageGroup = await MessageGroup.findOne({ from_id: rootUser._id, to_id });
-        if (existingMessageGroup) throw new ApiError("already group created", 400);
+        const existingMessageGroup = await MessageGroup.findOne({ from_id: rootUser._id, to_id }).populate('from_id to_id', '-password -__v -location -otp -otp_expiry -interest')
+        if (existingMessageGroup) return res.status(200).json({ status: true, message: "message group", data: existingMessageGroup })
 
         const group_id = rootUser._id + '_' + to_id
         const messageGroup = await MessageGroup.create({ from_id: rootUser._id, to_id, group_id });

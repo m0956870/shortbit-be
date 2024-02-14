@@ -44,6 +44,13 @@ const geHomeApiDetails = require("../controllers/user/home/geHomeApiDetails");
 const getLiveRoom = require("../controllers/user/live_room/getLiveRoom");
 const createMessageGroup = require("../controllers/user/message_group/createMessageGroup");
 const getAllMessageGroup = require("../controllers/user/message_group/getAllMessageGroup");
+const getVoiceRoom = require("../controllers/user/voice_room/getVoiceRoom");
+const getAllVoiceRooms = require("../controllers/user/voice_room/getAllVoiceRooms");
+const createVoiceRoom = require("../controllers/user/voice_room/host/createVoiceRoom");
+const endVoiceRoom = require("../controllers/user/voice_room/host/endVoiceRoom");
+const ongoingVoiceRoom = require("../controllers/user/voice_room/host/ongoingVoiceRoom");
+const joinVoiceRoom = require("../controllers/user/voice_room/user/joinVoiceRoom");
+const leaveVoiceRoom = require("../controllers/user/voice_room/user/leaveVoiceRoom");
 
 
 userRoute.route('/').post(signupUser).get(userAuth, getProfileDetails).patch(userAuth, updateDetails)
@@ -71,21 +78,29 @@ userRoute.route('/share').post(userAuth, sharePost)
 userRoute.route('/comment').get(userAuth, getComments).post(userAuth, createComment); userRoute.delete('/comment/:id', userAuth, deleteComment);
 
 // HOST
+userRoute.route('/host').get(userAuth, getAllHostListing)
 userRoute.post('/host_request', userAuth, hostRequest);
 userRoute.post('/initiate_settlement', userAuth, initiateSettlement);
 
-// live & video chat module
-userRoute.route('/live_room').get(userAuth, getAllLiveRooms).post(userAuth, createLiveRoom).patch(userAuth, endLiveRoom)
+// live room module
 userRoute.route('/get_live_room').get(userAuth, getLiveRoom)
-
+// HOST
+userRoute.route('/live_room').get(userAuth, getAllLiveRooms).post(userAuth, createLiveRoom).patch(userAuth, endLiveRoom)
 userRoute.route('/ongoing_live_room').get(userAuth, ongoingLiveRoom);
 userRoute.route('/liveroom_schedular').get(userAuth, updateLiveRoomStatus);
-
-
 // USER - live room
-userRoute.route('/host').get(userAuth, getAllHostListing)
 userRoute.route('/join_room').post(userAuth, joinLiveRoom)
 userRoute.route('/leave_room').post(userAuth, leaveLiveRoom)
+
+// voice room module
+userRoute.route('/get_voice_room').get(userAuth, getVoiceRoom)
+// HOST
+userRoute.route('/voice_room').get(userAuth, getAllVoiceRooms).post(userAuth, createVoiceRoom).patch(userAuth, endVoiceRoom)
+userRoute.route('/ongoing_voice_room').get(userAuth, ongoingVoiceRoom);
+// userRoute.route('/liveroom_schedular').get(userAuth, updateLiveRoomStatus);
+// // USER - live room
+userRoute.route('/join_voice_room').post(userAuth, joinVoiceRoom)
+userRoute.route('/leave_voice_room').post(userAuth, leaveVoiceRoom)
 
 // videochat
 userRoute.post('/videochat/initiate', userAuth, videoChatInitiated)

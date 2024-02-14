@@ -8,13 +8,14 @@ const getAllMessageGroup = async (req, res, next) => {
         page = page ? page : 1;
         limit = limit ? limit : 10;
         const rootUser = req.user;
+        let role = rootUser.role;
 
-        const allData = await MessageGroup.find({ from_id: rootUser._id })
+        const allData = await MessageGroup.find({ [role === 'host' ? "to_id" : "from_id"]: rootUser._id })
             .skip((page * limit) - limit)
             .limit(limit)
             .sort({ createdAt: -1 })
             .select("-is_deleted -__v")
-            .populate('to_id', '-password -__v -location -otp -otp_expiry -interest')
+            .populate('from_id to_id', '-password -__v -location -otp -otp_expiry -interest')
 
         const dataCount = await MessageGroup.countDocuments({ from_id: rootUser._id })
 
