@@ -7,7 +7,7 @@ const getAllPost = async (req, res, next) => {
         page = page ? parseInt(page) : 1;
         limit = limit ? parseInt(limit) : 10;
 
-        const findConditions = { is_deleted: false, status: true };
+        const findConditions = { is_deleted: false, status: 'approved' };
 
         const pipeline = [
             { $match: findConditions },

@@ -4,7 +4,7 @@ const giftSchema = new mongoose.Schema(
     {
         name: { type: String, required: [true, 'name is required'] },
         icon: { type: String, default: '' },
-        value: { type: Number, required: [true, 'value is required'] },
+        animation_image: { type: String, default: '' },
         coins: { type: Number, required: [true, 'coins is required'] },
         is_deleted: { type: Boolean, default: false, },
         status: { type: Boolean, default: true, },

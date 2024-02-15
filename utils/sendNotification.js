@@ -1,14 +1,15 @@
 const axios = require("axios")
 
-const sendNotification = async (deviceToken, data) => {
+const sendNotification = async (deviceToken, notification, data) => {
     let config = {
         method: 'post',
         url: 'https://fcm.googleapis.com/fcm/send',
         headers: { Authorization: process.env.FCM_APIKEY, 'Content-Type': 'application/json', },
         data: {
             to: deviceToken,
-            data: data,
-            notification: data,
+            priority: "high",
+            notification,
+            data,
         }
     };
 

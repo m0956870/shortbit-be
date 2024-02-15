@@ -1,11 +1,11 @@
 const { ApiError } = require("../../../errorHandler/apiErrorHandler");
 const Gift = require("../../../models/giftModel");
 const getBaseUrl = require("../../../utils/getBaseUrl");
-const imageUpload = require("../../../utils/imageUpload");
+const multipleImageUpload = require("../../../utils/multipleImageUpload");
 
 const createGift = async (req, res, next) => {
     // console.log("createGift -------------------------->", req.body);
-    imageUpload(req, res, async (error) => {
+    multipleImageUpload(req, res, async (error) => {
         try {
             if (error) throw new ApiError(error.message, 400);
 
@@ -15,12 +15,15 @@ const createGift = async (req, res, next) => {
             if (!coins) throw new ApiError("coins is required!", 400);
 
             let icon;
-            if (req.file) icon = getBaseUrl() + "/image/" + req.file.filename;
+            let animation_image;
+            // if (req.files) icon = getBaseUrl() + "/image/" + req.file.filename;
+            if (req.files["image"]) icon = getBaseUrl() + "/image/" + req.file.filename;
+            if (req.files["gif_image"]) animation_image = getBaseUrl() + "/image/" + req.file.filename;
 
             const existingRecord = await Gift.findOne({ value }).lean();
             if (existingRecord) throw new ApiError("Gift already exist!", 400);
 
-            const newRecord = await Gift.create({ name, icon, value, coins });
+            const newRecord = await Gift.create({ name, icon, animation_image, value, coins });
             res.status(201).json({ status: true, message: "gift created successfully", data: newRecord });
         } catch (error) {
             next(error);

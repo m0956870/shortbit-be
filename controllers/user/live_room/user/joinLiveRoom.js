@@ -2,6 +2,7 @@ const { isValidObjectId } = require("mongoose");
 const { ApiError } = require("../../../../errorHandler/apiErrorHandler");
 const LiveRoom = require("../../../../models/liveRoomModel");
 const Follow = require("../../../../models/followModel");
+const sendNotification = require("../../../../utils/sendNotification");
 
 const joinLiveRoom = async (req, res, next) => {
     try {
@@ -20,11 +21,36 @@ const joinLiveRoom = async (req, res, next) => {
 
         liveRoom.users.push(req.user._id);
         liveRoom.users = [...new Set(liveRoom.users)];
+        liveRoom.users_token.push(req.user.device_token);
+        liveRoom.users_token = [...new Set(liveRoom.users_token)];
         if (liveRoom.users.length > liveRoom.peak_view_count) liveRoom.peak_view_count = liveRoom.users.length;
         await liveRoom.save();
 
         let roomData = liveRoom.toJSON();
-        roomData.is_followed = is_followed ? true : false,
+        roomData.is_followed = is_followed ? true : false;
+
+        liveRoom.users_token.map(async (token) => {
+            // console.log(token)
+            if (token !== req.user.token) {
+                console.log(await sendNotification(token,
+                    {
+                        body: "New user has joined the chat",
+                        title: "someone has joined the chat",
+                        type: "add_new_user_live",
+                        user_type: "vip", //vip/normal/vvip/
+                    },
+                    {
+                        body: "New user has joined the chat",
+                        title: "someone has joined the chat",
+                        type: "add_new_user_live",
+                        user_type: "vip", //vip/normal/vvip/
+                        user: req.user,
+                        click_action: "",
+                        image_url: "",
+                        notification_type: "",
+                    }))
+            }
+        })
 
         res.status(200).json({ status: true, message: "user live room joined", data: roomData });
     } catch (error) {

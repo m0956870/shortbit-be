@@ -13,7 +13,7 @@ const postSchema = new mongoose.Schema(
         share: { type: Number, default: 0 },
         views: { type: Number, default: 0 },
         is_deleted: { type: Boolean, default: false, },
-        status: { type: Boolean, default: true, }
+        status: { type: String, default: 'unapproved', enum: ['approved', 'unapproved'] }
     },
     { timestamps: true },
 );

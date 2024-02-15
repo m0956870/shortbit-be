@@ -4,6 +4,7 @@ const Gift = require("../../../../models/giftModel");
 const User = require("../../../../models/userModel");
 const LiveRoom = require("../../../../models/liveRoomModel");
 const { ApiError } = require("../../../../errorHandler/apiErrorHandler");
+const sendNotification = require("../../../../utils/sendNotification");
 
 const sendGift = async (req, res, next) => {
     // console.log("sendGift -----------------------", req.body)
@@ -44,12 +45,38 @@ const sendGift = async (req, res, next) => {
             item: gift,
             amount: gift.coins
         });
-        // await User.findByIdAndUpdate(to_user_id, { $inc: { balance: +gift.coins } }, { new: true });
         host.balance = host.balance + gift.coins;
         host.save();
 
         // inc liveroom host earning
-        if (room_id) await LiveRoom.findByIdAndUpdate(room_id, { $inc: { earned_coins: +gift.coins } }, { new: true });
+        if (room_id) {
+            // await LiveRoom.findByIdAndUpdate(room_id, { $inc: { earned_coins: +gift.coins } }, { new: true });
+            let liveRoom = await LiveRoom.findById(room_id)
+            liveRoom.earned_coins = liveRoom.earned_coins + gift.coins
+            liveRoom.save()
+            liveRoom.users_token.map(async (token) => {
+                // console.log(token)
+                if (token !== req.user.token) {
+                    console.log(await sendNotification(token,
+                        {
+                            body: "A user has sent the gift",
+                            title: "someone has sent the gift",
+                            type: "recived_gift",
+                        },
+                        {
+                            body: "A user has sent the gift",
+                            title: "someone has sent the gift",
+                            type: "recived_gift",
+                            click_action: '',
+                            image_url: gift.animation_image,
+                            gift: gift,
+                            notification_type: "",
+                            user_type: "",
+                        },
+                    ))
+                }
+            })
+        }
         res.status(201).json({ status: true, message: 'gift sent' });
     } catch (error) {
         next(error);

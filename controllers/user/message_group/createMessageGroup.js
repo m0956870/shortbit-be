@@ -17,6 +17,7 @@ const createMessageGroup = async (req, res, next) => {
 
         const group_id = rootUser._id + '_' + to_id
         const messageGroup = await MessageGroup.create({ from_id: rootUser._id, to_id, group_id });
+        await messageGroup.populate('from_id to_id', '-password -__v -location -otp -otp_expiry -interest')
         res.status(200).json({ status: true, message: "message group created", data: messageGroup })
     } catch (error) {
         next(error);

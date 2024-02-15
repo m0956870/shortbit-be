@@ -23,6 +23,7 @@ const multipleImageUpload = multer({
     },
 }).fields([
     { name: 'image', maxCount: 1 },
+    { name: 'gif_image', maxCount: 1 },
     { name: 'avatar_image', maxCount: 1 },
     { name: 'profile_image', maxCount: 1 },
 ]);

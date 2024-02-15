@@ -5,7 +5,7 @@ const forgetPassword = async (req, res, next) => {
     // console.log("forgetPassword", req.body);
     try {
         let { email, phone_number } = req.body;
-        // if (!email || !phone_number) throw new ApiError("credential is required!", 400);
+        if (!email && !phone_number) throw new ApiError("credential is required!", 400);
 
         let agency = await Agency.findOne({ $or: [{ email }, { phone_number }] });
         if (!agency) throw new ApiError("agency does not found", 404);

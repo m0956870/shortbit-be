@@ -14,7 +14,7 @@ const getTopReceivers = async (req, res, next) => {
         if (start_date) matchObj.createdAt = { $gte: new Date(start_date) };
         if (end_date) matchObj.createdAt = { ...matchObj.createdAt, $lte: new Date(end_date) };
 
-        pipeline.push([
+        pipeline.push(
             { $match: matchObj },
             {
                 $group: {
@@ -59,8 +59,7 @@ const getTopReceivers = async (req, res, next) => {
                     total_data: 1,
                 }
             },
-        ]);
-
+        );
 
         const allData = await Transaction.aggregate(pipeline)
         const dataCount = allData[0]?.total_data[0]?.total_data;

@@ -2,7 +2,7 @@ const fs = require("fs");
 const multer = require("multer");
 const { ApiError } = require("../errorHandler/apiErrorHandler");
 
-const allowedMimeTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
+const allowedMimeTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp", 'image/gif'];
 const storage = multer.diskStorage({
     destination: (req, res, cb) => {
         if (!fs.existsSync("images")) fs.mkdirSync("images", { recursive: true });
