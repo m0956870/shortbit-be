@@ -46,6 +46,13 @@ const getAllGivers = async (req, res, next) => {
                 }
             },
             {
+                $addFields: {
+                    data: {
+                        $sortArray: { input: "$data", sortBy: { total: -1 } }
+                    },
+                }
+            },
+            {
                 $project: {
                     data: {
                         total: 1,

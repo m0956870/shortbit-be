@@ -159,25 +159,22 @@ settlement module api host & admin ------------------------------------- done
 admin settlement approve api ------------------------------------------- done
 
 schedular in liveroom -------------------------------------------------- done
-notification api 
+notification api -------------------------------------------
 block functionality ---------------------------------------------------- done
 liveroom top 3 Givers -------------------------------------------------- done
 top givers / top takers ------------------------------------------------ done
 admin - debit use balance functionality -------------------------------- done
 delete user - and from its dependency
 
-add host
-add agency
+add host ----------------------------------------------
+add agency -----------------------------------------------
 update host - active/inactive status ----------------------------------- done
 host home api ---------------------------------------------------------- done
 
 send notification :-
-- follow
-- like
-- comment
-// share
-- gift
-- chat notification 
+- follow, like, comment, share, gift,
+- liveroom chat notification 
+- voiceroom chat
 
-dashboard api
-admin - settlement - create transaction of agency and host percentage wise
+dashboard api ------------------------------------------------
+admin - settlement - create transaction of agency and host percentage wise --

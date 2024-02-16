@@ -3,14 +3,14 @@ const Transaction = require("../../../models/transactionModel");
 const getTopReceivers = async (req, res, next) => {
     // console.log("getTopReceivers -------------------------->")
     try {
-        let { page, limit, start_date, end_date, host_id } = req.query;
+        let { page, limit, start_date, end_date, agency_id } = req.query;
         page = page ? Number(page) : 1;
         limit = limit ? Number(limit) : 10;
 
         const pipeline = [];
         const matchObj = { transaction_type: 'credit', transaction_by: 'user', $or: [{ item_type: 'gift' }, { item_type: 'coin' }] }
 
-        // if (host_id) matchObj.user_id = host_id;
+        // if (agency_id) matchObj.agency_id = agency_id;
         if (start_date) matchObj.createdAt = { $gte: new Date(start_date) };
         if (end_date) matchObj.createdAt = { ...matchObj.createdAt, $lte: new Date(end_date) };
 
@@ -43,6 +43,13 @@ const getTopReceivers = async (req, res, next) => {
                             $count: 'total_data'
                         }
                     ]
+                }
+            },
+            {
+                $addFields:{
+                    data: {
+                        $sortArray: { input: "$data", sortBy: { total: -1 } }
+                    },
                 }
             },
             {
