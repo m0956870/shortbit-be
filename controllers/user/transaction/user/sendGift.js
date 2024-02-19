@@ -3,6 +3,7 @@ const Transaction = require("../../../../models/transactionModel");
 const Gift = require("../../../../models/giftModel");
 const User = require("../../../../models/userModel");
 const LiveRoom = require("../../../../models/liveRoomModel");
+const VoiceRoom = require("../../../../models/voiceRoomModel");
 const { ApiError } = require("../../../../errorHandler/apiErrorHandler");
 const sendNotification = require("../../../../utils/sendNotification");
 
@@ -52,6 +53,11 @@ const sendGift = async (req, res, next) => {
         if (room_id) {
             // await LiveRoom.findByIdAndUpdate(room_id, { $inc: { earned_coins: +gift.coins } }, { new: true });
             let liveRoom = await LiveRoom.findById(room_id)
+            if (!liveRoom) {
+                liveRoom = await VoiceRoom.findById(room_id)
+            }
+            if (!liveRoom) throw new ApiError("no room found with this id", 400)
+
             liveRoom.earned_coins = liveRoom.earned_coins + gift.coins
             liveRoom.save()
             liveRoom.users_token.map(async (token) => {
@@ -70,6 +76,7 @@ const sendGift = async (req, res, next) => {
                             click_action: '',
                             image_url: gift.animation_image,
                             gift: gift,
+                            liveRoom,
                             notification_type: "",
                             user_type: "",
                         },
