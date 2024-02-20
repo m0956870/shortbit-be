@@ -14,7 +14,7 @@ const leaveVoiceRoom = async (req, res, next) => {
         if (voiceRoom.status === 'ended') return res.status(200).json({ status: true, message: 'this voice room is ended', data: voiceRoom })
 
         voiceRoom.users = voiceRoom.users.filter(ids => ids !== user._id.toString());
-        voiceRoom.users_token = voiceRoom.users_token.filter(token => token !== req.user.token);
+        voiceRoom.users_token = voiceRoom.users_token.filter(token => token !== req.user.device_token);
 
         await voiceRoom.save();
         res.status(200).json({ status: true, message: "user voice room leaved", data: voiceRoom });

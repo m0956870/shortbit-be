@@ -62,7 +62,7 @@ const sendGift = async (req, res, next) => {
             liveRoom.save()
             liveRoom.users_token.map(async (token) => {
                 // console.log(token)
-                if (token !== req.user.token) {
+                if (token !== req.user.device_token) {
                     console.log(await sendNotification(token,
                         {
                             body: "A user has sent the gift",

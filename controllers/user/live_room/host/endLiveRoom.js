@@ -19,7 +19,7 @@ const endLiveRoom = async (req, res, next) => {
 
         liveRoom.users_token.map(async (token) => {
             // console.log(token)
-            if (token !== req.user.token) {
+            if (token !== req.user.device_token) {
                 console.log(await sendNotification(token,
                     {
                         body: "Host has ended the chat",
