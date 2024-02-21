@@ -48,6 +48,23 @@ const sendGift = async (req, res, next) => {
         });
         host.balance = host.balance + gift.coins;
         host.save();
+        console.log(await sendNotification(host.device_token,
+            {
+                body: "A user has sent the gift",
+                title: "someone has sent the gift",
+                type: "recived_gift",
+            },
+            {
+                body: "A user has sent the gift",
+                title: "someone has sent the gift",
+                type: "recived_gift",
+                click_action: '',
+                image_url: gift.animation_image,
+                gift: gift,
+                notification_type: "",
+                user_type: "",
+            },
+        ))
 
         // inc liveroom host earning
         if (room_id) {

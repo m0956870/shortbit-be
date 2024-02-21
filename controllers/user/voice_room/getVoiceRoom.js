@@ -7,7 +7,7 @@ const getVoiceRoom = async (req, res, next) => {
 
         const voiceRoom = await VoiceRoom.findById(id)
             .select(" -__v")
-            .populate('host_id', 'name profile_image level language followers_count')
+            .populate('host_id slot_users', 'name profile_image level language followers_count')
             .lean()
 
         res.status(200).json({

@@ -51,6 +51,9 @@ const endVoiceRoom = require("../controllers/user/voice_room/host/endVoiceRoom")
 const ongoingVoiceRoom = require("../controllers/user/voice_room/host/ongoingVoiceRoom");
 const joinVoiceRoom = require("../controllers/user/voice_room/user/joinVoiceRoom");
 const leaveVoiceRoom = require("../controllers/user/voice_room/user/leaveVoiceRoom");
+const requestSlot = require("../controllers/user/voice_room/user/requestSlot");
+const approveSlot = require("../controllers/user/voice_room/host/approveSlot");
+const leaveSlot = require("../controllers/user/voice_room/user/leaveSlot");
 
 
 userRoute.route('/').post(signupUser).get(userAuth, getProfileDetails).patch(userAuth, updateDetails)
@@ -97,10 +100,12 @@ userRoute.route('/get_voice_room').get(userAuth, getVoiceRoom)
 // HOST
 userRoute.route('/voice_room').get(userAuth, getAllVoiceRooms).post(userAuth, createVoiceRoom).patch(userAuth, endVoiceRoom)
 userRoute.route('/ongoing_voice_room').get(userAuth, ongoingVoiceRoom);
+userRoute.route('/approve_slot').post(userAuth, approveSlot);
 // userRoute.route('/liveroom_schedular').get(userAuth, updateLiveRoomStatus);
 // // USER - live room
 userRoute.route('/join_voice_room').post(userAuth, joinVoiceRoom)
 userRoute.route('/leave_voice_room').post(userAuth, leaveVoiceRoom)
+userRoute.route('/voiceroom_slot').post(userAuth, requestSlot).patch(userAuth, leaveSlot)
 
 // videochat
 userRoute.post('/videochat/initiate', userAuth, videoChatInitiated)
