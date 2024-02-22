@@ -32,23 +32,22 @@ const joinVoiceRoom = async (req, res, next) => {
         voiceRoom.users_token.map(async (token) => {
             // console.log(token)
             if (token !== req.user.device_token) {
-                console.log(await sendNotification(token,
+                await sendNotification(token,
                     {
                         body: "New user has joined the chat",
                         title: "someone has joined the chat",
-                        type: "add_new_user_live",
+                        type: "add_new_user_voice",
                         user_type: "vip", //vip/normal/vvip/
                     },
                     {
                         body: "New user has joined the chat",
                         title: "someone has joined the chat",
-                        type: "add_new_user_live",
+                        type: "add_new_user_voice",
                         user_type: "vip", //vip/normal/vvip/
-                        user: req.user,
                         click_action: "",
                         image_url: "",
                         notification_type: "",
-                    }))
+                    })
             }
         })
 

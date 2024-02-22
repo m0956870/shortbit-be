@@ -30,9 +30,9 @@ const joinLiveRoom = async (req, res, next) => {
         roomData.is_followed = is_followed ? true : false;
 
         liveRoom.users_token.map(async (token) => {
-            console.log("tokens ", token)
+            // console.log("tokens ", token)
             if (token !== req.user.device_token) {
-                console.log(await sendNotification(token,
+                await sendNotification(token,
                     {
                         body: "New user has joined the chat",
                         title: "someone has joined the chat",
@@ -44,11 +44,10 @@ const joinLiveRoom = async (req, res, next) => {
                         title: "someone has joined the chat",
                         type: "add_new_user_live",
                         user_type: "vip", //vip/normal/vvip/
-                        user: req.user,
                         click_action: "",
                         image_url: "",
                         notification_type: "",
-                    }))
+                    })
             }
         })
 

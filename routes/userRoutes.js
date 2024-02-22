@@ -108,7 +108,7 @@ userRoute.route('/leave_voice_room').post(userAuth, leaveVoiceRoom)
 userRoute.route('/voiceroom_slot').post(userAuth, requestSlot).patch(userAuth, leaveSlot)
 
 // videochat
-userRoute.post('/videochat/initiate', userAuth, videoChatInitiated)
+userRoute.route('/videochat').post(userAuth, videoChatInitiated)//.patch()
 
 // message
 userRoute.route('/message_group').post(userAuth, createMessageGroup).get(userAuth, getAllMessageGroup)

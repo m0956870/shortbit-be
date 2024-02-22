@@ -33,7 +33,7 @@ const approveSlot = async (req, res, next) => {
         voiceRoom.users_token.map(async (token) => {
             // console.log(token)
             if (token !== req.user.device_token) {
-                console.log(await sendNotification(token,
+                await sendNotification(token,
                     {
                         body: "New user has joined the chat",
                         title: "someone has joined the chat",
@@ -45,13 +45,10 @@ const approveSlot = async (req, res, next) => {
                         title: "someone has joined the chat",
                         type: "approve_voice_call",
                         user_type: "vip", //vip/normal/vvip/
-                        user: req.user,
                         click_action: "",
                         image_url: "",
                         notification_type: "",
-                        // data
-                        voiceRoom
-                    }))
+                    })
             }
         })
 

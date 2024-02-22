@@ -15,64 +15,41 @@ const leaveSlot = async (req, res, next) => {
         if (voiceRoom.status !== 'ongoing') throw new ApiError('room has ended', 400);
 
         let rootUser = req.user;
-        let usersArr = Object.entries(voiceRoom.slot_users)
 
-        // console.log("usersArr ------------------------------------", usersArr)
+        let usersArr = Object.entries(voiceRoom.slot_users)
         usersArr.map((user, i) => {
-            if(user[1]){
-                console.log(user)
+            if (user[1]) {
+                if (user[1]._id.toString() == req.user._id.toString()) user[1] = null;
             }
-            // if (user[i][1]?._id.toString() === rootUser._id.toString()) {
-            //     // console.log("user", user)
-            // }
+            return user;
         })
 
-        // for (let i = 0; i < usersArr.length; i++) {
-        //     const user = usersArr[i];
-        //     console.log("user for", user)
-        // }
+        let obj = Object.fromEntries(usersArr)
+        voiceRoom.slot_users = obj;
+        voiceRoom.save()
 
-        // voiceRoom.slot_users = voiceRoom.slot_users.filter(id => id?.toString() !== rootUser._id.toString())
-        // console.log(voiceRoom)
-
-        // if (!slot) throw new ApiError("slot is required", 400);
-        // if (Number(slot) > 8) throw new ApiError('slot number is higher then 8', 400);
-        // if (voiceRoom.slot_users[slot]) throw new ApiError('room slot is not available', 400);
-
-        // let rootUser = req.user;
-        // let hostToken = voiceRoom.users_token[0];
-
-        // console.log(await sendNotification(hostToken,
-        //     {
-        //         body: "A user has requested for voice chat",
-        //         title: "someone has requested for voice chat",
-        //         type: "request_voice_call",
-        //     },
-        //     {
-        //         body: "A user has requested for voice chat",
-        //         title: "someone has requested for voice chat",
-        //         type: "request_voice_call",
-        //         click_action: '',
-        //         notification_type: "",
-        //         user_type: "",
-        //         image_url: "",
-        //         // necessory details
-        //         user_id: rootUser._id,
-        //         room_id,
-        //         slot,
-        //     },
-        // ))
+        voiceRoom.users_token.map(async (token) => {
+            if (token !== req.user.device_token) {
+                await sendNotification(token,
+                    {
+                        body: "A user has left the chat",
+                        title: "someone has left the chat",
+                        type: "leave_voice_call",
+                        user_type: "vip", //vip/normal/vvip/
+                    },
+                    {
+                        body: "A user has left the chat",
+                        title: "someone has left the chat",
+                        type: "leave_voice_call",
+                        user_type: "vip", //vip/normal/vvip/
+                        click_action: "",
+                        image_url: "",
+                        notification_type: "",
+                    })
+            }
+        })
 
         res.status(201).json({ status: true, message: 'chat leaved' });
-
-        // let roomSlot = voiceRoom.slot_users[slot] || null
-        // voiceRoom.slot_users[slot] = rootUser._id
-        // voiceRoom.save()
-
-        // voiceRoom.slot_users = voiceRoom.slot_users.filter(id => id?.toString() !== rootUser._id.toString())
-        // console.log(voiceRoom)
-
-        // res.json({ voiceRoom, hostToken , roomSlot})
     } catch (error) {
         next(error);
     }

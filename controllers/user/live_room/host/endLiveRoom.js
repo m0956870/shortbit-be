@@ -20,7 +20,7 @@ const endLiveRoom = async (req, res, next) => {
         liveRoom.users_token.map(async (token) => {
             // console.log(token)
             if (token !== req.user.device_token) {
-                console.log(await sendNotification(token,
+                await sendNotification(token,
                     {
                         body: "Host has ended the chat",
                         title: "liveroom chat ended",
@@ -31,12 +31,11 @@ const endLiveRoom = async (req, res, next) => {
                         title: "liveroom chat ended",
                         type: "live_end",
                         user_type: "", //vip/normal/vvip/
-                        user: req.user,
                         click_action: "",
                         image_url: "",
                         notification_type: "",
                     }
-                ))
+                )
             }
         })
 

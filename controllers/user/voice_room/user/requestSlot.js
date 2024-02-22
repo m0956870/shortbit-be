@@ -21,7 +21,7 @@ const requestSlot = async (req, res, next) => {
         let rootUser = req.user;
         let hostToken = voiceRoom.users_token[0];
 
-        console.log(await sendNotification(hostToken,
+       await sendNotification(hostToken,
             {
                 body: "A user has requested for voice chat",
                 title: "someone has requested for voice chat",
@@ -40,7 +40,7 @@ const requestSlot = async (req, res, next) => {
                 room_id,
                 slot,
             },
-        ))
+        )
 
         res.status(201).json({ status: true, message: 'request sent' });
     } catch (error) {

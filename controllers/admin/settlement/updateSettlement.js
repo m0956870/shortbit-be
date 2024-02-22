@@ -45,8 +45,8 @@ const updateSettlement = async (req, res, next) => {
         });
         await User.findByIdAndUpdate(settlement.host_id._id, { $inc: { balance: +hostAmount } }, { new: true })
 
-        console.log("agencyAmount", agencyAmount)
-        console.log("hostAmount", hostAmount)
+        // console.log("agencyAmount", agencyAmount)
+        // console.log("hostAmount", hostAmount)
 
         let updatedObj = {};
         updatedObj.status = status;
