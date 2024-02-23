@@ -17,8 +17,8 @@ const createGift = async (req, res, next) => {
             let icon;
             let animation_image;
             // if (req.files) icon = getBaseUrl() + "/image/" + req.file.filename;
-            if (req.files["image"]) icon = getBaseUrl() + "/image/" + req.file.filename;
-            if (req.files["gif_image"]) animation_image = getBaseUrl() + "/image/" + req.file.filename;
+            if (req.files["image"]) icon = getBaseUrl() + "/image/" +  req.files["image"][0].filename;
+            if (req.files["gif_image"]) animation_image = getBaseUrl() + "/image/" + req.files["gif_image"][0].filename;
 
             const existingRecord = await Gift.findOne({ value }).lean();
             if (existingRecord) throw new ApiError("Gift already exist!", 400);

@@ -16,7 +16,7 @@ const videoChatInitiated = async (req, res, next) => {
         if (!host) throw new ApiError('no host found', 404);
         let rootUser = req.user;
 
-        if (rootUser.price_per_min > rootUser.balance) throw new ApiError('user balance is low', 404);
+        if (host.price_per_min > rootUser.balance) throw new ApiError('user balance is low', 404);
 
         let existingVideoChat = await VideoChat.findOne({ user_id: rootUser._id, host_id, $or: [{ status: 'initiated' }, { status: 'ongoing' }] });
         if (existingVideoChat) throw new ApiError('chat already initiated', 400)

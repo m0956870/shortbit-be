@@ -54,6 +54,8 @@ const leaveVoiceRoom = require("../controllers/user/voice_room/user/leaveVoiceRo
 const requestSlot = require("../controllers/user/voice_room/user/requestSlot");
 const approveSlot = require("../controllers/user/voice_room/host/approveSlot");
 const leaveSlot = require("../controllers/user/voice_room/user/leaveSlot");
+const updateVideoChat = require("../controllers/user/video_chat/updateVideoChat");
+const videoChatScheduler = require("../controllers/user/video_chat/videoChatScheduler");
 
 
 userRoute.route('/').post(signupUser).get(userAuth, getProfileDetails).patch(userAuth, updateDetails)
@@ -108,7 +110,8 @@ userRoute.route('/leave_voice_room').post(userAuth, leaveVoiceRoom)
 userRoute.route('/voiceroom_slot').post(userAuth, requestSlot).patch(userAuth, leaveSlot)
 
 // videochat
-userRoute.route('/videochat').post(userAuth, videoChatInitiated)//.patch()
+userRoute.route('/videochat').post(userAuth, videoChatInitiated).patch(userAuth, updateVideoChat)
+userRoute.route('/videochat_scheduler').post(userAuth, videoChatScheduler)
 
 // message
 userRoute.route('/message_group').post(userAuth, createMessageGroup).get(userAuth, getAllMessageGroup)

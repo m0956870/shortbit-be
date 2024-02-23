@@ -18,8 +18,8 @@ const updateGift = async (req, res, next) => {
             if (name) updatedObj.name = name;
             if (value) updatedObj.value = value;
             if (coins) updatedObj.coins = coins;
-            if (req.files["image"]) icon = getBaseUrl() + "/image/" + req.file.filename;
-            if (req.files["gif_image"]) animation_image = getBaseUrl() + "/image/" + req.file.filename;
+            if (req.files["image"]) updatedObj.icon = getBaseUrl() + "/image/" + req.files["image"][0].filename;
+            if (req.files["gif_image"]) updatedObj.animation_image = getBaseUrl() + "/image/" + req.files["gif_image"][0].filename;
 
 
             let updatedRecord = await Gift.findByIdAndUpdate(id, updatedObj, { new: true }).lean();
