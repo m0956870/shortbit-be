@@ -12,7 +12,10 @@ const updatePost = async (req, res, next) => {
         if (!statusEnum.includes(status)) throw new ApiError('invalid status type', 400);
 
         let updatedObj = {}
-        if (status) updatedObj.status = status;
+        if (status) {
+            updatedObj.status = status;
+            updatedObj.approved_time = Date.now();
+        }
 
         let post = await Post.findByIdAndUpdate(post_id, updatedObj, { new: true });
         if (!post) throw ApiError("no data found with id", 404);

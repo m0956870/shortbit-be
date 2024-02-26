@@ -12,6 +12,7 @@ const postSchema = new mongoose.Schema(
         comments: { type: Number, default: 0 },
         share: { type: Number, default: 0 },
         views: { type: Number, default: 0 },
+        approved_time: { type: Date, default: null },
         is_deleted: { type: Boolean, default: false, },
         status: { type: String, default: 'unapproved', enum: ['approved', 'unapproved'] }
     },

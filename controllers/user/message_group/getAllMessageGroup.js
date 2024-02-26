@@ -10,14 +10,23 @@ const getAllMessageGroup = async (req, res, next) => {
         const rootUser = req.user;
         // let role = rootUser.role;
 
-        const allData = await MessageGroup.find({$or: [{ from_id: rootUser._id }, { to_id: rootUser._id }]})
+        let allData = await MessageGroup.find({ $or: [{ from_id: rootUser._id }, { to_id: rootUser._id }] })
             .skip((page * limit) - limit)
             .limit(limit)
             .sort({ createdAt: -1 })
             .select("-is_deleted -__v")
             .populate('from_id to_id', '-password -__v -location -otp -otp_expiry -interest')
+            .lean()
 
-        const dataCount = await MessageGroup.countDocuments({$or: [{ from_id: rootUser._id }, { to_id: rootUser._id }]})
+        const dataCount = await MessageGroup.countDocuments({ $or: [{ from_id: rootUser._id }, { to_id: rootUser._id }] })
+
+        allData.map(obj => {
+            let otherUser = {};
+            if (obj.from_id._id.toString() === rootUser._id.toString()) otherUser = obj.to_id;
+            else otherUser = obj.from_id;
+            obj.otherUser = otherUser;
+        })
+        allData = allData;
 
         res.status(200).json({
             status: true,

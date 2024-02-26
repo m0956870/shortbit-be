@@ -6,6 +6,7 @@ const videoChatSchema = new mongoose.Schema(
         host_id: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: [true, 'host id is required'] },
         start_time: { type: Date, default: null },
         end_time: { type: Date, default: null },
+        max_min: { type: Number, default: null },
         last_captured_time: { type: String, default: null },
         total_time_in_minutes: { type: Number, default: null },
         user_transaction_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Transaction', default: null },
