@@ -7,6 +7,7 @@ const VoiceRoom = require("../../../../models/voiceRoomModel");
 const { ApiError } = require("../../../../errorHandler/apiErrorHandler");
 const sendNotification = require("../../../../utils/sendNotification");
 const Admin = require("../../../../models/adminModel");
+const getUserBadge = require("../../../../utils/getUserBadge");
 
 const sendGift = async (req, res, next) => {
     // console.log("sendGift -----------------------", req.body)
@@ -95,6 +96,8 @@ const sendGift = async (req, res, next) => {
                 user_type: "",
             },
         )
+
+        await getUserBadge("65c3226a3516e1663041a12e", 'user')
 
         // inc liveroom host earning
         if (room_id) {

@@ -27,13 +27,15 @@ const updateDetails = async (req, res, next) => {
                     condition[key] = body[key];
                 }
             }
-    
+
             if (req.body.avtar) condition.avtar = req.body.avtar;
             if (req.files?.["image"]?.[0]) condition.profile_image = getBaseUrl() + "/image/" + req.files["image"][0].filename;
 
             if (body.dob) {
                 // calculate age
-                console.log(body.dob);
+                let year = body.dob.split("/")[2];
+                let age = new Date().getFullYear() - year;
+                condition.age = age;
             }
 
             const result = await userSchema.findByIdAndUpdate(req.user.id, condition, { new: true })

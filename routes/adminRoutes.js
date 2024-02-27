@@ -48,6 +48,10 @@ const updateAgency = require('../controllers/admin/agency/updateAgency');
 const adminDashboardData = require('../controllers/admin/dashboard/adminDashboardData');
 const getAllPosts = require('../controllers/admin/post/getAllPosts');
 const updatePost = require('../controllers/admin/post/updatePost');
+const getAllWalletPackage = require('../controllers/admin/wallet_package/getAllWalletPackage');
+const addWalletPackage = require('../controllers/admin/wallet_package/addWalletPackage');
+const updateWalletPackage = require('../controllers/admin/wallet_package/updateWalletPackage');
+const deleteWalletPackage = require('../controllers/admin/wallet_package/deleteWalletPackage');
 
 adminRoute.post('/login', loginAdmin);
 adminRoute.post("/forget_password", forgetPassword);
@@ -74,6 +78,7 @@ adminRoute.route('/user').get(adminAuth, getAllUserListing).patch(adminAuth, upd
 
 adminRoute.route('/post').get(adminAuth, getAllPosts).patch(adminAuth, updatePost);
 // master data
+adminRoute.route('/wallet_package').get(adminAuth, getAllWalletPackage).post(adminAuth, addWalletPackage).patch(adminAuth, updateWalletPackage); adminRoute.delete('/wallet_package/:id', adminAuth, deleteWalletPackage);
 adminRoute.route('/gift').get(adminAuth, getAllIGifts).post(adminAuth, createGift).patch(adminAuth, updateGift); adminRoute.delete('/gift/:id', adminAuth, deleteGift);
 adminRoute.route('/interest').get(adminAuth, getAllInterest).post(adminAuth, createInterest).patch(adminAuth, updateInterest); adminRoute.delete('/interest/:id', adminAuth, deleteInterest);
 adminRoute.route('/avatar').get(adminAuth, getAllAvatar).post(adminAuth, createAvatar).patch(adminAuth, updateAvatar); adminRoute.delete('/avatar/:id', adminAuth, deleteAvatar);

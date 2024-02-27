@@ -19,37 +19,44 @@ const approveSlot = async (req, res, next) => {
         if (voiceRoom.status !== 'ongoing') throw new ApiError('room has ended', 400);
 
         if (!slot) throw new ApiError("slot is required", 400);
-        if (Number(slot) > 8) throw new ApiError('slot number is higher then 8', 400);
+        let slotValidation = true
+        if (slot === 'one' || slot === 'two' || slot === 'three' || slot === 'four' || slot === 'five' || slot === 'six' || slot === 'seven' || slot === 'eight') slotValidation = false;
+        if (slotValidation) throw new ApiError('invalid slot type', 400);
+        // if (Number(slot) > 8) throw new ApiError('slot number is higher then 8', 400);
         if (voiceRoom.slot_users[slot]) throw new ApiError('room slot is not available', 400);
 
         if (!user_id) throw new ApiError("user id is required", 400);
         if (!isValidObjectId(user_id)) throw new ApiError("Invalid user ID format", 400);
         const user = await User.findById(user_id);
         if (!user) throw new ApiError('no user found', 404);
+        let usersArr = Object.entries(voiceRoom.slot_users)
+        usersArr.map((user, i) => {
+            if (user[1]) if (user[1]._id.toString() == user_id.toString()) throw new ApiError('user already added', 400);
+        })
 
         voiceRoom.slot_users[slot] = user
         voiceRoom.save();
 
         voiceRoom.users_token.map(async (token) => {
             // console.log(token)
-            if (token !== req.user.device_token) {
-                await sendNotification(token,
-                    {
-                        body: "New user has joined the chat",
-                        title: "someone has joined the chat",
-                        type: "approve_voice_call",
-                        user_type: "vip", //vip/normal/vvip/
-                    },
-                    {
-                        body: "New user has joined the chat",
-                        title: "someone has joined the chat",
-                        type: "approve_voice_call",
-                        user_type: "vip", //vip/normal/vvip/
-                        click_action: "",
-                        image_url: "",
-                        notification_type: "",
-                    })
-            }
+            // if (token !== req.user.device_token) {
+            await sendNotification(token,
+                {
+                    body: "New user has joined the chat",
+                    title: "someone has joined the chat",
+                    type: "approve_voice_call",
+                    user_type: "vip", //vip/normal/vvip/
+                },
+                {
+                    body: "New user has joined the chat",
+                    title: "someone has joined the chat",
+                    type: "approve_voice_call",
+                    user_type: "vip", //vip/normal/vvip/
+                    click_action: "",
+                    image_url: "",
+                    notification_type: "",
+                })
+            // }
         })
 
         res.status(200).json({ status: true, message: "user request accepted", data: voiceRoom });

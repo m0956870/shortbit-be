@@ -14,15 +14,17 @@ const updateVideoChat = async (req, res, next) => {
         if (!videoChat) throw new ApiError('No video chat find with this id', 404);
         if (videoChat.status === 'ended') throw new ApiError('video chat has ended', 400);
         let rootUser = req.user;
-        if (rootUser._id.toString() !== videoChat.user_id._id.toString()) throw new ApiError('call not initiated by user', 400);
 
         if (type === 'host_cancel') {
+            if (rootUser.role !== 'host' || rootUser.account_status !== 'approved') throw new ApiError("not allowed to cancel videochat", 403);
+
             videoChat.status = 'ended';
             videoChat.chat_status = 'host_cancel';
             videoChat.save();
             return res.status(200).json({ status: true, message: "video chat ended", data: videoChat });
 
         } else if (type === 'host_accepted') {
+            if (rootUser.role !== 'host' || rootUser.account_status !== 'approved') throw new ApiError("not allowed to accept videochat", 403);
             if (videoChat.status === 'ongoing') throw new ApiError('video chat is already ongoing', 400);
 
             if (videoChat.host_id.price_per_min > rootUser.balance) throw new ApiError('user balance is low', 404);
@@ -33,11 +35,19 @@ const updateVideoChat = async (req, res, next) => {
             videoChat.chat_status = 'host_accepted';
             videoChat.start_time = Date.now();
             videoChat.max_min = maxMin;
-
             videoChat.save();
+
+            let host = await User.findById(videoChat.host_id)
+            host.is_video_busy = true;
+            host.video_chat_id = videoChat._id;
+            host.save();
+
             return res.status(200).json({ status: true, message: "video chat started", data: videoChat });
 
         } else if (type === 'host_end' || type === 'user_end') {
+            if (videoChat.status !== 'ongoing') throw new ApiError('videochat is not ongoing', 400);
+
+            let user = await User.findById(videoChat.user_id._id);
             let host = await User.findById(videoChat.host_id._id);
 
             let differenceMin = ((new Date().getTime() - Number(videoChat.start_time)) / 1000) / 60;
@@ -47,26 +57,28 @@ const updateVideoChat = async (req, res, next) => {
 
             // create user txn
             let userTransaction = await Transaction.create({
-                user_id: rootUser._id,
+                user_id: user._id,
                 to_user_id: host._id,
                 transaction_type: 'debit',
                 transaction_by: 'user',
                 item_type: 'coin',
                 amount
             });
-            rootUser.balance = rootUser.balance - amount;
-            rootUser.save();
+            user.balance = user.balance - amount;
+            user.save();
 
             // create host txn
             let hostTransaction = await Transaction.create({
                 user_id: host._id,
-                to_user_id: rootUser._id,
+                to_user_id: user._id,
                 transaction_type: 'credit',
                 transaction_by: 'user',
                 item_type: 'coin',
                 amount,
             });
             host.balance = host.balance + amount;
+            host.is_video_busy = false;
+            host.video_chat_id = null;
             host.save();
 
             videoChat.end_time = Date.now();

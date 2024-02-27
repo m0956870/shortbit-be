@@ -56,7 +56,7 @@ const approveSlot = require("../controllers/user/voice_room/host/approveSlot");
 const leaveSlot = require("../controllers/user/voice_room/user/leaveSlot");
 const updateVideoChat = require("../controllers/user/video_chat/updateVideoChat");
 const videoChatScheduler = require("../controllers/user/video_chat/videoChatScheduler");
-
+const getAllWalletPackage = require("../controllers/user/wallet_package/getAllWalletPackage")
 
 userRoute.route('/').post(signupUser).get(userAuth, getProfileDetails).patch(userAuth, updateDetails)
 userRoute.route('/detail_status').patch(userAuth, updateRegisterDetails);
@@ -123,6 +123,7 @@ userRoute.route('/gift').get(userAuth, giftListing);
 // recharge & wallet
 userRoute.post('/recharge/initiate', userAuth, initiateRecharge);
 userRoute.route('/wallet').get(userAuth, getWalletDetails);
+userRoute.route('/wallet_package').get(userAuth, getAllWalletPackage);
 
 // avatar
 userRoute.route('/avatar').get(userAuth, getAllAvatar);

@@ -9,19 +9,25 @@ const requestSlot = async (req, res, next) => {
         let { room_id, slot } = req.body;
         if (!room_id) throw new ApiError("room id is required", 400)
         if (!isValidObjectId(room_id)) throw new ApiError("Invalid room ID format", 400);
-        
+
         const voiceRoom = await VoiceRoom.findById(room_id);
         if (!voiceRoom) throw new ApiError('no room found', 404);
         if (voiceRoom.status !== 'ongoing') throw new ApiError('room has ended', 400);
-       
+        let usersArr = Object.entries(voiceRoom.slot_users)
+        usersArr.map((user, i) => {
+            if (user[1]) if (user[1]._id.toString() == req.user._id.toString()) throw new ApiError('user already added', 400);
+        })
+
         if (!slot) throw new ApiError("slot is required", 400)
-        if (Number(slot) > 8) throw new ApiError('slot number is higher then 8', 400)
+        let slotValidation = true
+        if (slot === 'one' || slot === 'two' || slot === 'three' || slot === 'four' || slot === 'five' || slot === 'six' || slot === 'seven' || slot === 'eight') slotValidation = false;
+        if (slotValidation) throw new ApiError('invalid slot type', 400);
         if (voiceRoom.slot_users[slot]) throw new ApiError('room slot is not available', 400);
 
         let rootUser = req.user;
         let hostToken = voiceRoom.users_token[0];
 
-       await sendNotification(hostToken,
+        await sendNotification(hostToken,
             {
                 body: "A user has requested for voice chat",
                 title: "someone has requested for voice chat",
@@ -33,12 +39,19 @@ const requestSlot = async (req, res, next) => {
                 type: "request_voice_call",
                 click_action: '',
                 notification_type: "",
-                user_type: "",
                 image_url: "",
                 // necessory details
-                user_id: rootUser._id,
                 room_id,
                 slot,
+                user_type: "",
+                user_id: rootUser._id,
+                user_name: rootUser.name,
+                user_username: rootUser.user_name,
+                user_gender: rootUser.gender,
+                user_age: rootUser.age,
+                user_profile_image: rootUser.profile_image,
+                user_followers: rootUser.followers_count,
+                user_avtar: rootUser.avtar,
             },
         )
 

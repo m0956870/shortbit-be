@@ -44,13 +44,15 @@ const userSchema = new mongoose.Schema(
         agency_code: { type: String },
         price_per_min: { type: Number, default: 0 },
         commission: { type: Number, default: 0 },
+        // liveroom
         is_live_busy: { type: Boolean, default: false },
         live_room_id: { type: mongoose.Types.ObjectId, ref: 'liveroom', default: null },
-        
+        // voiceroom
         is_voice_busy: { type: Boolean, default: false },
         voice_room_id: { type: mongoose.Types.ObjectId, ref: 'voiceroom', default: null },
-      
-        is_chat_busy: { type: Boolean, default: false },
+        // videochat
+        is_video_busy: { type: Boolean, default: false },
+        video_chat_id: { type: mongoose.Types.ObjectId, ref: 'videochat', default: null },
     },
     { timestamps: true }
 );

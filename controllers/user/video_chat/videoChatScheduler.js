@@ -45,6 +45,8 @@ const videoChatScheduler = async (req, res, next) => {
                 amount,
             });
             host.balance = host.balance + amount;
+            host.is_video_busy = false;
+            host.video_chat_id = null;
             host.save();
 
             videoChat.end_time = Date.now();
