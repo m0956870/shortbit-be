@@ -71,7 +71,7 @@ userRoute.post("/reset_password", resetPassword);
 userRoute.route('/home').get(userAuth, geHomeApiDetails)
 
 // user interactivity
-userRoute.route('/follow/:following_id').get(userAuth, followUser)
+userRoute.route('/follow').post(userAuth, followUser)
 userRoute.get('/followers', userAuth, getFollowerListing)
 userRoute.get('/following', userAuth, getFollowingListing)
 

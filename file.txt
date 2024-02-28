@@ -178,3 +178,8 @@ send notification :-
 
 dashboard api ------------------------------------------------
 admin - settlement - create transaction of agency and host percentage wise --
+
+get badge of user ------------------ done
+send user_type in notification - store user to users_token
+
+store requested user in voiceroom slot for queue

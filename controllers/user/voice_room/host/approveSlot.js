@@ -38,7 +38,6 @@ const approveSlot = async (req, res, next) => {
         voiceRoom.save();
 
         voiceRoom.users_token.map(async (token) => {
-            // console.log(token)
             // if (token !== req.user.device_token) {
             await sendNotification(token,
                 {

@@ -51,6 +51,7 @@ const sendGift = async (req, res, next) => {
             });
             user.balance = user.balance - gift.coins;
             user.save();
+            getUserBadge(user._id)
 
             return res.status(201).json({ status: true, message: 'gift sent' });
         }
@@ -67,6 +68,7 @@ const sendGift = async (req, res, next) => {
         });
         user.balance = user.balance - gift.coins;
         user.save();
+        getUserBadge(user._id);
 
         // HOST - inc balance in host account
         let hostTransaction = await Transaction.create({
@@ -80,6 +82,8 @@ const sendGift = async (req, res, next) => {
         });
         host.balance = host.balance + gift.coins;
         host.save();
+        getUserBadge(host._id);
+
         await sendNotification(host.device_token,
             {
                 body: "A user has sent the gift",
@@ -97,7 +101,6 @@ const sendGift = async (req, res, next) => {
             },
         )
 
-        await getUserBadge("65c3226a3516e1663041a12e", 'user')
 
         // inc liveroom host earning
         if (room_id) {

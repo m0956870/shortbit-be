@@ -37,9 +37,15 @@ const userSchema = new mongoose.Schema(
         followers_count: { type: Number, default: 0 },
         following_count: { type: Number, default: 0 },
         balance: { type: Number, default: 0 },
-
-        role: { type: String, default: 'user' },
+        
+        user_monthly_debit: { type: Number, default: 0 },
+        user_type: { type: String, default: 'normal' },
+        purchased_monthly_debit_limit: { type: Number, default: 0 },
+        
+        host_monthly_credit: { type: Number, default: 0 },
         level: { type: Number, default: 1 },
+        
+        role: { type: String, default: 'user' },
         // host
         agency_code: { type: String },
         price_per_min: { type: Number, default: 0 },

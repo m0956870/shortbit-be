@@ -34,6 +34,7 @@ const videoChatScheduler = async (req, res, next) => {
             });
             rootUser.balance = rootUser.balance - amount;
             rootUser.save();
+            getUserBadge(rootUser._id)
 
             // host txn
             let hostTransaction = await Transaction.create({
@@ -48,6 +49,7 @@ const videoChatScheduler = async (req, res, next) => {
             host.is_video_busy = false;
             host.video_chat_id = null;
             host.save();
+            getUserBadge(host._id)
 
             videoChat.end_time = Date.now();
             videoChat.status = 'ended';

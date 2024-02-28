@@ -29,24 +29,24 @@ const leaveSlot = async (req, res, next) => {
         voiceRoom.save()
 
         voiceRoom.users_token.map(async (token) => {
-            if (token !== req.user.device_token) {
-                await sendNotification(token,
-                    {
-                        body: "A user has left the chat",
-                        title: "someone has left the chat",
-                        type: "leave_voice_call",
-                        user_type: "vip", //vip/normal/vvip/
-                    },
-                    {
-                        body: "A user has left the chat",
-                        title: "someone has left the chat",
-                        type: "leave_voice_call",
-                        user_type: "vip", //vip/normal/vvip/
-                        click_action: "",
-                        image_url: "",
-                        notification_type: "",
-                    })
-            }
+            // if (token !== req.user.device_token) {
+            await sendNotification(token,
+                {
+                    body: "A user has left the chat",
+                    title: "someone has left the chat",
+                    type: "leave_voice_call",
+                    user_type: "vip", //vip/normal/vvip/
+                },
+                {
+                    body: "A user has left the chat",
+                    title: "someone has left the chat",
+                    type: "leave_voice_call",
+                    user_type: "vip", //vip/normal/vvip/
+                    click_action: "",
+                    image_url: "",
+                    notification_type: "",
+                })
+            // }
         })
 
         res.status(201).json({ status: true, message: 'chat leaved' });
