@@ -6,7 +6,7 @@ const schema = new mongoose.Schema(
         start_time: { type: Date, default: Date.now },
         end_time: { type: Date, default: '' },
         users: [String],
-        users_token: [String],
+        users_token: [],
         peak_view_count: { type: Number, default: 0 },
         earned_coins: { type: Number, default: 0 },
         last_active_time: { type: Date, default: Date.now },

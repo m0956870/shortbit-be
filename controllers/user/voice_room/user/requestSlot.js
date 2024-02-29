@@ -14,6 +14,10 @@ const requestSlot = async (req, res, next) => {
         if (!voiceRoom) throw new ApiError('no room found', 404);
         if (voiceRoom.status !== 'ongoing') throw new ApiError('room has ended', 400);
         let usersArr = Object.entries(voiceRoom.slot_users)
+
+        voiceRoom.requested_slot_users.map(reqUser => {
+            if(reqUser._id.toString() === req.user._id.toString()) throw new ApiError('user already requested', 400);
+        })
         usersArr.map((user, i) => {
             if (user[1]) if (user[1]._id.toString() == req.user._id.toString()) throw new ApiError('user already added', 400);
         })
@@ -24,8 +28,17 @@ const requestSlot = async (req, res, next) => {
         if (slotValidation) throw new ApiError('invalid slot type', 400);
         if (voiceRoom.slot_users[slot]) throw new ApiError('room slot is not available', 400);
 
+        let requestedSlotUser = {
+            _id: req.user._id,
+            device_token: req.user.device_token,
+            user_type: req.user.user_type,
+        }
+
+        voiceRoom.requested_slot_users.push(requestedSlotUser);
+        voiceRoom.save();
+
         let rootUser = req.user;
-        let hostToken = voiceRoom.users_token[0];
+        let hostToken = voiceRoom.users_token[0].device_token;
 
         await sendNotification(hostToken,
             {
@@ -43,7 +56,7 @@ const requestSlot = async (req, res, next) => {
                 // necessory details
                 room_id,
                 slot,
-                user_type: "",
+                user_type: rootUser.device_token,
                 user_id: rootUser._id,
                 user_name: rootUser.name,
                 user_username: rootUser.user_name,

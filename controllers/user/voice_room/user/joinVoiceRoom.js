@@ -19,37 +19,40 @@ const joinVoiceRoom = async (req, res, next) => {
 
         let is_followed = await Follow.findOne({ follower_id: user._id, following_id: voiceRoom.host_id._id }).lean()
 
-        voiceRoom.users.push(user._id);
-        voiceRoom.users = [...new Set(voiceRoom.users)];
-        voiceRoom.users_token.push(req.user.device_token);
-        voiceRoom.users_token = [...new Set(voiceRoom.users_token)];
-        if (voiceRoom.users.length > voiceRoom.peak_view_count) voiceRoom.peak_view_count = voiceRoom.users.length;
+        if (!voiceRoom.users.includes(user._id)) {
+            let tokenUser = {
+                _id: user._id,
+                device_token: user.device_token,
+                user_type: user.user_type,
+            }
+
+            voiceRoom.users.push(user._id);
+            voiceRoom.users_token.push(tokenUser);
+            if (voiceRoom.users.length > voiceRoom.peak_view_count) voiceRoom.peak_view_count = voiceRoom.users.length;
+        }
         await voiceRoom.save();
 
         let roomData = voiceRoom.toJSON();
         roomData.is_followed = is_followed ? true : false,
 
-        voiceRoom.users_token.map(async (token) => {
-            // console.log(token)
-            if (token !== req.user.device_token) {
-                await sendNotification(token,
+            voiceRoom.users_token.map(async (user) => {
+                await sendNotification(user.device_token,
                     {
                         body: "New user has joined the chat",
                         title: "someone has joined the chat",
                         type: "add_new_user_voice",
-                        user_type: "vip", //vip/normal/vvip/
+                        user_type: user.user_type, //vip/normal/vvip/
                     },
                     {
                         body: "New user has joined the chat",
                         title: "someone has joined the chat",
                         type: "add_new_user_voice",
-                        user_type: "vip", //vip/normal/vvip/
+                        user_type: user.user_type, //vip/normal/vvip/
                         click_action: "",
                         image_url: "",
                         notification_type: "",
                     })
-            }
-        })
+            })
 
         res.status(200).json({ status: true, message: "user voice room joined", data: roomData });
     } catch (error) {

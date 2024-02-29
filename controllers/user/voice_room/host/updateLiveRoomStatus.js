@@ -13,22 +13,21 @@ const updateLiveRoomStatus = async (req, res, next) => {
 
         let currentTime = new Date();
 
-        let liveRoom = await LiveRoom.findOne({ _id: room_id, host_id: host._id, status: 'ongoing' });
-        if (!liveRoom) throw new ApiError('No live room find with this room id', 404)
+        let voiceRoom = await LiveRoom.findOne({ _id: room_id, host_id: host._id, status: 'ongoing' });
+        if (!voiceRoom) throw new ApiError('No live room find with this room id', 404)
 
-        if (liveRoom.scheduler_id) clearTimeout(liveRoom.scheduler_id)
+        if (voiceRoom.scheduler_id) clearTimeout(voiceRoom.scheduler_id)
         let scheduler_id = setTimeout(async () => {
-            await LiveRoom.findOneAndUpdate(liveRoom._id, { end_time: new Date(), status: 'ended' }, { new: true });
+            await LiveRoom.findOneAndUpdate(voiceRoom._id, { end_time: new Date(), status: 'ended' }, { new: true });
             host.is_live_busy = false;
             host.save();
         }, 15 * 60 * 1000);
 
-        // let updatedLiveRoom = await LiveRoom.findOneAndUpdate({ _id: room_id, host_id: host._id, status: 'ongoing' }, { last_active_time: currentTime, scheduler_id }, { new: true });
-        liveRoom.last_active_time = currentTime;
-        liveRoom.scheduler_id = scheduler_id;
-        liveRoom.save();
+        voiceRoom.last_active_time = currentTime;
+        voiceRoom.scheduler_id = scheduler_id;
+        voiceRoom.save();
 
-        res.status(200).json({ status: true, message: "time updated", data: liveRoom });
+        res.status(200).json({ status: true, message: "time updated", data: voiceRoom });
     } catch (error) {
         next(error);
     }

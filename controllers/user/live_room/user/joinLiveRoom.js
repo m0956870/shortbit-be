@@ -19,36 +19,44 @@ const joinLiveRoom = async (req, res, next) => {
 
         let is_followed = await Follow.findOne({ follower_id: req.user._id, following_id: liveRoom.host_id._id }).lean()
 
-        liveRoom.users.push(req.user._id);
-        liveRoom.users = [...new Set(liveRoom.users)];
-        liveRoom.users_token.push(req.user.device_token);
-        liveRoom.users_token = [...new Set(liveRoom.users_token)];
-        if (liveRoom.users.length > liveRoom.peak_view_count) liveRoom.peak_view_count = liveRoom.users.length;
+        // liveRoom.users.push(req.user._id);
+        // liveRoom.users = [...new Set(liveRoom.users)];
+        // liveRoom.users_token.push(req.user.device_token);
+        // liveRoom.users_token = [...new Set(liveRoom.users_token)];
+        // if (liveRoom.users.length > liveRoom.peak_view_count) liveRoom.peak_view_count = liveRoom.users.length;
+        if (!liveRoom.users.includes(user._id)) {
+            let tokenUser = {
+                _id: user._id,
+                device_token: user.device_token,
+                user_type: user.user_type,
+            }
+
+            liveRoom.users.push(user._id);
+            liveRoom.users_token.push(tokenUser);
+            if (liveRoom.users.length > liveRoom.peak_view_count) liveRoom.peak_view_count = liveRoom.users.length;
+        }
         await liveRoom.save();
 
         let roomData = liveRoom.toJSON();
         roomData.is_followed = is_followed ? true : false;
 
-        liveRoom.users_token.map(async (token) => {
-            // console.log("tokens ", token)
-            if (token !== req.user.device_token) {
-                await sendNotification(token,
-                    {
-                        body: "New user has joined the chat",
-                        title: "someone has joined the chat",
-                        type: "add_new_user_live",
-                        user_type: "vip", //vip/normal/vvip/
-                    },
-                    {
-                        body: "New user has joined the chat",
-                        title: "someone has joined the chat",
-                        type: "add_new_user_live",
-                        user_type: "vip", //vip/normal/vvip/
-                        click_action: "",
-                        image_url: "",
-                        notification_type: "",
-                    })
-            }
+        liveRoom.users_token.map(async (user) => {
+            await sendNotification(user.device_token,
+                {
+                    body: "New user has joined the chat",
+                    title: "someone has joined the chat",
+                    type: "add_new_user_live",
+                    user_type: user.user_type, //vip/normal/vvip/
+                },
+                {
+                    body: "New user has joined the chat",
+                    title: "someone has joined the chat",
+                    type: "add_new_user_live",
+                    user_type: user.user_type, //vip/normal/vvip/
+                    click_action: "",
+                    image_url: "",
+                    notification_type: "",
+                })
         })
 
         res.status(200).json({ status: true, message: "user live room joined", data: roomData });

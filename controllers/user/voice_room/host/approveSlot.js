@@ -11,7 +11,7 @@ const approveSlot = async (req, res, next) => {
         if (rootUser.role !== 'host' || rootUser.account_status !== 'approved') throw new ApiError("not allowed to approve voice room", 403);
 
         let { user_id, room_id, slot } = req.body;
-
+        
         if (!room_id) throw new ApiError("room id is required", 400);
         if (!isValidObjectId(room_id)) throw new ApiError("Invalid room ID format", 400);
         const voiceRoom = await VoiceRoom.findById(room_id);
@@ -35,27 +35,26 @@ const approveSlot = async (req, res, next) => {
         })
 
         voiceRoom.slot_users[slot] = user
+        voiceRoom.requested_slot_users = voiceRoom.requested_slot_users.filter(reqUser => reqUser._id.toString() !== user._id.toString());
         voiceRoom.save();
 
-        voiceRoom.users_token.map(async (token) => {
-            // if (token !== req.user.device_token) {
-            await sendNotification(token,
+        voiceRoom.users_token.map(async (user) => {
+            await sendNotification(user.device_token,
                 {
                     body: "New user has joined the chat",
                     title: "someone has joined the chat",
                     type: "approve_voice_call",
-                    user_type: "vip", //vip/normal/vvip/
+                    user_type: user.user_type, // vip/normal/vvip/
                 },
                 {
                     body: "New user has joined the chat",
                     title: "someone has joined the chat",
                     type: "approve_voice_call",
-                    user_type: "vip", //vip/normal/vvip/
+                    user_type: user.user_type, // vip/normal/vvip/
                     click_action: "",
                     image_url: "",
                     notification_type: "",
                 })
-            // }
         })
 
         res.status(200).json({ status: true, message: "user request accepted", data: voiceRoom });

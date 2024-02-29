@@ -26,25 +26,23 @@ const followUser = async (req, res, next) => {
                 if (!voiceRoom) throw new ApiError('no room found', 404);
                 if (voiceRoom.status !== 'ongoing') throw new ApiError('room has ended', 400);
 
-                voiceRoom.users_token.map(async (token) => {
-                    // if (token !== req.user.device_token) {
-                    await sendNotification(token,
+                voiceRoom.users_token.map(async (user) => {
+                    await sendNotification(user.device_token,
                         {
                             body: "New user has joined the chat",
                             title: "someone has joined the chat",
                             type: "follow_voice_call",
-                            user_type: "vip", //vip/normal/vvip/
+                            user_type: user.user_type, //vip/normal/vvip/
                         },
                         {
                             body: "New user has joined the chat",
                             title: "someone has joined the chat",
                             type: "follow_voice_call",
-                            user_type: "vip", //vip/normal/vvip/
+                            user_type: user.user_type, //vip/normal/vvip/
                             click_action: "",
                             image_url: "",
                             notification_type: "",
                         })
-                    // }
                 })
             }
 
@@ -61,25 +59,23 @@ const followUser = async (req, res, next) => {
                 if (!voiceRoom) throw new ApiError('no room found', 404);
                 if (voiceRoom.status !== 'ongoing') throw new ApiError('room has ended', 400);
 
-                voiceRoom.users_token.map(async (token) => {
-                    // if (token !== req.user.device_token) {
-                    await sendNotification(token,
+                voiceRoom.users_token.map(async (user) => {
+                    await sendNotification(user.device_token,
                         {
                             body: "New user has joined the chat",
                             title: "someone has joined the chat",
                             type: "follow_voice_call",
-                            user_type: "vip", //vip/normal/vvip/
+                            user_type: user.user_type, //vip/normal/vvip/
                         },
                         {
                             body: "New user has joined the chat",
                             title: "someone has joined the chat",
                             type: "follow_voice_call",
-                            user_type: "vip", //vip/normal/vvip/
+                            user_type: user.user_type, //vip/normal/vvip/
                             click_action: "",
                             image_url: "",
                             notification_type: "",
                         })
-                    // }
                 })
             }
 

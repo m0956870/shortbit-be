@@ -9,7 +9,13 @@ const createVoiceRoom = async (req, res, next) => {
         let existingRoom = await VoiceRoom.findOne({ host_id: host._id, status: 'ongoing' });
         if (existingRoom) throw new ApiError("voice room already exist", 400);
 
-        let voiceRoom = await VoiceRoom.create({ host_id: host._id, users_token: [req.user.device_token], status: 'ongoing', });
+        let tokenUser = {
+            _id: host._id,
+            device_token: host.device_token,
+            user_type: host.user_type,
+        }
+
+        let voiceRoom = await VoiceRoom.create({ host_id: host._id, users_token: [tokenUser], status: 'ongoing', });
         req.user.voice_room_id = voiceRoom._id;
         req.user.is_voice_busy = true;
         req.user.save();

@@ -17,7 +17,7 @@ const adminSchema = new mongoose.Schema(
 
         phone_number: { type: String, default: '' },
         profile_image: { type: String, default: '' },
-        role: { type: String, default: 'admin' },
+        role: { type: String, default: 'sub_admin' },
         account_status: { type: String, default: 'active' },
         is_deleted: { type: Boolean, default: false, },
     },

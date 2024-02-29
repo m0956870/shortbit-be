@@ -20,26 +20,25 @@ const endVoiceRoom = async (req, res, next) => {
         voiceRoom.status = 'ended';
         voiceRoom.save()
 
-        voiceRoom.users_token.map(async (token) => {
+        voiceRoom.users_token.map(async (user) => {
             // console.log(token)
-            if (token !== req.user.device_token) {
-                await sendNotification(token,
-                    {
-                        body: "Host has ended the chat",
-                        title: "Voice room chat ended",
-                        type: "voice_end",
-                    },
-                    {
-                        body: "Host has ended the chat",
-                        title: "Voice room chat ended",
-                        type: "voice_end",
-                        user_type: "", //vip/normal/vvip/
-                        click_action: "",
-                        image_url: "",
-                        notification_type: "",
-                    }
-                )
-            }
+            await sendNotification(user.device_token,
+                {
+                    body: "Host has ended the chat",
+                    title: "Voice room chat ended",
+                    type: "voice_end",
+                    user_type: user.user_type, //vip/normal/vvip/
+                },
+                {
+                    body: "Host has ended the chat",
+                    title: "Voice room chat ended",
+                    type: "voice_end",
+                    user_type: user.user_type, //vip/normal/vvip/
+                    click_action: "",
+                    image_url: "",
+                    notification_type: "",
+                }
+            )
         })
 
         rootUser.voice_room_id = null;

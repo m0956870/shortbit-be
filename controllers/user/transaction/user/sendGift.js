@@ -26,7 +26,7 @@ const sendGift = async (req, res, next) => {
         if (user.balance < gift.coins) throw new ApiError('Insufficient balance', 400);
 
         if (user.role === 'host' && host.role === 'user') {
-            let admin = await Admin.findById("65b9d6f228e159d6ef276f9b");
+            let admin = await Admin.findById({ role: 'admin' });
 
             let adminTransaction = await Transaction.create({
                 user_id: admin._id,
@@ -112,27 +112,25 @@ const sendGift = async (req, res, next) => {
             if (!liveRoom) throw new ApiError("no room found with this id", 400)
 
             liveRoom.earned_coins = liveRoom.earned_coins + gift.coins
-            liveRoom.save()
-            liveRoom.users_token.map(async (token) => {
-                // console.log(token)
-                if (token !== req.user.device_token) {
-                    await sendNotification(token,
-                        {
-                            body: "A user has sent the gift",
-                            title: "someone has sent the gift",
-                            type: "recived_gift",
-                        },
-                        {
-                            body: "A user has sent the gift",
-                            title: "someone has sent the gift",
-                            type: "recived_gift",
-                            click_action: '',
-                            image_url: gift.animation_image,
-                            notification_type: "",
-                            user_type: "",
-                        },
-                    )
-                }
+            liveRoom.save();
+            liveRoom.users_token.map(async (user) => {
+                await sendNotification(user.device_token,
+                    {
+                        body: "A user has sent the gift",
+                        title: "someone has sent the gift",
+                        type: "recived_gift",
+                        user_type: user.user_type,
+                    },
+                    {
+                        body: "A user has sent the gift",
+                        title: "someone has sent the gift",
+                        type: "recived_gift",
+                        click_action: '',
+                        user_type: user.user_type,
+                        image_url: gift.animation_image,
+                        notification_type: "",
+                    },
+                )
             })
         }
         res.status(201).json({ status: true, message: 'gift sent' });

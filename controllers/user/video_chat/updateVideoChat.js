@@ -3,6 +3,8 @@ const { ApiError } = require("../../../errorHandler/apiErrorHandler");
 const VideoChat = require("../../../models/videoChat");
 const Transaction = require("../../../models/transactionModel");
 const User = require("../../../models/userModel");
+const sendNotification = require("../../../utils/sendNotification");
+const getUserBadge = require("../../../utils/getUserBadge");
 
 const updateVideoChat = async (req, res, next) => {
     // console.log("updateVideoChat -------------------------------->", req.body)
@@ -10,7 +12,7 @@ const updateVideoChat = async (req, res, next) => {
         let { type, chat_id } = req.body;
         if (!chat_id) throw new ApiError("chat id is required", 400)
         if (!isValidObjectId(chat_id)) throw new ApiError("Invalid chat ID format", 400);
-        let videoChat = await VideoChat.findById(chat_id).populate('user_id host_id', 'name profile_image followers_count balance price_per_min')
+        let videoChat = await VideoChat.findById(chat_id).populate('user_id host_id', 'name profile_image followers_count balance price_per_min device_token')
         if (!videoChat) throw new ApiError('No video chat find with this id', 404);
         if (videoChat.status === 'ended') throw new ApiError('video chat has ended', 400);
         let rootUser = req.user;
@@ -41,6 +43,24 @@ const updateVideoChat = async (req, res, next) => {
             host.is_video_busy = true;
             host.video_chat_id = videoChat._id;
             host.save();
+
+            await sendNotification(videoChat.user_id.device_token,
+                {
+                    body: "Host has accepted your videochat request",
+                    title: "Host has accepted your videochat request",
+                    type: "accept_video_call",
+                },
+                {
+                    body: "Host has accepted your videochat request",
+                    title: "Host has accepted your videochat request",
+                    type: "accept_video_call",
+                    click_action: '',
+                    notification_type: "",
+                    user_type: "",
+                    image_url: "",
+                    // necessory details
+                },
+            )
 
             return res.status(200).json({ status: true, message: "video chat started", data: videoChat });
 
@@ -90,6 +110,41 @@ const updateVideoChat = async (req, res, next) => {
             videoChat.user_transaction_id = userTransaction._id;
             videoChat.host_transaction_id = hostTransaction._id;
             videoChat.save();
+
+            await sendNotification(host.device_token,
+                {
+                    body: "Videochat has ended",
+                    title: "Videochat has ended",
+                    type: "ended_video_call",
+                },
+                {
+                    body: "Videochat has ended",
+                    title: "Videochat has ended",
+                    type: "ended_video_call",
+                    click_action: '',
+                    notification_type: "",
+                    user_type: "",
+                    image_url: "",
+                    // necessory details
+                },
+            )
+            await sendNotification(videoChat.user_id.device_token,
+                {
+                    body: "Videochat has ended",
+                    title: "Videochat has ended",
+                    type: "ended_video_call",
+                },
+                {
+                    body: "Videochat has ended",
+                    title: "Videochat has ended",
+                    type: "ended_video_call",
+                    click_action: '',
+                    notification_type: "",
+                    user_type: "",
+                    image_url: "",
+                    // necessory details
+                },
+            )
 
             return res.status(200).json({ status: true, message: "video chat ended", data: videoChat });
         }

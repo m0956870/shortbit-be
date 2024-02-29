@@ -12,31 +12,30 @@ const endLiveRoom = async (req, res, next) => {
         // let liveRoom = await LiveRoom.findOneAndUpdate({ _id: room_id, host_id: req.user._id, status: 'ongoing' }, { end_time: Date.now(), status: 'ended', }, { new: true });
         let liveRoom = await LiveRoom.findById(room_id)
         if (!liveRoom) throw new ApiError('No live room find with this room id', 404)
+        if(liveRoom.host_id.toString() !== req.user._id.toString()) throw new ApiError('live is not started by this host', 400)
 
         liveRoom.end_time = Date.now();
         liveRoom.status = 'ended';
         liveRoom.save()
 
-        liveRoom.users_token.map(async (token) => {
-            // console.log(token)
-            if (token !== req.user.device_token) {
-                await sendNotification(token,
-                    {
-                        body: "Host has ended the chat",
-                        title: "liveroom chat ended",
-                        type: "live_end",
-                    },
-                    {
-                        body: "Host has ended the chat",
-                        title: "liveroom chat ended",
-                        type: "live_end",
-                        user_type: "", //vip/normal/vvip/
-                        click_action: "",
-                        image_url: "",
-                        notification_type: "",
-                    }
-                )
-            }
+        liveRoom.users_token.map(async (user) => {
+            await sendNotification(user.device_token,
+                {
+                    body: "Host has ended the chat",
+                    title: "liveroom chat ended",
+                    type: "live_end",
+                    user_type: user.user_type, //vip/normal/vvip/
+                },
+                {
+                    body: "Host has ended the chat",
+                    title: "liveroom chat ended",
+                    type: "live_end",
+                    user_type: user.user_type, //vip/normal/vvip/
+                    click_action: "",
+                    image_url: "",
+                    notification_type: "",
+                }
+            )
         })
 
         req.user.live_room_id = null;

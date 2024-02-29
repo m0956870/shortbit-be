@@ -3,6 +3,7 @@ const { ApiError } = require("../../../errorHandler/apiErrorHandler");
 const VideoChat = require("../../../models/videoChat");
 const Transaction = require("../../../models/transactionModel");
 const User = require("../../../models/userModel");
+const getUserBadge = require("../../../utils/getUserBadge");
 
 const videoChatScheduler = async (req, res, next) => {
     // console.log("videoChatScheduler ---------------------------->", req.body)
@@ -12,6 +13,7 @@ const videoChatScheduler = async (req, res, next) => {
         if (!isValidObjectId(chat_id)) throw new ApiError("Invalid chat ID format", 400);
         let videoChat = await VideoChat.findById(chat_id).populate('user_id host_id', 'name profile_image followers_count balance price_per_min')
         if (!videoChat) throw new ApiError('No video chat find with this id', 404);
+        if (videoChat.status === 'ongoing') throw new ApiError('video chat is not ongoing right now', 400);
         if (videoChat.status === 'ended') throw new ApiError('video chat has ended', 400);
 
         let rootUser = req.user;

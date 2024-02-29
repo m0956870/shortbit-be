@@ -6,7 +6,8 @@ const schema = new mongoose.Schema(
         start_time: { type: Date, default: Date.now },
         end_time: { type: Date, default: '' },
         users: [String],
-        users_token: [String],
+        users_token: [],
+        requested_slot_users: [],
         slot_users: {
             one: { type: Object, default: null },
             two: { type: Object, default: null },
