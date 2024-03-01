@@ -9,7 +9,6 @@ const userRoute = require('./routes/userRoutes');
 const unspecifiedRouteHandler = require('./routes/unspecifiedRouteHandler');
 const { finalErrorHandler } = require('./errorHandler/apiErrorHandler');
 const sendNotification = require('./utils/sendNotification');
-const getUserBadge = require('./utils/getUserBadge');
 
 app.use(morgan('dev'));
 app.use(cors());
@@ -26,15 +25,9 @@ app.use('/api/agency', agencyRoute);
 app.use('/api/user', userRoute);
 
 app.get('/api/test', (req, res) => res.json({ status: true, message: 'Working fine...' }));
-app.get('/api/txn', async (req, res) => {
-    let result = await getUserBadge('user', '65c3226a3516e1663041a12e')
-    res.json(result)
-    // res.json({ status: true, message: 'Working fine...' })
-});
 app.get('/api/notification_test', async (req, res) => {
     let { token, data } = req.body;
     try {
-        // let data =  await sendNotification(token, data)
         res.send(await sendNotification(token, data))
     } catch (error) {
         res.send("error")

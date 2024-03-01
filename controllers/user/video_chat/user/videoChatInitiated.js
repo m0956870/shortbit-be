@@ -20,7 +20,29 @@ const videoChatInitiated = async (req, res, next) => {
         if (host.price_per_min > rootUser.balance) throw new ApiError('user balance is low', 404);
 
         let existingVideoChat = await VideoChat.findOne({ user_id: rootUser._id, host_id, $or: [{ status: 'initiated' }, { status: 'ongoing' }] });
-        if (existingVideoChat)  return res.status(200).json({ status: true, message: "video chat", data: existingVideoChat });
+        // if (existingVideoChat)  return res.status(200).json({ status: true, message: "video chat", data: existingVideoChat });
+        if (existingVideoChat) {
+            await sendNotification(host.device_token,
+                {
+                    body: "A user wants to connect with you",
+                    title: "someone has requested for video call",
+                    type: "request_video_call",
+                },
+                {
+                    body: "A user wants to connect with you",
+                    title: "someone has requested for video call",
+                    type: "request_video_call",
+                    click_action: '',
+                    notification_type: "",
+                    user_type: rootUser.user_type,
+                    image_url: "",
+                    // necessory details
+                    user_id: rootUser._id,
+                    room_id: existingVideoChat._id,
+                },
+            )
+            return res.status(200).json({ status: true, message: "video chat", data: existingVideoChat });
+        }
         // if (existingVideoChat) {
         //     setTimeout(async () => {
         //         existingVideoChat.status = 'ended';

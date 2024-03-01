@@ -12,7 +12,7 @@ const updateVideoChat = async (req, res, next) => {
         let { type, chat_id } = req.body;
         if (!chat_id) throw new ApiError("chat id is required", 400)
         if (!isValidObjectId(chat_id)) throw new ApiError("Invalid chat ID format", 400);
-        let videoChat = await VideoChat.findById(chat_id).populate('user_id host_id', 'name profile_image followers_count balance price_per_min device_token')
+        let videoChat = await VideoChat.findById(chat_id).populate('user_id host_id', 'name profile_image followers_count balance price_per_min device_token user_type')
         if (!videoChat) throw new ApiError('No video chat find with this id', 404);
         if (videoChat.status === 'ended') throw new ApiError('video chat has ended', 400);
         let rootUser = req.user;
@@ -23,6 +23,24 @@ const updateVideoChat = async (req, res, next) => {
             videoChat.status = 'ended';
             videoChat.chat_status = 'host_cancel';
             videoChat.save();
+
+            await sendNotification(videoChat.user_id.device_token,
+                {
+                    body: "Host has cancel your videochat request",
+                    title: "Host has cancel your videochat request",
+                    type: "host_cancel_video_call",
+                },
+                {
+                    body: "Host has cancel your videochat request",
+                    title: "Host has cancel your videochat request",
+                    type: "host_cancel_video_call",
+                    click_action: '',
+                    notification_type: "",
+                    user_type: rootUser.user_type,
+                    image_url: "",
+                    // necessory details
+                },
+            )
             return res.status(200).json({ status: true, message: "video chat ended", data: videoChat });
 
         } else if (type === 'host_accepted') {
@@ -56,7 +74,7 @@ const updateVideoChat = async (req, res, next) => {
                     type: "accept_video_call",
                     click_action: '',
                     notification_type: "",
-                    user_type: "",
+                    user_type: host.user_type,
                     image_url: "",
                     // necessory details
                 },
@@ -123,7 +141,7 @@ const updateVideoChat = async (req, res, next) => {
                     type: "ended_video_call",
                     click_action: '',
                     notification_type: "",
-                    user_type: "",
+                    user_type: host.user_type,
                     image_url: "",
                     // necessory details
                 },
@@ -140,7 +158,7 @@ const updateVideoChat = async (req, res, next) => {
                     type: "ended_video_call",
                     click_action: '',
                     notification_type: "",
-                    user_type: "",
+                    user_type: videoChat.user_id.user_type,
                     image_url: "",
                     // necessory details
                 },

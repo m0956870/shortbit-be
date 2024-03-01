@@ -28,7 +28,7 @@ const getUserBadge = async (id) => {
                 }
             }
         ])
-        let userTxnAmount = userTxn[0]?.total || 0
+        let userTxnAmount = userTxn[0]?.total || 0;
         user.user_monthly_debit = userTxnAmount;
 
         let badge = USER_BADGES.filter(badge => userTxnAmount > badge.monthly_debit_limit).at(-1)
@@ -56,7 +56,7 @@ const getUserBadge = async (id) => {
         let userTxnAmount = userTxn[0]?.total || 0
         user.host_monthly_credit = userTxnAmount;
 
-        let level = HOST_BADGES.filter(badge => userTxnAmount > badge.monthly_credit_limit).at(-1)
+        let badge = HOST_BADGES.filter(badge => userTxnAmount > badge.monthly_credit_limit).at(-1)
         user.level = badge.type;
     }
     
