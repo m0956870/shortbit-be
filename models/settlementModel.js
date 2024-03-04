@@ -6,6 +6,7 @@ const settlementSchema = new mongoose.Schema(
         agency_id: { type: mongoose.Types.ObjectId, ref: 'agency', required: [true, 'agency id is required!'] },
         amount: { type: Number, required: [true, 'amount is required'] },
         status: { type: String, default: 'pending', enum: ['pending', 'settled'] },
+        settlement_date: { type: Date, default: null },
     },
     {
         timestamps: true,

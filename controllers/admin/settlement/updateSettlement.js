@@ -20,8 +20,21 @@ const updateSettlement = async (req, res, next) => {
 
         let admin = req.user;
 
-        let agencyAmount = (Number(settlement.amount) / 100) * settlement.agency_id.commission;
-        let hostAmount = (Number(settlement.amount) / 100) * settlement.host_id.commission;
+        let agencyAmount = (Number(settlement.amount) / 100) * settlement.agency_id?.commission;
+        let hostAmount = (Number(settlement.amount) / 100) * settlement.host_id?.commission;
+        let adminAmount = (Number(settlement.amount) / 100) * (100 - (settlement.agency_id?.commission + settlement.host_id?.commission));
+        console.log("adminAmount", adminAmount)
+
+        // admin transaction
+        await Transaction.create({
+            user_id: admin._id,
+            to_user_id: admin._id,
+            transaction_type: 'credit',
+            transaction_by: 'admin',
+            amount: adminAmount,
+            item_type: 'coin'
+        });
+        // await Agency.findByIdAndUpdate(settlement.agency_id._id, { $inc: { balance: +agencyAmount } }, { new: true })
 
         // agency transaction
         await Transaction.create({
@@ -52,6 +65,7 @@ const updateSettlement = async (req, res, next) => {
         updatedObj.status = status;
 
         settlement.status = status;
+        settlement.settlement_date = Date.now();
         settlement.save();
 
         // const settlement = await Settlement.findByIdAndUpdate(id, updatedObj, { new: true }).lean();

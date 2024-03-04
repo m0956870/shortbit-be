@@ -180,9 +180,9 @@ dashboard api ------------------------------------------------
 admin - settlement - create transaction of agency and host percentage wise --
 
 get badge of user ------------------------------------------------------ done
-send user_type in notification - store user to users_token
+send user_type in notification - store user to users_token ------------- done
 
-store requested user in voiceroom slot for queue
+store requested user in voiceroom slot for queue ----------------------- done
 
 host201=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWRjMzIyOTkwYmMzY2RkN2E5NDJkOTIiLCJpYXQiOjE3MDkxODM5NjB9.O4HNyiKbdBkir4UnUe-lRl7sbJ2vgrP13QPY5jOkEGk
 user201=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWRjMzFmMDkwYmMzY2RkN2E5NDJkOGUiLCJpYXQiOjE3MDkxODQwMzZ9.MPlfhLjpwCyG97JWjKBq9ovmmd3pFEv4MTgrRhB1IfM

@@ -7,7 +7,7 @@ const updateRegisterDetails = async (req, res, next) => {
     imageUpload(req, res, async (error) => {
         try {
             if (error) throw new ApiError(error.message, 400);
-
+        
             let user = req.user;
             let { gender, dob, interest, location } = req.body;
             

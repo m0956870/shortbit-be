@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema(
         purchased_monthly_debit_limit: { type: Number, default: 0 },
         
         host_monthly_credit: { type: Number, default: 0 },
-        level: { type: Number, default: 1 },
+        level: { type: Number, default: 0 },
         
         role: { type: String, default: 'user' },
         // host

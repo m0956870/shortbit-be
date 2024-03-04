@@ -15,7 +15,7 @@ const initiateSettlement = async (req, res, next) => {
 
         let settlement = await Settlement.create({
             host_id: req.user._id,
-            agency_id: agency._id,
+            agency_id: agency._id || null,
             amount,
         })
 

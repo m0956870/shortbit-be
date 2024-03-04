@@ -17,11 +17,13 @@ const getAllAgencyListing = async (req, res, next) => {
             .sort({ createdAt: -1 })
             .select("-password -is_deleted -updatedAt -otp -otp_expiry -__v")
 
+        let totalCount = await Agency.countDocuments(findConditions);
+
         res.status(200).json({
             status: true,
             message: "all listing",
-            total_data: allData.length,
-            total_pages: Math.ceil(allData.length / limit),
+            total_data: totalCount,
+            total_pages: Math.ceil(totalCount / limit),
             data: allData,
         });
     } catch (error) {

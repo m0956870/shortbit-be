@@ -21,7 +21,7 @@ const getSettlementListing = async (req, res, next) => {
             .skip((page * limit) - limit)
             .limit(limit)
             .sort({ createdAt: -1 })
-            .populate('host_id', 'name email profile_image phone_number balance')
+            .populate('agency_id host_id', 'name email profile_image phone_number balance')
             .select('-__v')
 
         let dataCount = await Settlement.countDocuments(findConditions)

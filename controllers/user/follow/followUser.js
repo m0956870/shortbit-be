@@ -3,11 +3,12 @@ const { ApiError } = require("../../../errorHandler/apiErrorHandler");
 const Follow = require("../../../models/followModel");
 const User = require("../../../models/userModel");
 const VoiceRoom = require("../../../models/voiceRoomModel");
+const LiveRoom = require("../../../models/liveRoomModel");
 const sendNotification = require("../../../utils/sendNotification");
 
 const followUser = async (req, res, next) => {
     try {
-        let { following_id, voiceroom_id } = req.body;
+        let { following_id, voiceroom_id, liveroom_id } = req.body;
         if (!following_id) throw new ApiError("following user id is required", 400)
         if (!isValidObjectId(following_id)) throw new ApiError("Invalid ID format", 400);
         let rootUser = req.user;
@@ -20,6 +21,31 @@ const followUser = async (req, res, next) => {
 
             rootUser.following_count = rootUser.following_count + 1
             rootUser.save();
+
+            if (liveroom_id) {
+                const liveroom = await LiveRoom.findById(liveroom_id);
+                if (!liveroom) throw new ApiError('no room found', 404);
+                if (liveroom.status !== 'ongoing') throw new ApiError('room has ended', 400);
+
+                liveroom.users_token.map(async (user) => {
+                    await sendNotification(user.device_token,
+                        {
+                            body: "New user has joined the chat",
+                            title: "someone has joined the chat",
+                            type: "follow_video_call",
+                            user_type: user.user_type, //vip/normal/vvip/
+                        },
+                        {
+                            body: "New user has joined the chat",
+                            title: "someone has joined the chat",
+                            type: "follow_video_call",
+                            user_type: user.user_type, //vip/normal/vvip/
+                            click_action: "",
+                            image_url: "",
+                            notification_type: "",
+                        })
+                })
+            }
 
             if (voiceroom_id) {
                 const voiceRoom = await VoiceRoom.findById(voiceroom_id);
