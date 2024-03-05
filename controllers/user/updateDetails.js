@@ -37,6 +37,8 @@ const updateDetails = async (req, res, next) => {
                 let age = new Date().getFullYear() - year;
                 condition.age = age;
             }
+            
+            // console.log("fgh", mongoose)
 
             const result = await userSchema.findByIdAndUpdate(req.user.id, condition, { new: true })
             res.status(200).json({ status: true, message: "updateDetails.", result });

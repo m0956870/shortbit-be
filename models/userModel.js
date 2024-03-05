@@ -33,18 +33,19 @@ const userSchema = new mongoose.Schema(
         detail_status: { type: String, default: 'incomplete', },
         account_status: { type: String, default: 'active', enum: ['active', 'inactive', 'blocked', 'unapproved', 'approved'] },
         service_status: { type: String, default: 'active', enum: ['active', 'inactive'] },
+        is_online: { type: Boolean, default: false },
 
         followers_count: { type: Number, default: 0 },
         following_count: { type: Number, default: 0 },
         balance: { type: Number, default: 0 },
-        
+
         user_monthly_debit: { type: Number, default: 0 },
         user_type: { type: String, default: 'normal' },
         purchased_monthly_debit_limit: { type: Number, default: 0 },
-        
+
         host_monthly_credit: { type: Number, default: 0 },
         level: { type: Number, default: 0 },
-        
+
         role: { type: String, default: 'user' },
         // host
         agency_code: { type: String },

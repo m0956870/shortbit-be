@@ -56,13 +56,17 @@ const approveSlot = require("../controllers/user/voice_room/host/approveSlot");
 const leaveSlot = require("../controllers/user/voice_room/user/leaveSlot");
 const updateVideoChat = require("../controllers/user/video_chat/updateVideoChat");
 const videoChatScheduler = require("../controllers/user/video_chat/videoChatScheduler");
-const getAllWalletPackage = require("../controllers/user/wallet_package/getAllWalletPackage")
+const getAllWalletPackage = require("../controllers/user/wallet_package/getAllWalletPackage");
+const getUserNotification = require("../controllers/user/notification/getUserNotification");
+const updateNotification = require("../controllers/user/notification/updateNotification");
+const logoutUser = require("../controllers/user/auth/logoutUser");
 
 userRoute.route('/').post(signupUser).get(userAuth, getProfileDetails).patch(userAuth, updateDetails)
 userRoute.route('/detail_status').patch(userAuth, updateRegisterDetails);
 userRoute.get('/details/:user_id', getUser);
 // auth
 userRoute.post('/login', loginUser);
+userRoute.post('/logout', userAuth, logoutUser);
 userRoute.post('/verify_signup_otp', verifySignupOTP);
 userRoute.post("/forget_password", forgetPassword);
 userRoute.post("/reset_password", resetPassword);
@@ -74,6 +78,9 @@ userRoute.route('/home').get(userAuth, geHomeApiDetails)
 userRoute.route('/follow').post(userAuth, followUser)
 userRoute.get('/followers', userAuth, getFollowerListing)
 userRoute.get('/following', userAuth, getFollowingListing)
+
+// notification
+userRoute.route('/notification').get(userAuth, getUserNotification).patch(userAuth, updateNotification)
 
 // post interactivity
 userRoute.route('/post').post(userAuth, createPost).get(userAuth, getAllPost)

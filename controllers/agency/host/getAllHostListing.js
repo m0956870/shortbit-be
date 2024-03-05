@@ -12,7 +12,6 @@ const getAllHostListing = async (req, res, next) => {
         const findConditions = { agency_code, role: 'host' };
         // if (type) findConditions.type = { $regex: new RegExp(type, "i") };
 
-        let dataCount = await User.countDocuments(findConditions);
         const allData = await User.find(findConditions)
             .lean()
             .skip((page * limit) - limit)
@@ -20,6 +19,7 @@ const getAllHostListing = async (req, res, next) => {
             .sort({ createdAt: -1 })
             .select("-password -is_deleted -updatedAt -otp -otp_expiry -__v")
 
+        let dataCount = await User.countDocuments(findConditions);
         res.status(200).json({
             status: true,
             message: "all listing",

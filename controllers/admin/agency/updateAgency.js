@@ -14,7 +14,6 @@ const updateAgency = async (req, res, next) => {
             if (!id) throw new ApiError("id is required", 400)
             if (!isValidObjectId(id)) throw new ApiError("Invalid ID format", 400);
 
-
             let updatedObj = {};
             if (name) updatedObj.name = name;
             if (email) updatedObj.email = email;

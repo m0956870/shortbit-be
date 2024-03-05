@@ -21,7 +21,6 @@ const updateGift = async (req, res, next) => {
             if (req.files["image"]) updatedObj.icon = getBaseUrl() + "/image/" + req.files["image"][0].filename;
             if (req.files["gif_image"]) updatedObj.animation_image = getBaseUrl() + "/image/" + req.files["gif_image"][0].filename;
 
-
             let updatedRecord = await Gift.findByIdAndUpdate(id, updatedObj, { new: true }).lean();
             if (!updatedRecord) throw new ApiError("No document found with this ID", 404);
             res.status(200).json({ status: true, message: "Gift updated sucessfully.", data: updatedRecord });

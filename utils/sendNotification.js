@@ -1,7 +1,7 @@
 const axios = require("axios")
 
 const sendNotification = async (deviceToken, notification, data) => {
-    console.log("notifiction =============>", deviceToken, notification, data)
+    // console.log("notifiction =============>", deviceToken, notification, data)
     let config = {
         method: 'post',
         url: 'https://fcm.googleapis.com/fcm/send',

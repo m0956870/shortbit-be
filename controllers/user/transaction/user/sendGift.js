@@ -4,6 +4,7 @@ const Gift = require("../../../../models/giftModel");
 const User = require("../../../../models/userModel");
 const LiveRoom = require("../../../../models/liveRoomModel");
 const VoiceRoom = require("../../../../models/voiceRoomModel");
+const Notification = require("../../../../models/notificationModel");
 const { ApiError } = require("../../../../errorHandler/apiErrorHandler");
 const sendNotification = require("../../../../utils/sendNotification");
 const Admin = require("../../../../models/adminModel");
@@ -101,6 +102,13 @@ const sendGift = async (req, res, next) => {
             },
         )
 
+        await Notification.create({
+            title: `${user?.name} sends you a gift`,
+            body: `${user?.name} sends you a gift`,
+            from: user._id,
+            to: host._id,
+            for: 'gift',
+        })
 
         // inc liveroom host earning
         if (room_id) {

@@ -19,6 +19,7 @@ const loginUser = async (req, res, next) => {
 
         const token = signJWT(user._id);
         user.device_token = device_token;
+        user.is_online = true;
         user.save();
 
         res.status(200).json({ status: true, message: "login successful", data: { token } });
