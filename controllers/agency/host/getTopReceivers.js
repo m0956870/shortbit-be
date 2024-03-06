@@ -61,6 +61,7 @@ const getTopReceivers = async (req, res, next) => {
                             name: 1,
                             email: 1,
                             phone_number: 1,
+                            role: 1,
                         }
                     },
                     total_data: 1,
@@ -71,6 +72,7 @@ const getTopReceivers = async (req, res, next) => {
 
         const allData = await Transaction.aggregate(pipeline)
         const dataCount = allData[0]?.total_data[0]?.total_data;
+        allData[0].data = allData[0].data.filter(elem => elem?.user?.role === "host");
 
         res.status(200).json({
             status: true,

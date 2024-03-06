@@ -59,14 +59,15 @@ const videoChatScheduler = require("../controllers/user/video_chat/videoChatSche
 const getAllWalletPackage = require("../controllers/user/wallet_package/getAllWalletPackage");
 const getUserNotification = require("../controllers/user/notification/getUserNotification");
 const updateNotification = require("../controllers/user/notification/updateNotification");
-const logoutUser = require("../controllers/user/auth/logoutUser");
+const userActiveStatus = require("../controllers/user/userActiveStatus");
 
 userRoute.route('/').post(signupUser).get(userAuth, getProfileDetails).patch(userAuth, updateDetails)
 userRoute.route('/detail_status').patch(userAuth, updateRegisterDetails);
 userRoute.get('/details/:user_id', getUser);
 // auth
 userRoute.post('/login', loginUser);
-userRoute.post('/logout', userAuth, logoutUser);
+// userRoute.post('/logout', userAuth, logoutUser);
+userRoute.post('/active_status', userAuth, userActiveStatus);
 userRoute.post('/verify_signup_otp', verifySignupOTP);
 userRoute.post("/forget_password", forgetPassword);
 userRoute.post("/reset_password", resetPassword);

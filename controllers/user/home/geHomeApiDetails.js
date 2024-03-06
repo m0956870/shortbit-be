@@ -31,21 +31,15 @@ const geHomeApiDetails = async (req, res, next) => {
                     ],
                     active: [
                         {
-                            $match: {
-                                service_status: 'active',
-                                live_room_id: null
-                            },
+                            $match: { is_live_busy: false, is_online: true },
                         },
                     ],
                     inactive: [
                         {
-                            $match: {
-                                service_status: 'inactive',
-                            },
+                            $match: { is_online: false },
                         },
                     ],
-                    // totalDataArray: { $concatArrays: ["$live", "$active", "$inactive"] },          // gives error
-                    // data: [{ $skip: (page * limit) - limit }, { $limit: limit }],
+                    totalDataArray: [{ $skip: (page * limit) - limit }, { $limit: limit }],
                     total_data: [
                         {
                             $count: 'total_data'
@@ -53,11 +47,11 @@ const geHomeApiDetails = async (req, res, next) => {
                     ]
                 },
             },
-            {
-                $addFields: {
-                    totalDataArray: { $concatArrays: ["$live", "$active", "$inactive"] }
-                }
-            },
+            // {
+            //     $addFields: {
+            //         totalDataArray: { $concatArrays: ["$live", "$active", "$inactive"] }
+            //     }
+            // },
             // {
             //     $project: {
             //         totalDataArray: 1,
@@ -66,9 +60,8 @@ const geHomeApiDetails = async (req, res, next) => {
             // }
         ])
         const banners = await HomeBanner.find().lean();
-        // await Promise.all([allData, banners])
 
-        const dataCount = allData[0]?.total_data[0]?.total_data;
+        const dataCount = allData[0]?.total_data[0]?.total_data || 0;
         // let data = allData[0]?.totalDataArray
 
         res.status(200).json({

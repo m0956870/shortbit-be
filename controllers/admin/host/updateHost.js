@@ -32,9 +32,10 @@ const updateHost = async (req, res, next) => {
             if (location) user.location = JSON.parse(location);
             if (about_me) user.about_me = about_me;
             if (level) user.level = level;
-            if (is_live_busy && String(is_live_busy)) user.is_live_busy = !is_live_busy;
-            if (is_voice_busy && String(is_voice_busy)) user.is_voice_busy = !is_voice_busy;
-            if (is_video_busy && String(is_video_busy)) user.is_video_busy = !is_video_busy;
+            // if (is_live_busy && String(is_live_busy)) user.is_live_busy = !is_live_busy;
+            if (is_live_busy != undefined && is_live_busy != "undefined") user.is_live_busy = !is_live_busy;
+            if (is_voice_busy != undefined && is_voice_busy != "undefined") user.is_voice_busy = !is_voice_busy;
+            if (is_video_busy != undefined && is_video_busy != "undefined") user.is_video_busy = !is_video_busy;
 
             if (commission) user.commission = commission;
             if (price_per_min) user.price_per_min = price_per_min;
