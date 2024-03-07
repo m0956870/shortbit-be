@@ -9,6 +9,9 @@ const createAppData = async (req, res, next) => {
         if (!title) throw new ApiError("title is required!", 400);
         if (!value) throw new ApiError("value is required!", 400);
 
+        let oldRecord = await AppData.findOne({ key });
+        if (oldRecord) throw new ApiError("Page already exist", 400);
+
         const newRecord = await AppData.create({ key, title, value, test, test2 });
         res.status(201).json({ status: true, message: "document created successfully", data: newRecord });
     } catch (error) {

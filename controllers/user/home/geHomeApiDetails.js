@@ -39,7 +39,7 @@ const geHomeApiDetails = async (req, res, next) => {
                             $match: { is_online: false },
                         },
                     ],
-                    totalDataArray: [{ $skip: (page * limit) - limit }, { $limit: limit }],
+                    // totalDataArray: [{ $skip: (page * limit) - limit }, { $limit: limit }],
                     total_data: [
                         {
                             $count: 'total_data'
@@ -47,14 +47,14 @@ const geHomeApiDetails = async (req, res, next) => {
                     ]
                 },
             },
-            // {
-            //     $addFields: {
-            //         totalDataArray: { $concatArrays: ["$live", "$active", "$inactive"] }
-            //     }
-            // },
+            {
+                $addFields: {
+                    totalDataArray: { $concatArrays: ["$live", "$active", "$inactive"] },
+                }
+            },
             // {
             //     $project: {
-            //         totalDataArray: 1,
+            //         totalDataArray: { $slice: ["$totalDataArray", (page * limit) - limit, limit] },
             //         total_data: 1
             //     }
             // }

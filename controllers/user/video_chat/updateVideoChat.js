@@ -83,7 +83,7 @@ const updateVideoChat = async (req, res, next) => {
             return res.status(200).json({ status: true, message: "video chat started", data: videoChat });
 
         } else if (type === 'host_end' || type === 'user_end') {
-            if (videoChat.status !== 'ongoing') throw new ApiError('videochat is not ongoing', 400);
+            if (videoChat.status === 'ended') throw new ApiError('videochat has ended', 400);
 
             let user = await User.findById(videoChat.user_id._id);
             let host = await User.findById(videoChat.host_id._id);
@@ -146,6 +146,7 @@ const updateVideoChat = async (req, res, next) => {
                     // necessory details
                 },
             )
+            
             await sendNotification(videoChat.user_id.device_token,
                 {
                     body: "Videochat has ended",

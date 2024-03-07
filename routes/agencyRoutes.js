@@ -10,6 +10,7 @@ const getAllHostListing = require("../controllers/agency/host/getAllHostListing"
 const getSettlementListing = require("../controllers/agency/settlement/getSettlementListing");
 const agencyDashboardData = require("../controllers/agency/dashboard/agencyDashboardData");
 const getTopReceivers = require("../controllers/agency/host/getTopReceivers");
+const getWalletDetails = require("../controllers/agency/wallet/getWalletDetails");
 
 agencyRoute.post('/login', loginAgency);
 agencyRoute.post("/forget_password", forgetPassword);
@@ -20,6 +21,7 @@ agencyRoute.route('/').post(signupAgnecy).get(agencyAuth, getAgencyDetails)
 agencyRoute.route('/dashboard').get(agencyAuth, agencyDashboardData)
 
 agencyRoute.route('/host').get(agencyAuth, getAllHostListing)
+agencyRoute.route('/user_wallet').get(agencyAuth, getWalletDetails);
 agencyRoute.route('/top_receiver').get(agencyAuth, getTopReceivers);
 agencyRoute.route('/settlement').get(agencyAuth, getSettlementListing)
 

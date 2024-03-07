@@ -9,6 +9,7 @@ const userRoute = require('./routes/userRoutes');
 const unspecifiedRouteHandler = require('./routes/unspecifiedRouteHandler');
 const { finalErrorHandler } = require('./errorHandler/apiErrorHandler');
 const sendNotification = require('./utils/sendNotification');
+const getAppDataLink = require("./controllers/user/app_data/getAppDataLink");
 
 app.use(morgan('dev'));
 app.use(cors());
@@ -34,6 +35,7 @@ app.get('/api/notification_test', async (req, res) => {
         console.log("/api/test error", error)
     }
 });
+app.get('/:key', getAppDataLink)
 
 // error handles
 app.use(unspecifiedRouteHandler);

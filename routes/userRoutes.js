@@ -35,6 +35,7 @@ const getFollowerListing = require("../controllers/user/follow/getFollowerListin
 const getFollowingListing = require("../controllers/user/follow/getFollowingListing");
 const getAllFAQs = require("../controllers/user/app_data/getAllFAQs");
 const getAppData = require("../controllers/user/app_data/getAppData");
+const getAppDataLink = require("../controllers/user/app_data/getAppDataLink");
 const initiateRecharge = require("../controllers/user/recharge/initiateRecharge");
 const getWalletDetails = require("../controllers/user/wallet/user/getWalletDetails");
 const initiateSettlement = require("../controllers/user/settlement/host/initiateSettlement");
@@ -138,6 +139,7 @@ userRoute.route('/avatar').get(userAuth, getAllAvatar);
 userRoute.route('/interest').get(getAllInterest)
 userRoute.route('/faq').get(userAuth, getAllFAQs)
 userRoute.route('/app_data/:key').get(getAppData)
+userRoute.route('/:key').get(getAppDataLink)
 
 
 module.exports = userRoute;
