@@ -39,7 +39,7 @@ const geHomeApiDetails = async (req, res, next) => {
                             $match: { is_online: false },
                         },
                     ],
-                    // totalDataArray: [{ $skip: (page * limit) - limit }, { $limit: limit }],
+                    // totalDataArray: [{ $skip: (page * limit) - limit }, { $limit: limit }], // not populating lookup fields
                     total_data: [
                         {
                             $count: 'total_data'
@@ -52,12 +52,12 @@ const geHomeApiDetails = async (req, res, next) => {
                     totalDataArray: { $concatArrays: ["$live", "$active", "$inactive"] },
                 }
             },
-            // {
-            //     $project: {
-            //         totalDataArray: { $slice: ["$totalDataArray", (page * limit) - limit, limit] },
-            //         total_data: 1
-            //     }
-            // }
+            {
+                $project: {
+                    totalDataArray: { $slice: ["$totalDataArray", (page * limit) - limit, limit] },
+                    total_data: 1
+                }
+            }
         ])
         const banners = await HomeBanner.find().lean();
 

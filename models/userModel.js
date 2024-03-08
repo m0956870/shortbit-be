@@ -60,6 +60,8 @@ const userSchema = new mongoose.Schema(
         // videochat
         is_video_busy: { type: Boolean, default: false },
         video_chat_id: { type: mongoose.Types.ObjectId, ref: 'videochat', default: null },
+
+        is_deleted: { type: Boolean, default: false },
     },
     { timestamps: true }
 );

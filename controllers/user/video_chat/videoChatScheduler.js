@@ -13,8 +13,8 @@ const videoChatScheduler = async (req, res, next) => {
         if (!isValidObjectId(chat_id)) throw new ApiError("Invalid chat ID format", 400);
         let videoChat = await VideoChat.findById(chat_id).populate('user_id host_id', 'name profile_image followers_count balance price_per_min')
         if (!videoChat) throw new ApiError('No video chat find with this id', 404);
-        if (videoChat.status === 'ongoing') throw new ApiError('video chat is not ongoing right now', 400);
-        if (videoChat.status === 'ended') throw new ApiError('video chat has ended', 400);
+        if (videoChat.status === 'initiated') throw new ApiError('video chat is not ongoing right now', 400);
+        if (videoChat.status === 'ended') throw new ApiError('video chat has been ended', 400);
 
         let rootUser = req.user;
         if (rootUser._id.toString() !== videoChat.user_id._id.toString()) throw new ApiError('video chat not initiated by this user', 400);
@@ -61,13 +61,13 @@ const videoChatScheduler = async (req, res, next) => {
             videoChat.host_transaction_id = hostTransaction._id;
             videoChat.save();
 
-            return res.status(200).json({ status: false, message: "video chat ended" });
+            return res.status(200).json({ status: false, message: "video chat ended", data: { user: rootUser } });
         }
 
         videoChat.last_captured_time = Date.now();
         videoChat.save();
 
-        res.status(200).json({ status: true, message: "call continue" });
+        res.status(200).json({ status: true, message: "call continue", data: { user: rootUser } });
     } catch (error) {
         next(error);
     }

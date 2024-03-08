@@ -20,36 +20,28 @@ const videoChatInitiated = async (req, res, next) => {
         if (host.price_per_min > rootUser.balance) throw new ApiError('user balance is low', 404);
 
         let existingVideoChat = await VideoChat.findOne({ user_id: rootUser._id, host_id, $or: [{ status: 'initiated' }, { status: 'ongoing' }] });
-        // if (existingVideoChat)  return res.status(200).json({ status: true, message: "video chat", data: existingVideoChat });
-        if (existingVideoChat) {
-            await sendNotification(host.device_token,
-                {
-                    body: "A user wants to connect with you",
-                    title: "someone has requested for video call",
-                    type: "request_video_call",
-                },
-                {
-                    body: "A user wants to connect with you",
-                    title: "someone has requested for video call",
-                    type: "request_video_call",
-                    click_action: '',
-                    notification_type: "",
-                    user_type: rootUser.user_type,
-                    image_url: "",
-                    // necessory details
-                    user_id: rootUser._id,
-                    room_id: existingVideoChat._id,
-                },
-            )
-            return res.status(200).json({ status: true, message: "video chat", data: existingVideoChat });
-        }
+        if (existingVideoChat) return res.status(200).json({ status: true, message: "video chat", data: existingVideoChat });
         // if (existingVideoChat) {
-        //     setTimeout(async () => {
-        //         existingVideoChat.status = 'ended';
-        //         existingVideoChat.chat_status = 'user_cancel';
-        //         existingVideoChat.save();
-        //     }, 10 * 1000);
-        //     res.end();
+        //     await sendNotification(host.device_token,
+        //         {
+        //             body: "A user wants to connect with you",
+        //             title: "someone has requested for video call",
+        //             type: "request_video_call",
+        //         },
+        //         {
+        //             body: "A user wants to connect with you",
+        //             title: "someone has requested for video call",
+        //             type: "request_video_call",
+        //             click_action: '',
+        //             notification_type: "",
+        //             user_type: rootUser.user_type,
+        //             image_url: "",
+        //             // necessory details
+        //             user_id: rootUser._id,
+        //             room_id: existingVideoChat._id,
+        //         },
+        //     )
+        //     return res.status(200).json({ status: true, message: "video chat", data: existingVideoChat });
         // }
 
         let newVideoChat = await VideoChat.create({ user_id: rootUser._id, host_id });
@@ -57,10 +49,10 @@ const videoChatInitiated = async (req, res, next) => {
         host.video_chat_id = newVideoChat._id;
         host.save();
 
-        setTimeout(() => {
+        setTimeout(async () => {
             newVideoChat.status = 'ended';
             newVideoChat.chat_status = 'user_cancel';
-            newVideoChat.save();
+            await newVideoChat.save();
         }, 1 * 60 * 1000);
 
         await sendNotification(host.device_token,

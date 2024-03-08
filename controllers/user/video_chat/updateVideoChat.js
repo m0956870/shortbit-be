@@ -49,7 +49,7 @@ const updateVideoChat = async (req, res, next) => {
 
             if (videoChat.host_id.price_per_min > rootUser.balance) throw new ApiError('user balance is low', 404);
 
-            let maxMin = Math.ceil(rootUser.balance / videoChat.host_id.price_per_min)
+            let maxMin = Math.ceil(videoChat.user_id.balance / videoChat.host_id.price_per_min)
 
             videoChat.status = 'ongoing';
             videoChat.chat_status = 'host_accepted';
@@ -146,7 +146,7 @@ const updateVideoChat = async (req, res, next) => {
                     // necessory details
                 },
             )
-            
+
             await sendNotification(videoChat.user_id.device_token,
                 {
                     body: "Videochat has ended",
