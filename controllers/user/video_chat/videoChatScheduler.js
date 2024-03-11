@@ -24,6 +24,7 @@ const videoChatScheduler = async (req, res, next) => {
 
         if (differenceMin > videoChat.max_min) {
             let host = await User.findById(videoChat.host_id._id)
+            if (host.is_deleted === true) throw new ApiError("user does not exist", 404);
             // user txn
             let amount = videoChat.max_min * videoChat.host_id.price_per_min;
             let userTransaction = await Transaction.create({

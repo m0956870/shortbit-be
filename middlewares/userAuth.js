@@ -12,6 +12,7 @@ const userAuth = async (req, res, next) => {
         const verifiedUser = verifyJWT(token);
         const user = await User.findById(verifiedUser._id);
         if (!user) throw new ApiError("User not found!", 404);
+        if (user.is_deleted === true) throw new ApiError("user does not exist", 404);
 
         req.user = user;
         next();

@@ -29,6 +29,7 @@ const approveSlot = async (req, res, next) => {
         if (!isValidObjectId(user_id)) throw new ApiError("Invalid user ID format", 400);
         const user = await User.findById(user_id);
         if (!user) throw new ApiError('no user found', 404);
+        if (user.is_deleted === true) throw new ApiError("user does not exist", 404);
         let usersArr = Object.entries(voiceRoom.slot_users)
         usersArr.map((user, i) => {
             if (user[1]) if (user[1]._id.toString() == user_id.toString()) throw new ApiError('user already added', 400);

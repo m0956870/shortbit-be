@@ -10,6 +10,7 @@ const resetPassword = async (req, res, next) => {
 
         const user = await User.findOne({ $or: [{ email }, { phone_number }] });
         if(!user) throw new ApiError("user not found!", 400);
+        if (user.is_deleted === true) throw new ApiError("user does not exist", 404);
 
         const salt = await bcrypt.genSalt(10)
         const hashPass = await bcrypt.hash(password, salt);

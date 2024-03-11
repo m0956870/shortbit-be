@@ -10,6 +10,7 @@ const createMessageGroup = async (req, res, next) => {
         if (!isValidObjectId(to_id)) throw new ApiError("Invalid to ID format", 400);
         const toUser = await User.findById(to_id);
         if (!toUser) throw new ApiError("no to user found", 404);
+        if (toUser.is_deleted === true) throw new ApiError("user does not exist", 404);
         const rootUser = req.user;
 
         const existingMessageGroup = await MessageGroup.findOne({ from_id: rootUser._id, to_id }).populate('from_id to_id', '-password -__v -location -otp -otp_expiry -interest')

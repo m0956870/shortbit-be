@@ -15,6 +15,7 @@ const verifySignupOTP = async (req, res, next) => {
         // const user = await User.findOne({ phone_number, otp }).select("role").lean();
         const user = await User.findOne({ $or: [{ email }, { phone_number }] });
         if (!user) throw new ApiError("no user found!", 400);
+        if (user.is_deleted === true) throw new ApiError("user does not exist", 404);
         if (new Date(user.otp_expiry) < new Date()) throw new ApiError("otp expired", 400);
         if (user.otp !== String(otp)) throw new ApiError("Incorrect OTP!", 400);
 

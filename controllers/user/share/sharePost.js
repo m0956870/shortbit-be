@@ -13,6 +13,7 @@ const sharePost = async (req, res, next) => {
         if (!isValidObjectId(to)) throw new ApiError("Invalid to user ID format", 400);
         let toUser = await User.findById(to);
         if (!toUser) throw new ApiError("not user found with to user id", 404);
+        if (toUser.is_deleted === true) throw new ApiError("user does not exist", 404);
         let rootUser = req.user;
 
         let postShareCount = await Post.findByIdAndUpdate(post_id, { $inc: { share: 1 } }, { new: true });

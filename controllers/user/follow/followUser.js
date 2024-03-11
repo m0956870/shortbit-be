@@ -18,6 +18,7 @@ const followUser = async (req, res, next) => {
         if (!oldRecord) {
             let userFollowing = await User.findByIdAndUpdate(following_id, { $inc: { followers_count: 1 } }, { new: true })
             if (!userFollowing) throw new ApiError("no user found with this ID, 404");
+            if (userFollowing.is_deleted === true) throw new ApiError("user does not exist", 404);
             await Follow.create({ follower_id: rootUser._id, following_id, });
 
             rootUser.following_count = rootUser.following_count + 1
@@ -104,6 +105,7 @@ const followUser = async (req, res, next) => {
         } else {
             let userFollowing = await User.findByIdAndUpdate(following_id, { $inc: { followers_count: -1 } }, { new: true })
             if (!userFollowing) throw new ApiError("no user found with this ID, 404");
+            if (userFollowing.is_deleted === true) throw new ApiError("user does not exist", 404);
             await Follow.deleteOne({ follower_id: rootUser._id, following_id, });
             rootUser.following_count = rootUser.following_count - 1
             rootUser.save();

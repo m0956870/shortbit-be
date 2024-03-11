@@ -13,6 +13,8 @@ const createLiveRoom = async (req, res, next) => {
             _id: host._id,
             device_token: host.device_token,
             user_type: host.user_type,
+            name: host.name,
+            profile_image: host.profile_image,
         }
 
         let liveRoom = await LiveRoom.create({ host_id: host._id, users_token: [tokenUser], status: 'ongoing', });

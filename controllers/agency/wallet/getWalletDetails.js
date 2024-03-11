@@ -13,6 +13,7 @@ const getWalletDetails = async (req, res, next) => {
         let user = await User.findById(user_id).lean();
         if (!user) throw new ApiError('no user found', 404);
         if (user.role !== 'host') throw new ApiError('user is not host', 400);
+        if (user.is_deleted === true) throw new ApiError("user does not exist", 404);
         if (user.agency_code !== req.user.agency_code) throw new ApiError('host is not from this agency', 400);
 
         page = page ? page : 1;

@@ -20,6 +20,7 @@ const sendGift = async (req, res, next) => {
         if (!isValidObjectId(gift_id)) throw new ApiError("Invalid gift ID format", 400);
         let host = await User.findById(to_user_id);
         if (!host) throw new ApiError("no user found with to_user_id", 400)
+        if (host.is_deleted === true) throw new ApiError("user does not exist", 404);
         let user = req.user;
 
         let gift = await Gift.findById(gift_id);
@@ -85,22 +86,26 @@ const sendGift = async (req, res, next) => {
         host.save();
         getUserBadge(host._id);
 
-        await sendNotification(host.device_token,
-            {
-                body: "A user has sent the gift",
-                title: "someone has sent the gift",
-                type: "recived_gift",
-            },
-            {
-                body: "A user has sent the gift",
-                title: "someone has sent the gift",
-                type: "recived_gift",
-                click_action: '',
-                image_url: gift.animation_image,
-                notification_type: "",
-                user_type: "",
-            },
-        )
+        if (!room_id) {
+            await sendNotification(host.device_token,
+                {
+                    body: "A user has sent the gift",
+                    title: "someone has sent the gift",
+                    type: "recived_gift",
+                },
+                {
+                    body: "A user has sent the gift",
+                    title: "someone has sent the gift",
+                    type: "recived_gift",
+                    click_action: '',
+                    image_url: gift.animation_image,
+                    notification_type: "",
+                    user_type: "",
+                    user_image: user.profile_image,
+                    user_name: user.name,
+                },
+            )
+        }
 
         await Notification.create({
             title: `${user?.name} sends you a gift`,
@@ -137,6 +142,8 @@ const sendGift = async (req, res, next) => {
                         user_type: user.user_type,
                         image_url: gift.animation_image,
                         notification_type: "",
+                        user_image: user.profile_image,
+                        user_name: user.name,
                     },
                 )
             })

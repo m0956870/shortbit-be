@@ -10,6 +10,8 @@ const getUser = async (req, res, next) => {
             .select('-password -__v')
 
         if (!user) throw new ApiError('user not found', 404);
+        if (user.is_deleted === true) throw new ApiError("user does not exist", 404);
+
         res.status(200).json({ status: true, message: "user profile details.", data: user });
     } catch (error) {
         next(error);

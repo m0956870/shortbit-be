@@ -52,6 +52,7 @@ const getAllWalletPackage = require('../controllers/admin/wallet_package/getAllW
 const addWalletPackage = require('../controllers/admin/wallet_package/addWalletPackage');
 const updateWalletPackage = require('../controllers/admin/wallet_package/updateWalletPackage');
 const deleteWalletPackage = require('../controllers/admin/wallet_package/deleteWalletPackage');
+const deleteUser = require('../controllers/admin/user/deleteUser');
 
 adminRoute.post('/login', loginAdmin);
 adminRoute.post("/forget_password", forgetPassword);
@@ -74,7 +75,7 @@ adminRoute.route('/top_givers').get(adminAuth, getAllGivers);
 // host
 adminRoute.route('/host').get(adminAuth, getAllHostListing).patch(adminAuth, updateHost);
 // user
-adminRoute.route('/user').get(adminAuth, getAllUserListing).patch(adminAuth, updateUser);
+adminRoute.route('/user').get(adminAuth, getAllUserListing).patch(adminAuth, updateUser); adminRoute.delete('/user/:id', adminAuth, deleteUser);
 
 adminRoute.route('/post').get(adminAuth, getAllPosts).patch(adminAuth, updatePost);
 // master data

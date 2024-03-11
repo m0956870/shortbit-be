@@ -17,7 +17,7 @@ const leaveLiveRoom = async (req, res, next) => {
         liveRoom.users_token = liveRoom.users_token.filter(user => user._id.toString() !== req.user._id.toString());
 
         await liveRoom.save();
-        res.status(200).json({ status: true, message: "user live room joined", data: liveRoom });
+        res.status(200).json({ status: true, message: "user live room leaved", data: liveRoom });
     } catch (error) {
         next(error);
     }

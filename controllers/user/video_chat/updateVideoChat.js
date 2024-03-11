@@ -58,6 +58,7 @@ const updateVideoChat = async (req, res, next) => {
             videoChat.save();
 
             let host = await User.findById(videoChat.host_id)
+            if (host.is_deleted === true) throw new ApiError("user does not exist", 404);
             host.is_video_busy = true;
             host.video_chat_id = videoChat._id;
             host.save();
@@ -86,7 +87,9 @@ const updateVideoChat = async (req, res, next) => {
             if (videoChat.status === 'ended') throw new ApiError('videochat has ended', 400);
 
             let user = await User.findById(videoChat.user_id._id);
+            if (user.is_deleted === true) throw new ApiError("user does not exist", 404);
             let host = await User.findById(videoChat.host_id._id);
+            if (host.is_deleted === true) throw new ApiError("user does not exist", 404);
 
             let differenceMin = ((new Date().getTime() - Number(videoChat.start_time)) / 1000) / 60;
             differenceMin = Math.abs(Math.round(differenceMin)) + 1;

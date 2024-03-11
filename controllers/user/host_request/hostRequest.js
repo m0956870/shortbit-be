@@ -7,13 +7,13 @@ const hostRequest = async (req, res, next) => {
     // console.log("hostRequest --------------", req.body);
     try {
         const { agency_code } = req.body;
-
         if (!agency_code) throw new ApiError("Agency code is required!", 400);
 
         let agency = await Agency.findOne({ agency_code })
         if (!agency) throw new ApiError('Invalid agency code!', 404);
 
         let user = await User.findById(req.user._id)
+        if (user.is_deleted === true) throw new ApiError("user does not exist", 404);
         if (user.role === 'user') {
             user.role = 'host';
             user.account_status = 'unapproved';

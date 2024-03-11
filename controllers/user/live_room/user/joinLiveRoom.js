@@ -29,6 +29,8 @@ const joinLiveRoom = async (req, res, next) => {
                 _id: user._id,
                 device_token: user.device_token,
                 user_type: user.user_type,
+                name: user.name,
+                profile_image: user.profile_image,
             }
 
             liveRoom.users.push(user._id);
@@ -41,6 +43,7 @@ const joinLiveRoom = async (req, res, next) => {
         roomData.is_followed = is_followed ? true : false;
 
         liveRoom.users_token.map(async (user) => {
+            console.log("user", user)
             await sendNotification(user.device_token,
                 {
                     body: "New user has joined the chat",
@@ -56,6 +59,8 @@ const joinLiveRoom = async (req, res, next) => {
                     click_action: "",
                     image_url: "",
                     notification_type: "",
+                    user_image: user.profile_image,
+                    user_name: user.name,
                 })
         })
 

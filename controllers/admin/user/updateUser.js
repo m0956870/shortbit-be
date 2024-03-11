@@ -21,6 +21,7 @@ const updateUser = async (req, res, next) => {
 
             let user = await User.findByIdAndUpdate(id, updatedObj, { new: true });
             if (!user) throw new ApiError("user not found with this id", 400);
+            if (user.is_deleted === true) throw new ApiError("user does not exist", 404);
 
             res.status(200).json({ status: true, message: "User details updated successfully!", data: user });
         } catch (error) {

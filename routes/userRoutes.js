@@ -61,8 +61,9 @@ const getAllWalletPackage = require("../controllers/user/wallet_package/getAllWa
 const getUserNotification = require("../controllers/user/notification/getUserNotification");
 const updateNotification = require("../controllers/user/notification/updateNotification");
 const userActiveStatus = require("../controllers/user/userActiveStatus");
+const deleteUser = require("../controllers/user/deleteUser");
 
-userRoute.route('/').post(signupUser).get(userAuth, getProfileDetails).patch(userAuth, updateDetails)
+userRoute.route('/').post(signupUser).get(userAuth, getProfileDetails).patch(userAuth, updateDetails).delete(userAuth, deleteUser);
 userRoute.route('/detail_status').patch(userAuth, updateRegisterDetails);
 userRoute.get('/details/:user_id', getUser);
 // auth
@@ -74,56 +75,56 @@ userRoute.post("/forget_password", forgetPassword);
 userRoute.post("/reset_password", resetPassword);
 
 // home api
-userRoute.route('/home').get(userAuth, geHomeApiDetails)
+userRoute.route('/home').get(userAuth, geHomeApiDetails);
 
 // user interactivity
-userRoute.route('/follow').post(userAuth, followUser)
-userRoute.get('/followers', userAuth, getFollowerListing)
-userRoute.get('/following', userAuth, getFollowingListing)
+userRoute.route('/follow').post(userAuth, followUser);
+userRoute.get('/followers', userAuth, getFollowerListing);
+userRoute.get('/following', userAuth, getFollowingListing);
 
 // notification
-userRoute.route('/notification').get(userAuth, getUserNotification).patch(userAuth, updateNotification)
+userRoute.route('/notification').get(userAuth, getUserNotification).patch(userAuth, updateNotification);
 
 // post interactivity
-userRoute.route('/post').post(userAuth, createPost).get(userAuth, getAllPost)
-userRoute.route('/like/:post_id').get(userAuth, likePost)
-userRoute.route('/view/:post_id').get(userAuth, viewPost)
-userRoute.route('/share').post(userAuth, sharePost)
+userRoute.route('/post').post(userAuth, createPost).get(userAuth, getAllPost);
+userRoute.route('/like/:post_id').get(userAuth, likePost);
+userRoute.route('/view/:post_id').get(userAuth, viewPost);
+userRoute.route('/share').post(userAuth, sharePost);
 userRoute.route('/comment').get(userAuth, getComments).post(userAuth, createComment); userRoute.delete('/comment/:id', userAuth, deleteComment);
 
 // HOST
-userRoute.route('/host').get(userAuth, getAllHostListing)
+userRoute.route('/host').get(userAuth, getAllHostListing);
 userRoute.post('/host_request', userAuth, hostRequest);
 userRoute.post('/initiate_settlement', userAuth, initiateSettlement);
 
 // live room module
-userRoute.route('/get_live_room').get(userAuth, getLiveRoom)
+userRoute.route('/get_live_room').get(userAuth, getLiveRoom);
 // HOST
-userRoute.route('/live_room').get(userAuth, getAllLiveRooms).post(userAuth, createLiveRoom).patch(userAuth, endLiveRoom)
+userRoute.route('/live_room').get(userAuth, getAllLiveRooms).post(userAuth, createLiveRoom).patch(userAuth, endLiveRoom);
 userRoute.route('/ongoing_live_room').get(userAuth, ongoingLiveRoom);
 userRoute.route('/liveroom_schedular').get(userAuth, updateLiveRoomStatus);
 // USER - live room
-userRoute.route('/join_room').post(userAuth, joinLiveRoom)
-userRoute.route('/leave_room').post(userAuth, leaveLiveRoom)
+userRoute.route('/join_room').post(userAuth, joinLiveRoom);
+userRoute.route('/leave_room').post(userAuth, leaveLiveRoom);
 
 // voice room module
-userRoute.route('/get_voice_room').get(userAuth, getVoiceRoom)
+userRoute.route('/get_voice_room').get(userAuth, getVoiceRoom);
 // HOST
-userRoute.route('/voice_room').get(userAuth, getAllVoiceRooms).post(userAuth, createVoiceRoom).patch(userAuth, endVoiceRoom)
+userRoute.route('/voice_room').get(userAuth, getAllVoiceRooms).post(userAuth, createVoiceRoom).patch(userAuth, endVoiceRoom);
 userRoute.route('/ongoing_voice_room').get(userAuth, ongoingVoiceRoom);
 userRoute.route('/approve_slot').post(userAuth, approveSlot);
 // userRoute.route('/liveroom_schedular').get(userAuth, updateLiveRoomStatus);
 // // USER - live room
-userRoute.route('/join_voice_room').post(userAuth, joinVoiceRoom)
-userRoute.route('/leave_voice_room').post(userAuth, leaveVoiceRoom)
-userRoute.route('/voiceroom_slot').post(userAuth, requestSlot).patch(userAuth, leaveSlot)
+userRoute.route('/join_voice_room').post(userAuth, joinVoiceRoom);
+userRoute.route('/leave_voice_room').post(userAuth, leaveVoiceRoom);
+userRoute.route('/voiceroom_slot').post(userAuth, requestSlot).patch(userAuth, leaveSlot);
 
 // videochat
-userRoute.route('/videochat').post(userAuth, videoChatInitiated).patch(userAuth, updateVideoChat)
-userRoute.route('/videochat_scheduler').post(userAuth, videoChatScheduler)
+userRoute.route('/videochat').post(userAuth, videoChatInitiated).patch(userAuth, updateVideoChat);
+userRoute.route('/videochat_scheduler').post(userAuth, videoChatScheduler);
 
 // message
-userRoute.route('/message_group').post(userAuth, createMessageGroup).get(userAuth, getAllMessageGroup)
+userRoute.route('/message_group').post(userAuth, createMessageGroup).get(userAuth, getAllMessageGroup);
 
 // gift
 userRoute.post('/send_gift', userAuth, sendGift);

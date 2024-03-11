@@ -7,7 +7,7 @@ const getAllHostListing = async (req, res, next) => {
         page = page ? page : 1;
         limit = limit ? limit : 10;
 
-        const findConditions = { role: 'host' };
+        const findConditions = { role: 'host', is_deleted: false };
         // if (type) findConditions.type = { $regex: new RegExp(type, "i") };
 
         let dataCount = await User.countDocuments(findConditions);

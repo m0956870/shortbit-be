@@ -19,6 +19,7 @@ const updateHost = async (req, res, next) => {
             const user = await User.findById(id);
             if (!user) throw new ApiError("No user found with this ID", 404);
             if (user.role === 'user') throw new ApiError("user is not a host", 404);
+            if (user.is_deleted === true) throw new ApiError("user does not exist", 404);
 
             if (name) user.name = name;
             if (email) user.email = email;
@@ -43,7 +44,6 @@ const updateHost = async (req, res, next) => {
             if (req.files['image']) user.profile_image = getBaseUrl() + "/image/" + req.files['image'][0].filename;
             await user.save();
 
-            // const user = await User.findByIdAndUpdate(id, updatedObj, { new: true }).lean()
             res.status(200).json({ status: true, message: "host updated sucessfully.", data: user });
         } catch (error) {
             next(error);

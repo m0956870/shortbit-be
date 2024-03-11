@@ -9,7 +9,7 @@ const getAllHostListing = async (req, res, next) => {
 
         let { agency_code } = req.user;
 
-        const findConditions = { agency_code, role: 'host' };
+        const findConditions = { agency_code, role: 'host', is_deleted: false };
         // if (type) findConditions.type = { $regex: new RegExp(type, "i") };
 
         const allData = await User.find(findConditions)

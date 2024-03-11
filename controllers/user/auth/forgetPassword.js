@@ -9,6 +9,7 @@ const forgetPassword = async (req, res, next) => {
 
         let user = await User.findOne({ $or: [{ email }, { phone_number }] });
         if (!user) throw new ApiError("user does not found", 404);
+        if (user.is_deleted === true) throw new ApiError("user does not exist", 404);
         // user.otp = '1234';
         // user.otp_expiry = new Date(Date.now() + 2 * 60 * 1000);
         // user.save();

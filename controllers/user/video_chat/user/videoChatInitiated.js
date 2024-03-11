@@ -15,6 +15,7 @@ const videoChatInitiated = async (req, res, next) => {
         if (!host) throw new ApiError('no host found', 404);
         if (host.role !== 'host' || host.account_status !== 'approved') throw new ApiError("user is not a host", 403);
         // if (host.is_video_busy) throw new ApiError("host is busy", 400);
+        if (host.is_deleted === true) throw new ApiError("user does not exist", 404);
         let rootUser = req.user;
 
         if (host.price_per_min > rootUser.balance) throw new ApiError('user balance is low', 404);

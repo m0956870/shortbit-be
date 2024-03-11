@@ -10,6 +10,7 @@ const getWalletDetails = async (req, res, next) => {
         page = page ? page : 1;
         limit = limit ? limit : 10;
         let user = await User.findById(user_id).lean();
+        if (user.is_deleted === true) throw new ApiError("user does not exist", 404);
 
         if (type === "transaction") {
             let userTransactions = await Transaction.find({ $or: [{ user_id: user._id, transaction_by: 'user' }, { to_user_id: user._id, transaction_by: 'admin' }] })
