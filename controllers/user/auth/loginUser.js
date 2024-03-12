@@ -10,7 +10,10 @@ const loginUser = async (req, res, next) => {
         if (!email && !phone_number) throw new ApiError("credential is required!", 400);
         if (!password) throw new ApiError("Password is required!", 400);
 
-        let user = await User.findOne({ $or: [{ email }, { phone_number }] });
+        let findVal = email ? { email } : { phone_number }
+        // let user = await User.findOne({ $or: [{ email }, { phone_number }] });
+        let user = await User.findOne(findVal);
+
         if (!user) throw new ApiError("User does not exist!", 404);
         if (user.is_deleted === true) throw new ApiError("user does not exist!", 403);
         if (user.account_status === "blocked") throw new ApiError("User is blocked!", 403);

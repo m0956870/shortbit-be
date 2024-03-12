@@ -8,16 +8,16 @@ const getAllPosts = async (req, res, next) => {
         page = page ? page : 1;
         limit = limit ? limit : 10;
 
-        const findConditions = {};
+        const findConditions = { is_deleted: false };
         if (user_id) findConditions.posted_by = user_id;
 
         const allData = await Post.find(findConditions)
-        .lean()
-        .skip((page * limit) - limit)
-        .limit(limit)
-        .sort({ createdAt: -1 })
-        .populate('posted_by')
-        .select("-password -is_deleted -updatedAt -otp -otp_expiry -__v")
+            .lean()
+            .skip((page * limit) - limit)
+            .limit(limit)
+            .sort({ createdAt: -1 })
+            .populate('posted_by')
+            .select("-password -is_deleted -updatedAt -otp -otp_expiry -__v")
         let dataCount = await Post.countDocuments(findConditions);
 
         res.status(200).json({
