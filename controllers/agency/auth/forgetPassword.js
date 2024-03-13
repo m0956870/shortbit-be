@@ -7,7 +7,9 @@ const forgetPassword = async (req, res, next) => {
         let { email, phone_number } = req.body;
         if (!email && !phone_number) throw new ApiError("credential is required!", 400);
 
-        let agency = await Agency.findOne({ $or: [{ email }, { phone_number }] });
+        let findVal = email ? { email } : { phone_number }
+        let agency = await Agency.findOne(findVal);
+        // let agency = await Agency.findOne({ $or: [{ email }, { phone_number }] });
         if (!agency) throw new ApiError("agency does not found", 404);
         // agency.otp = '1234';
         // agency.otp_expiry = new Date(Date.now() + 2 * 60 * 1000);

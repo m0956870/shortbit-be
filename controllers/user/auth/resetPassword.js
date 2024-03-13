@@ -8,7 +8,8 @@ const resetPassword = async (req, res, next) => {
         const { email, phone_number, password } = req.body;
         if (!password) throw new ApiError("Password is required!", 400);
 
-        const user = await User.findOne({ $or: [{ email }, { phone_number }] });
+        let findVal = email ? { email } : { phone_number }
+        const user = await User.findOne(findVal);
         if(!user) throw new ApiError("user not found!", 400);
         if (user.is_deleted === true) throw new ApiError("user does not exist", 404);
 

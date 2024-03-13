@@ -9,7 +9,8 @@ const resetPassword = async (req, res, next) => {
         if (!otp) throw new ApiError("otp is required!", 400);
         if (!password) throw new ApiError("Password is required!", 400);
 
-        const admin = await Admin.findOne({ $or: [{ email }, { phone_number }] });
+        let findVal = email ? { email } : { phone_number }
+        let admin = await Admin.findOne(findVal);
         if (!admin) throw new ApiError("admin not found", 400);
 
         if (new Date(admin.otp_expiry) < new Date()) throw new ApiError("otp expired", 400);

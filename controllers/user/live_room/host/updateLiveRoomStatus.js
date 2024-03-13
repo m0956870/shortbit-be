@@ -21,7 +21,7 @@ const updateLiveRoomStatus = async (req, res, next) => {
             await LiveRoom.findOneAndUpdate(liveRoom._id, { end_time: new Date(), status: 'ended' }, { new: true });
             host.is_live_busy = false;
             host.save();
-        }, 15 * 60 * 1000);
+        }, 5 * 60 * 1000);
 
         // let updatedLiveRoom = await LiveRoom.findOneAndUpdate({ _id: room_id, host_id: host._id, status: 'ongoing' }, { last_active_time: currentTime, scheduler_id }, { new: true });
         liveRoom.last_active_time = currentTime;

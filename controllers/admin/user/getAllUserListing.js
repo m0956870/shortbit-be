@@ -3,12 +3,12 @@ const User = require("../../../models/userModel");
 const getAllUserListing = async (req, res, next) => {
     // console.log("getAllUserListing -------------------------->")
     try {
-        let { page, limit } = req.query;
+        let { page, limit, user_id } = req.query;
         page = page ? page : 1;
         limit = limit ? limit : 10;
 
         const findConditions = { role: 'user', is_deleted: false };
-        // if (type) findConditions.type = { $regex: new RegExp(type, "i") };
+        if (user_id) findConditions.user_id = { $regex: new RegExp(user_id, "i") };
 
         // let allData = await User.aggregate([
         //     { $match: findConditions },
@@ -16,6 +16,7 @@ const getAllUserListing = async (req, res, next) => {
         //     { $limit: Number(limit) },
         //     { $sort: { createdAt: 1 } },
         // ])
+        
         // let [{ dataCount }] = await User.aggregate([
         //     { $match: findConditions },
         //     { $count: 'dataCount' }

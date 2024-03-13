@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema(
     {
         name: { type: String, default: "" },
         email: { type: String, unique: true, lowercase: true, },
-        password: { type: String, minlength: 6, required: [true, 'Password is required!'] },
+        password: { type: String },
         forget_password_otp: { type: String },
         phone_number: { type: String, default: '' },
         otp: { type: String, default: '' },
@@ -25,6 +25,7 @@ const userSchema = new mongoose.Schema(
             lat: { type: String, default: '' },
             long: { type: String, default: '' },
         },
+        user_id: { type: String, required: [true, 'user id is required'], unique: true, },
         user_name: { type: String, required: [true, 'username is required'], unique: true, },
         about_me: { type: String, default: '' },
 
@@ -61,6 +62,7 @@ const userSchema = new mongoose.Schema(
         is_video_busy: { type: Boolean, default: false },
         video_chat_id: { type: mongoose.Types.ObjectId, ref: 'videochat', default: null },
 
+        signup_source: { type: String, default: 'app' },
         is_deleted: { type: Boolean, default: false },
     },
     { timestamps: true }

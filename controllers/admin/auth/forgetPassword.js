@@ -7,7 +7,8 @@ const forgetPassword = async (req, res, next) => {
         let { email, phone_number } = req.body;
         if (!email && !phone_number) throw new ApiError("credential is required!", 400);
 
-        let admin = await Admin.findOne({ $or: [{ email }, { phone_number }] });
+        let findVal = email ? { email } : { phone_number }
+        let admin = await Admin.findOne(findVal);
         if (!admin) throw new ApiError("admin does not found", 404);
         // admin.otp = '1234';
         // admin.otp_expiry = new Date(Date.now() + 2 * 60 * 1000);

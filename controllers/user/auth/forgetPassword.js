@@ -7,7 +7,8 @@ const forgetPassword = async (req, res, next) => {
         let { email, phone_number } = req.body;
         if (!email && !phone_number) throw new ApiError("credential is required!", 400);
 
-        let user = await User.findOne({ $or: [{ email }, { phone_number }] });
+        let findVal = email ? { email } : { phone_number }
+        let user = await User.findOne(findVal);
         if (!user) throw new ApiError("user does not found", 404);
         if (user.is_deleted === true) throw new ApiError("user does not exist", 404);
         // user.otp = '1234';

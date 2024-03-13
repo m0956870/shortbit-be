@@ -8,8 +8,9 @@ const resetPassword = async (req, res, next) => {
         const { email, phone_number, otp, password } = req.body;
         if (!otp) throw new ApiError("otp is required!", 400);
         if (!password) throw new ApiError("Password is required!", 400);
-
-        const agency = await Agency.findOne({ $or: [{ email }, { phone_number }] });
+        
+        let findVal = email ? { email } : { phone_number }
+        let agency = await Agency.findOne(findVal);
         if (!agency) throw new ApiError('No agency found', 404);
         if (new Date(agency.otp_expiry) < new Date()) throw new ApiError("otp expired", 400);
         if (agency.otp !== otp) throw new ApiError("incorrect otp", 400);

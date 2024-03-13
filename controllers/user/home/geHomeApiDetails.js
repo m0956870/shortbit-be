@@ -4,11 +4,18 @@ const User = require("../../../models/userModel");
 const geHomeApiDetails = async (req, res, next) => {
     // console.log("geHomeApiDetails -------------------------->")
     try {
-        let { page, limit } = req.query;
+        let { page, limit, search } = req.query;
         page = page ? Number(page) : 1;
         limit = limit ? Number(limit) : 10;
 
-        const findConditions = { role: 'host', account_status: 'approved' };
+        const findConditions = { role: 'host', account_status: 'approved', _id: { $ne: req.user._id } };
+        if (search) {
+            findConditions['$or'] = [
+                { name: { $regex: new RegExp(search, "i") }},
+                { user_id: { $regex: new RegExp(search, "i") }},
+                { phone_number: { $regex: new RegExp(search, "i") }},
+            ]
+        }
 
         let allData = await User.aggregate([
             { $match: findConditions },

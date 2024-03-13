@@ -62,6 +62,8 @@ const getUserNotification = require("../controllers/user/notification/getUserNot
 const updateNotification = require("../controllers/user/notification/updateNotification");
 const userActiveStatus = require("../controllers/user/userActiveStatus");
 const deleteUser = require("../controllers/user/deleteUser");
+const googleLogin = require("../controllers/user/auth/googleLogin");
+const googleSignup = require("../controllers/user/auth/googleSignup");
 
 userRoute.route('/').post(signupUser).get(userAuth, getProfileDetails).patch(userAuth, updateDetails).delete(userAuth, deleteUser);
 userRoute.route('/detail_status').patch(userAuth, updateRegisterDetails);
@@ -73,6 +75,10 @@ userRoute.post('/active_status', userAuth, userActiveStatus);
 userRoute.post('/verify_signup_otp', verifySignupOTP);
 userRoute.post("/forget_password", forgetPassword);
 userRoute.post("/reset_password", resetPassword);
+
+// google login
+userRoute.post('/google_login', googleLogin);
+userRoute.post('/google_signup', googleSignup); 
 
 // home api
 userRoute.route('/home').get(userAuth, geHomeApiDetails);

@@ -4,7 +4,7 @@ const User = require("../../../models/userModel");
 const Post = require("../../../models/postModel");
 
 const deleteUser = async (req, res, next) => {
-    console.log('deleteUser', req.params.id);
+    // console.log('deleteUser', req.params.id);
     try {
         let user_id = req.params.id;
         if (!user_id) throw new ApiError("user id is required", 400)
@@ -27,5 +27,5 @@ F
     }
 }
 
-module.exports = deleteUser;
 
+module.exports = deleteUser;
