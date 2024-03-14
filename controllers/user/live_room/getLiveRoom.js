@@ -13,7 +13,7 @@ const getLiveRoom = async (req, res, next) => {
 
         const liveRoom = await LiveRoom.findById(id)
             .select(" -__v")
-            .populate('host_id', 'name profile_image level language followers_count')
+            .populate('host_id users', 'name profile_image level language followers_count')
             .lean()
 
         if (liveRoom) {

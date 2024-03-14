@@ -5,6 +5,7 @@ const Transaction = require("../../../models/transactionModel");
 const User = require("../../../models/userModel");
 const sendNotification = require("../../../utils/sendNotification");
 const getUserBadge = require("../../../utils/getUserBadge");
+const LiveRoom = require("../../../models/liveRoomModel");
 
 const updateVideoChat = async (req, res, next) => {
     // console.log("updateVideoChat -------------------------------->", req.body)
@@ -12,7 +13,7 @@ const updateVideoChat = async (req, res, next) => {
         let { type, chat_id } = req.body;
         if (!chat_id) throw new ApiError("chat id is required", 400)
         if (!isValidObjectId(chat_id)) throw new ApiError("Invalid chat ID format", 400);
-        let videoChat = await VideoChat.findById(chat_id).populate('user_id host_id', 'name profile_image followers_count balance price_per_min device_token user_type')
+        let videoChat = await VideoChat.findById(chat_id).populate('user_id host_id', 'name profile_image followers_count balance price_per_min device_token user_type live_room_id')
         if (!videoChat) throw new ApiError('No video chat find with this id', 404);
         if (videoChat.status === 'ended') throw new ApiError('video chat has ended', 400);
         let rootUser = req.user;
@@ -80,6 +81,40 @@ const updateVideoChat = async (req, res, next) => {
                     // necessory details
                 },
             )
+
+            let liveRoom = await LiveRoom.findById(videoChat.host_id.live_room_id);
+
+            console.log("videoChat.host_id.live_room_id.", videoChat.host_id.live_room_id)
+            if (liveRoom) {
+                liveRoom.end_time = Date.now();
+                liveRoom.status = 'ended';
+                await liveRoom.save()
+
+                rootUser.live_room_id = null;
+                rootUser.is_live_busy = false;
+                console.log("gfuygu", rootUser)
+                await rootUser.save();
+
+                liveRoom.users_token.map(async (user) => {
+                    await sendNotification(user.device_token,
+                        {
+                            body: "Host has ended the chat",
+                            title: "liveroom chat ended",
+                            type: "live_end",
+                            user_type: user.user_type, //vip/normal/vvip/
+                        },
+                        {
+                            body: "Host has ended the chat",
+                            title: "liveroom chat ended",
+                            type: "live_end",
+                            user_type: user.user_type, //vip/normal/vvip/
+                            click_action: "",
+                            image_url: "",
+                            notification_type: "",
+                        }
+                    )
+                })
+            }
 
             return res.status(200).json({ status: true, message: "video chat started", data: videoChat });
 

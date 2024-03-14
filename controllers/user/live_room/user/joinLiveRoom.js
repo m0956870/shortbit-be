@@ -16,14 +16,11 @@ const joinLiveRoom = async (req, res, next) => {
 
         if (!liveRoom) throw new ApiError('No live room find with this id', 404);
         if (liveRoom.status === 'ended') return res.status(200).json({ status: false, message: 'this live room is ended', data: liveRoom });
+        if (liveRoom.blocked_users.includes(user._id)) throw new ApiError('user is blocked by host', 400);
 
-        let is_followed = await Follow.findOne({ follower_id: req.user._id, following_id: liveRoom.host_id._id }).lean()
+        console.log("dfcgvhjnmk,.", liveRoom)
 
-        // liveRoom.users.push(req.user._id);
-        // liveRoom.users = [...new Set(liveRoom.users)];
-        // liveRoom.users_token.push(req.user.device_token);
-        // liveRoom.users_token = [...new Set(liveRoom.users_token)];
-        // if (liveRoom.users.length > liveRoom.peak_view_count) liveRoom.peak_view_count = liveRoom.users.length;
+        
         if (!liveRoom.users.includes(user._id)) {
             let tokenUser = {
                 _id: user._id,
@@ -32,18 +29,18 @@ const joinLiveRoom = async (req, res, next) => {
                 name: user.name,
                 profile_image: user.profile_image,
             }
-
+            
             liveRoom.users.push(user._id);
             liveRoom.users_token.push(tokenUser);
             if (liveRoom.users.length > liveRoom.peak_view_count) liveRoom.peak_view_count = liveRoom.users.length;
         }
         await liveRoom.save();
-
+        
+        let is_followed = await Follow.findOne({ follower_id: req.user._id, following_id: liveRoom.host_id._id }).lean()
         let roomData = liveRoom.toJSON();
         roomData.is_followed = is_followed ? true : false;
 
         liveRoom.users_token.map(async (user) => {
-            console.log("user", user)
             await sendNotification(user.device_token,
                 {
                     body: "New user has joined the chat",

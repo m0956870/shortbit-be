@@ -47,6 +47,7 @@ const userSchema = new mongoose.Schema(
         host_monthly_credit: { type: Number, default: 0 },
         level: { type: Number, default: 0 },
 
+        blocked_users: [{ type: mongoose.Types.ObjectId, ref: 'user' }],
         role: { type: String, default: 'user' },
         // host
         agency_code: { type: String },
