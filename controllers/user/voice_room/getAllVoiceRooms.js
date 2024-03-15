@@ -4,9 +4,18 @@ const VoiceRoom = require("../../../models/voiceRoomModel");
 const getAllVoiceRooms = async (req, res, next) => {
     // console.log("getAllVoiceRooms -------------------------->", req.user)
     try {
-        let { page, limit } = req.query;
+        let { page, limit, search } = req.query;
         page = page ? Number(page) : 1;
         limit = limit ? Number(limit) : 10;
+
+        const findConditions = { role: 'host', account_status: 'approved', _id: { $ne: req.user._id } };
+        if (search) {
+            findConditions['$or'] = [
+                { name: { $regex: new RegExp(search, "i") } },
+                { user_id: { $regex: new RegExp(search, "i") } },
+                { phone_number: { $regex: new RegExp(search, "i") } },
+            ]
+        }
 
         // const findConditions = { host_id: { $nin: req.user._id }, status: 'ongoing' };
         // // if (type) findConditions.type = { $regex: new RegExp(type, "i") };
@@ -28,8 +37,6 @@ const getAllVoiceRooms = async (req, res, next) => {
         //     total_pages: Math.ceil(dataCount / limit),
         //     data: voiceRooms,
         // });
-
-        const findConditions = { role: 'host', account_status: 'approved' };
 
         let allData = await User.aggregate([
             { $match: findConditions },
@@ -60,7 +67,7 @@ const getAllVoiceRooms = async (req, res, next) => {
                             $match: { is_online: false },
                         },
                     ],
-                    totalDataArray: [{ $skip: (page * limit) - limit }, { $limit: limit }],
+                    // totalDataArray: [{ $skip: (page * limit) - limit }, { $limit: limit }],
                     total_data: [
                         {
                             $count: 'total_data'
@@ -68,17 +75,17 @@ const getAllVoiceRooms = async (req, res, next) => {
                     ]
                 },
             },
-            // {
-            //     $addFields: {
-            //         totalDataArray: { $concatArrays: ["$live", "$active", "$inactive"] }
-            //     }
-            // },
-            // {
-            //     $project: {
-            //         totalDataArray: 1,
-            //         total_data: 1
-            //     }
-            // }
+            {
+                $addFields: {
+                    totalDataArray: { $concatArrays: ["$live", "$active", "$inactive"] },
+                }
+            },
+            {
+                $project: {
+                    totalDataArray: { $slice: ["$totalDataArray", (page * limit) - limit, limit] },
+                    total_data: 1
+                }
+            }
         ])
 
         const dataCount = allData[0]?.total_data[0]?.total_data || 0;

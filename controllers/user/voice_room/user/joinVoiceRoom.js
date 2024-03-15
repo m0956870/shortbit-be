@@ -12,10 +12,11 @@ const joinVoiceRoom = async (req, res, next) => {
         let user = req.user;
 
         let voiceRoom = await VoiceRoom.findById(room_id)
-            .populate('host_id', 'name profile_image followers_count')
+            .populate('host_id', 'name profile_image followers_count blocked_users')
 
         if (!voiceRoom) throw new ApiError('No voice room find with this id', 404);
         if (voiceRoom.status === 'ended') return res.status(200).json({ status: false, message: 'this voice room is ended', data: voiceRoom });
+        if (voiceRoom.host_id.blocked_users.includes(req.user._id)) throw new ApiError('user is blocked by host', 400);
 
         let is_followed = await Follow.findOne({ follower_id: user._id, following_id: voiceRoom.host_id._id }).lean()
 

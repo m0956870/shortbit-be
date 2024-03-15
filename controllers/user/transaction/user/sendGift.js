@@ -13,8 +13,9 @@ const getUserBadge = require("../../../../utils/getUserBadge");
 const sendGift = async (req, res, next) => {
     // console.log("sendGift -----------------------", req.body)
     try {
-        let { room_id, to_user_id, gift_id } = req.body;
-        if (!gift_id) throw new ApiError("gift id is required", 400)
+        let { room_id, to_user_id, gift_id, transaction_for } = req.body;
+        if (!gift_id) throw new ApiError("gift id is required", 400);
+        if (!transaction_for) throw new ApiError("transaction_type is required", 400);
         if (!isValidObjectId(gift_id)) throw new ApiError("Invalid gift ID format", 400);
         let gift = await Gift.findById(gift_id);
         if (!gift) throw new ApiError("no gift found with this id", 400)
@@ -28,6 +29,7 @@ const sendGift = async (req, res, next) => {
                 user_id: admin._id,
                 to_user_id: user._id,
                 transaction_type: 'credit',
+                transaction_for,
                 transaction_by: 'user',
                 item_type: 'gift',
                 item: gift,
@@ -40,6 +42,7 @@ const sendGift = async (req, res, next) => {
                 user_id: user._id,
                 to_user_id: admin._id,
                 transaction_type: 'debit',
+                transaction_for,
                 transaction_by: 'user',
                 item_type: 'gift',
                 item: gift,
@@ -64,6 +67,7 @@ const sendGift = async (req, res, next) => {
                 user_id: admin._id,
                 to_user_id: user._id,
                 transaction_type: 'credit',
+                transaction_for,
                 transaction_by: 'user',
                 item_type: 'gift',
                 item: gift,
@@ -76,6 +80,7 @@ const sendGift = async (req, res, next) => {
                 user_id: user._id,
                 to_user_id: admin._id,
                 transaction_type: 'debit',
+                transaction_for,
                 transaction_by: 'user',
                 item_type: 'gift',
                 item: gift,
@@ -93,6 +98,7 @@ const sendGift = async (req, res, next) => {
             user_id: user._id,
             to_user_id,
             transaction_type: 'debit',
+            transaction_for,
             transaction_by: 'user',
             item_type: 'gift',
             item: gift,
@@ -107,6 +113,7 @@ const sendGift = async (req, res, next) => {
             user_id: to_user_id,
             to_user_id: user._id,
             transaction_type: 'credit',
+            transaction_for,
             transaction_by: 'user',
             item_type: 'gift',
             item: gift,

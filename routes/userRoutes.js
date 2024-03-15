@@ -66,6 +66,8 @@ const googleLogin = require("../controllers/user/auth/googleLogin");
 const googleSignup = require("../controllers/user/auth/googleSignup");
 const removeFromLiveRoom = require("../controllers/user/live_room/host/leaveLiveRoom");
 const blockUser = require("../controllers/user/live_room/host/blockUser");
+const allUsersRanking = require("../controllers/user/home/allUsersRanking");
+const liveroomUserRanking = require("../controllers/user/live_room/liveroomUserRanking");
 
 userRoute.route('/').post(signupUser).get(userAuth, getProfileDetails).patch(userAuth, updateDetails).delete(userAuth, deleteUser);
 userRoute.route('/detail_status').patch(userAuth, updateRegisterDetails);
@@ -86,6 +88,7 @@ userRoute.post('/google_signup', googleSignup);
 
 // home api
 userRoute.route('/home').get(userAuth, geHomeApiDetails);
+userRoute.post('/all_users_ranking', userAuth, allUsersRanking);
 
 // user interactivity
 userRoute.route('/follow').post(userAuth, followUser);
@@ -109,6 +112,7 @@ userRoute.post('/initiate_settlement', userAuth, initiateSettlement);
 
 // live room module
 userRoute.route('/get_live_room').get(userAuth, getLiveRoom);
+userRoute.post('/liveroom_user_ranking', userAuth, liveroomUserRanking);
 // HOST
 userRoute.route('/live_room').get(userAuth, getAllLiveRooms).post(userAuth, createLiveRoom).patch(userAuth, endLiveRoom);
 userRoute.route('/ongoing_live_room').get(userAuth, ongoingLiveRoom);
