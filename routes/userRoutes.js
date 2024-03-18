@@ -46,6 +46,7 @@ const getLiveRoom = require("../controllers/user/live_room/getLiveRoom");
 const createMessageGroup = require("../controllers/user/message_group/createMessageGroup");
 const getAllMessageGroup = require("../controllers/user/message_group/getAllMessageGroup");
 const getVoiceRoom = require("../controllers/user/voice_room/getVoiceRoom");
+const voiceroomUserRanking = require("../controllers/user/voice_room/voiceroomUserRanking");
 const getAllVoiceRooms = require("../controllers/user/voice_room/getAllVoiceRooms");
 const createVoiceRoom = require("../controllers/user/voice_room/host/createVoiceRoom");
 const endVoiceRoom = require("../controllers/user/voice_room/host/endVoiceRoom");
@@ -68,6 +69,9 @@ const removeFromLiveRoom = require("../controllers/user/live_room/host/leaveLive
 const blockUser = require("../controllers/user/live_room/host/blockUser");
 const allUsersRanking = require("../controllers/user/home/allUsersRanking");
 const liveroomUserRanking = require("../controllers/user/live_room/liveroomUserRanking");
+const voiceroomBlockUser = require("../controllers/user/voice_room/host/voiceroomBlockUser");
+const liveroomMuteUser = require("../controllers/user/live_room/host/liveroomMuteUser");
+const voiceroomMuteUser = require("../controllers/user/voice_room/host/voiceroomMuteUser");
 
 userRoute.route('/').post(signupUser).get(userAuth, getProfileDetails).patch(userAuth, updateDetails).delete(userAuth, deleteUser);
 userRoute.route('/detail_status').patch(userAuth, updateRegisterDetails);
@@ -81,7 +85,7 @@ userRoute.post("/forget_password", forgetPassword);
 userRoute.post("/reset_password", resetPassword);
 
 // google login
-userRoute.post('/google_login', googleLogin);
+userRoute.post('/google_login', googleLogin); // "depricated"
 userRoute.post('/google_signup', googleSignup); 
 
 // userRoute.route('/block').get(userAuth, blockedUsers).patch(userAuth, updateBlockedUsers)
@@ -119,12 +123,15 @@ userRoute.route('/ongoing_live_room').get(userAuth, ongoingLiveRoom);
 userRoute.route('/liveroom_schedular').get(userAuth, updateLiveRoomStatus);
 userRoute.route('/liveroom_remove_user').post(userAuth, removeFromLiveRoom);
 userRoute.route('/liveroom_block_user').post(userAuth, blockUser);
+userRoute.route('/liveroom_user_mute').post(userAuth, liveroomMuteUser);
 // USER - live room
 userRoute.route('/join_room').post(userAuth, joinLiveRoom);
 userRoute.route('/leave_room').post(userAuth, leaveLiveRoom);
 
 // voice room module
 userRoute.route('/get_voice_room').get(userAuth, getVoiceRoom);
+userRoute.post('/voiceroom_user_ranking', userAuth, voiceroomUserRanking);
+
 // HOST
 userRoute.route('/voice_room').get(userAuth, getAllVoiceRooms).post(userAuth, createVoiceRoom).patch(userAuth, endVoiceRoom);
 userRoute.route('/ongoing_voice_room').get(userAuth, ongoingVoiceRoom);
@@ -134,6 +141,8 @@ userRoute.route('/approve_slot').post(userAuth, approveSlot);
 userRoute.route('/join_voice_room').post(userAuth, joinVoiceRoom);
 userRoute.route('/leave_voice_room').post(userAuth, leaveVoiceRoom);
 userRoute.route('/voiceroom_slot').post(userAuth, requestSlot).patch(userAuth, leaveSlot);
+userRoute.route('/voiceroom_block_user').post(userAuth, voiceroomBlockUser);
+userRoute.route('/voiceroom_user_mute').post(userAuth, voiceroomMuteUser);
 
 // videochat
 userRoute.route('/videochat').post(userAuth, videoChatInitiated).patch(userAuth, updateVideoChat);

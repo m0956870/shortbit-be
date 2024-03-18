@@ -22,6 +22,7 @@ const schema = new mongoose.Schema(
         earned_coins: { type: Number, default: 0 },
         last_active_time: { type: Date, default: Date.now },
         scheduler_id: { type: Number, default: null },
+        blocked_users: [{ type: mongoose.Types.ObjectId, ref: 'user' }],
         status: { type: String, default: 'ongoing', enum: ['ongoing', 'ended'] },
     },
     { timestamps: true }

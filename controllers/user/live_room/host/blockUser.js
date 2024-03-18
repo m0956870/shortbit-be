@@ -27,27 +27,68 @@ const blockUser = async (req, res, next) => {
                 if (liveRoom.users.length > liveRoom.peak_view_count) liveRoom.peak_view_count = liveRoom.users.length;
 
                 await liveRoom.save();
-                res.status(200).json({ status: true, message: "user blocked", data: liveRoom });
-            } else {
-                throw new ApiError('user is not present in liveroom', 400);
+
+                liveRoom.users_token.map(async (user) => {
+                    await sendNotification(user.device_token,
+                        {
+                            body: "Host has blocked a user",
+                            title: "Host has blocked a user",
+                            type: "liveroom_temprorary_user_block",
+                            user_type: user.user_type, //vip/normal/vvip/
+                            user_id: user_id,
+                        },
+                        {
+                            body: "Host has blocked a user",
+                            title: "Host has blocked a user",
+                            type: "liveroom_temprorary_user_block",
+                            user_type: user.user_type, //vip/normal/vvip/
+                            user_id: user_id,
+                            click_action: "",
+                            image_url: "",
+                            notification_type: "",
+                        }
+                    )
+                })
+                return res.status(200).json({ status: true, message: "user blocked", data: liveRoom });
             }
+            throw new ApiError('user is not present in liveroom', 400);
         } else if (type === "permanent") {
-            return res.send('working on it...')
-            // let rootUser = req.user;
+            let rootUser = req.user;
 
-            // if (liveRoom.users.includes(user._id)) {
-            //     rootUser.blocked_users.push(user._id);
-            //     await rootUser.save();
+            if (liveRoom.users.includes(user._id)) {
+                rootUser.blocked_users.push(user._id);
+                await rootUser.save();
 
-            //     liveRoom.users = liveRoom.users.filter(ids => ids.toString() !== user_id.toString());
-            //     liveRoom.users_token = liveRoom.users_token.filter(user => user._id.toString() !== user_id.toString());
+                liveRoom.users = liveRoom.users.filter(ids => ids.toString() !== user_id.toString());
+                liveRoom.users_token = liveRoom.users_token.filter(user => user._id.toString() !== user_id.toString());
+                if (liveRoom.users.length > liveRoom.peak_view_count) liveRoom.peak_view_count = liveRoom.users.length;
 
-            //     if (liveRoom.users.length > liveRoom.peak_view_count) liveRoom.peak_view_count = liveRoom.users.length;
+                await liveRoom.save();
 
-            //     await liveRoom.save();
-            //     return res.status(200).json({ status: true, message: "user blocked", data: liveRoom });
-            // }
-            // throw new ApiError('user is not present in liveroom', 400);
+                liveRoom.users_token.map(async (user) => {
+                    await sendNotification(user.device_token,
+                        {
+                            body: "Host has blocked a user",
+                            title: "Host has blocked a user",
+                            type: "liveroom_permanently_user_block",
+                            user_type: user.user_type, //vip/normal/vvip/
+                            user_id: user_id,
+                        },
+                        {
+                            body: "Host has blocked a user",
+                            title: "Host has blocked a user",
+                            type: "liveroom_permanently_user_block",
+                            user_type: user.user_type, //vip/normal/vvip/
+                            user_id: user_id,
+                            click_action: "",
+                            image_url: "",
+                            notification_type: "",
+                        }
+                    )
+                })
+                return res.status(200).json({ status: true, message: "user blocked", data: liveRoom });
+            }
+            throw new ApiError('user is not present in liveroom', 400);
         }
         throw new ApiError('invalid type', 400)
     } catch (error) {

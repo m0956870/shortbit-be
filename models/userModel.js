@@ -11,7 +11,6 @@ const userSchema = new mongoose.Schema(
         otp_expiry: { type: String, default: '' },
         device_token: { type: String, default: '' },
 
-        detail_count: { type: String, default: '0' },
         gender: { type: String, default: '' },
         dob: { type: String, default: '' },
         interest: [{ type: mongoose.Schema.Types.ObjectId, ref: 'interest' }],
@@ -28,9 +27,10 @@ const userSchema = new mongoose.Schema(
         user_id: { type: String, required: [true, 'user id is required'], unique: true, },
         user_name: { type: String, required: [true, 'username is required'], unique: true, },
         about_me: { type: String, default: '' },
-
+        
         gallery: [{ type: String }],
         age: { type: String, default: '' },
+        detail_count: { type: String, default: '0' },
         detail_status: { type: String, default: 'incomplete', },
         account_status: { type: String, default: 'active', enum: ['active', 'inactive', 'blocked', 'unapproved', 'approved'] },
         service_status: { type: String, default: 'active', enum: ['active', 'inactive'] },

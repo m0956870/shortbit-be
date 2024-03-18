@@ -18,6 +18,28 @@ const removeFromLiveRoom = async (req, res, next) => {
         liveRoom.users_token = liveRoom.users_token.filter(user => user._id.toString() !== user_id.toString());
 
         await liveRoom.save();
+
+        liveRoom.users_token.map(async (user) => {
+            await sendNotification(user.device_token,
+                {
+                    body: "A user has leaved the chat",
+                    title: "A user has leaved the chat",
+                    type: "liveroom_host_removed_user",
+                    user_type: user.user_type, //vip/normal/vvip/
+                },
+                {
+                    body: "A user has leaved the chat",
+                    title: "A user has leaved the chat",
+                    type: "liveroom_host_removed_user",
+                    user_type: user.user_type, //vip/normal/vvip/
+                    click_action: "",
+                    image_url: "",
+                    notification_type: "",
+                    user_image: user.profile_image,
+                    user_name: user.name,
+                })
+        })
+
         res.status(200).json({ status: true, message: "user live room leaved", data: liveRoom });
     } catch (error) {
         next(error);

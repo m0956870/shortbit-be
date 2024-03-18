@@ -13,8 +13,9 @@ const requestSlot = async (req, res, next) => {
         const voiceRoom = await VoiceRoom.findById(room_id);
         if (!voiceRoom) throw new ApiError('no room found', 404);
         if (voiceRoom.status !== 'ongoing') throw new ApiError('room has ended', 400);
+        if (voiceRoom.blocked_users.includes(req.user._id)) throw new ApiError('user is blocked by host', 400);
+      
         let usersArr = Object.entries(voiceRoom.slot_users)
-
         voiceRoom.requested_slot_users.map(reqUser => {
             if(reqUser._id.toString() === req.user._id.toString()) throw new ApiError('user already requested', 400);
         })
