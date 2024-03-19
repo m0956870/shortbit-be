@@ -21,13 +21,7 @@ const blockUser = async (req, res, next) => {
         if (type === "temporary") {
             if (liveRoom.users.includes(user._id)) {
                 liveRoom.blocked_users.push(user._id);
-                liveRoom.users = liveRoom.users.filter(ids => ids.toString() !== user_id.toString());
-                liveRoom.users_token = liveRoom.users_token.filter(user => user._id.toString() !== user_id.toString());
-
-                if (liveRoom.users.length > liveRoom.peak_view_count) liveRoom.peak_view_count = liveRoom.users.length;
-
-                await liveRoom.save();
-
+                
                 liveRoom.users_token.map(async (user) => {
                     await sendNotification(user.device_token,
                         {
@@ -49,6 +43,12 @@ const blockUser = async (req, res, next) => {
                         }
                     )
                 })
+
+                liveRoom.users = liveRoom.users.filter(ids => ids.toString() !== user_id.toString());
+                liveRoom.users_token = liveRoom.users_token.filter(user => user._id.toString() !== user_id.toString());
+                if (liveRoom.users.length > liveRoom.peak_view_count) liveRoom.peak_view_count = liveRoom.users.length;
+
+                await liveRoom.save();
                 return res.status(200).json({ status: true, message: "user blocked", data: liveRoom });
             }
             throw new ApiError('user is not present in liveroom', 400);

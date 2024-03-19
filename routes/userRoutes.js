@@ -153,14 +153,14 @@ userRoute.route('/message_group').post(userAuth, createMessageGroup).get(userAut
 
 // gift
 userRoute.post('/send_gift', userAuth, sendGift);
-userRoute.route('/gift').get(userAuth, giftListing);
 
 // recharge & wallet
 userRoute.post('/recharge/initiate', userAuth, initiateRecharge);
 userRoute.route('/wallet').get(userAuth, getWalletDetails);
-userRoute.route('/wallet_package').get(userAuth, getAllWalletPackage);
 
-// avatar
+// getters
+userRoute.route('/wallet_package').get(userAuth, getAllWalletPackage);
+userRoute.route('/gift').get(userAuth, giftListing);
 userRoute.route('/avatar').get(userAuth, getAllAvatar);
 userRoute.route('/interest').get(getAllInterest)
 userRoute.route('/faq').get(userAuth, getAllFAQs)

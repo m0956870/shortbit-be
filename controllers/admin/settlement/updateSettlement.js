@@ -23,7 +23,7 @@ const updateSettlement = async (req, res, next) => {
         let agencyAmount = (Number(settlement.amount) / 100) * settlement.agency_id?.commission;
         let hostAmount = (Number(settlement.amount) / 100) * settlement.host_id?.commission;
         let adminAmount = (Number(settlement.amount) / 100) * (100 - (settlement.agency_id?.commission + settlement.host_id?.commission));
-        console.log("adminAmount", adminAmount)
+        // console.log("adminAmount", adminAmount)
 
         // admin transaction
         await Transaction.create({

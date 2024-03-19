@@ -1,6 +1,7 @@
 const { isValidObjectId } = require("mongoose");
 const { ApiError } = require("../../../../errorHandler/apiErrorHandler");
 const LiveRoom = require("../../../../models/liveRoomModel");
+const sendNotification = require("../../../../utils/sendNotification");
 
 const leaveLiveRoom = async (req, res, next) => {
     try {

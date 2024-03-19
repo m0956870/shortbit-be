@@ -53,9 +53,11 @@ const videoChatInitiated = async (req, res, next) => {
         host.save();
 
         setTimeout(async () => {
-            newVideoChat.status = 'ended';
-            newVideoChat.chat_status = 'user_cancel';
-            await newVideoChat.save();
+            console.log("videoChatInitiated schedular 1min run")
+            await VideoChat.findOneAndUpdate({ _id: newVideoChat._id, status: "initiated" }, { end_time: new Date(), status: 'ended', chat_status: 'user_cancel' }, { new: true });
+            // newVideoChat.status = 'ended';
+            // newVideoChat.chat_status = 'user_cancel';
+            // await newVideoChat.save();
         }, 1 * 60 * 1000);
 
         await sendNotification(host.device_token,

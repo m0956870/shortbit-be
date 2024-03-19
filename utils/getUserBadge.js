@@ -7,8 +7,8 @@ const getUserBadge = async (id) => {
     let user = await User.findById(id);
 
     // startDate = first date of the month (1) & endDate = end Date of the month (30/31)
-    let startDate = new Date(new Date(new Date().setDate(1)).setHours(0, 0, 0)).toLocaleString();
-    let endDate = new Date(new Date(new Date(new Date(new Date().setMonth(new Date().getMonth() + 1)).setDate(1))).setHours(0, 0, 0)).toLocaleString();
+    let startDate = new Date(new Date(new Date().setDate(1)).setHours(0, 0, 0)).toLocaleString(); // 1
+    let endDate = new Date(new Date(new Date(new Date(new Date().setMonth(new Date().getMonth() + 1)).setDate(1))).setHours(0, 0, 0)).toLocaleString(); //30
 
     if (user.role === 'user') {
 

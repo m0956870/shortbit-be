@@ -19,6 +19,7 @@ const getLiveRoom = async (req, res, next) => {
         if (liveRoom) {
             let is_followed = await Follow.findOne({ follower_id: rootUser._id, following_id: liveRoom?.host_id?._id }).lean();
             liveRoom.is_followed = is_followed ? true : false;
+            // liveRoom.is_followed = Boolean(is_followed)
         }
 
         res.status(200).json({

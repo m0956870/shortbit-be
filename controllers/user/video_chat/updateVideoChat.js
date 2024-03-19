@@ -82,6 +82,7 @@ const updateVideoChat = async (req, res, next) => {
                 },
             )
 
+            // if he is on liveroom, and accept videochat then cut the liveroom
             let liveRoom = await LiveRoom.findById(videoChat.host_id.live_room_id);
 
             console.log("videoChat.host_id.live_room_id.", videoChat.host_id.live_room_id)
@@ -92,7 +93,7 @@ const updateVideoChat = async (req, res, next) => {
 
                 rootUser.live_room_id = null;
                 rootUser.is_live_busy = false;
-                console.log("gfuygu", rootUser)
+                // console.log("gfuygu", rootUser)
                 await rootUser.save();
 
                 liveRoom.users_token.map(async (user) => {
